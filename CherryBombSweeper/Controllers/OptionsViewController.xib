@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="OptionsViewController" customModule="C4Sweeper" customModuleProvider="target">
+            <connections>
+                <outlet property="columnCountPicker" destination="FDq-Vs-bAG" id="Cz5-Ib-WxD"/>
+                <outlet property="gridSizeLabel" destination="Unt-Mb-KTh" id="S72-RY-VS4"/>
+                <outlet property="mineCountPicker" destination="PMc-T9-3fY" id="adf-5g-a9f"/>
+                <outlet property="minesCountLabel" destination="7WQ-jk-dDZ" id="X18-YM-dLf"/>
+                <outlet property="rowCountPicker" destination="J2S-mX-a0Z" id="NtV-d8-bdL"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Grid Size" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Unt-Mb-KTh" userLabel="Grid Size">
+                    <rect key="frame" x="0.0" y="78" width="375" height="21"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mines Count" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7WQ-jk-dDZ">
+                    <rect key="frame" x="0.0" y="99" width="375" height="21"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pXQ-P7-eth" userLabel="Easy">
+                    <rect key="frame" x="32" y="152" width="98.5" height="30"/>
+                    <state key="normal" title="Easy"/>
+                    <connections>
+                        <action selector="onEasyButtonPressed:" destination="-1" eventType="touchUpInside" id="nrZ-18-jqy"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="klV-PH-wnV" userLabel="Intermediate">
+                    <rect key="frame" x="138.5" y="152" width="98" height="30"/>
+                    <state key="normal" title="Intermediate"/>
+                    <connections>
+                        <action selector="onIntermediateButtonPressed:" destination="-1" eventType="touchUpInside" id="24C-nG-19f"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lrm-S1-l2a" userLabel="Expert">
+                    <rect key="frame" x="244.5" y="152" width="98.5" height="30"/>
+                    <state key="normal" title="Expert"/>
+                    <connections>
+                        <action selector="onExpertButtonPressed:" destination="-1" eventType="touchUpInside" id="urs-3b-hsZ"/>
+                    </connections>
+                </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Row Count" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7xD-kR-ZWs">
+                    <rect key="frame" x="32" y="214" width="83.5" height="70"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Column Count" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="X5x-BI-uuE">
+                    <rect key="frame" x="32" y="292" width="109.5" height="70"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mine Count" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="e5P-Yd-me3">
+                    <rect key="frame" x="32" y="370" width="88" height="70"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="J2S-mX-a0Z">
+                    <rect key="frame" x="188" y="214" width="155" height="70"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="70" id="apv-dg-JTQ"/>
+                    </constraints>
+                </pickerView>
+                <pickerView tag="1" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FDq-Vs-bAG" userLabel="Column Count Picker">
+                    <rect key="frame" x="188" y="292" width="155" height="70"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="70" id="csB-Yq-W9J"/>
+                    </constraints>
+                </pickerView>
+                <pickerView tag="2" contentMode="scaleToFill" restorationIdentifier="mineCountPicker" translatesAutoresizingMaskIntoConstraints="NO" id="PMc-T9-3fY" userLabel="Mine Count Picker">
+                    <rect key="frame" x="188" y="370" width="155" height="70"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="70" id="f45-1q-fph"/>
+                    </constraints>
+                </pickerView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rqE-pe-704">
+                    <rect key="frame" x="170" y="472" width="34" height="30"/>
+                    <state key="normal" title="Save"/>
+                    <connections>
+                        <action selector="onSaveButtonPressed:" destination="-1" eventType="touchUpInside" id="1ng-Ll-SFu"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="X5x-BI-uuE" firstAttribute="leading" secondItem="7xD-kR-ZWs" secondAttribute="leading" id="0so-6O-sVS"/>
+                <constraint firstItem="pXQ-P7-eth" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="32" id="1Do-Gy-9gx"/>
+                <constraint firstItem="FDq-Vs-bAG" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="4aZ-er-Y3T"/>
+                <constraint firstItem="7WQ-jk-dDZ" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="4ui-lm-stH"/>
+                <constraint firstItem="lrm-S1-l2a" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" multiplier="0.5" id="4wb-e9-98j"/>
+                <constraint firstItem="7WQ-jk-dDZ" firstAttribute="top" secondItem="Unt-Mb-KTh" secondAttribute="bottom" id="6nu-WJ-Hiu"/>
+                <constraint firstItem="PMc-T9-3fY" firstAttribute="top" secondItem="e5P-Yd-me3" secondAttribute="top" id="Cp4-2z-d51"/>
+                <constraint firstItem="J2S-mX-a0Z" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="Dry-6l-aot"/>
+                <constraint firstItem="FDq-Vs-bAG" firstAttribute="bottom" secondItem="X5x-BI-uuE" secondAttribute="bottom" id="JNO-Ak-Qt0"/>
+                <constraint firstItem="lrm-S1-l2a" firstAttribute="leading" secondItem="klV-PH-wnV" secondAttribute="trailing" constant="8" id="JnK-W7-XXr"/>
+                <constraint firstItem="PMc-T9-3fY" firstAttribute="bottom" secondItem="e5P-Yd-me3" secondAttribute="bottom" id="Jqq-Ci-5kv"/>
+                <constraint firstItem="PMc-T9-3fY" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="K5S-bN-MN4"/>
+                <constraint firstItem="lrm-S1-l2a" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" constant="-32" id="KUv-cd-gJs"/>
+                <constraint firstItem="klV-PH-wnV" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" multiplier="0.5" id="LHQ-Hb-ck7"/>
+                <constraint firstItem="J2S-mX-a0Z" firstAttribute="height" secondItem="7xD-kR-ZWs" secondAttribute="height" id="LoO-hx-3Lu"/>
+                <constraint firstItem="Unt-Mb-KTh" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="MTC-Y4-rcE"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="Unt-Mb-KTh" secondAttribute="trailing" id="Miz-MV-wtU"/>
+                <constraint firstItem="FDq-Vs-bAG" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" constant="-32" id="NeE-io-YIM"/>
+                <constraint firstItem="pXQ-P7-eth" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" multiplier="0.5" id="O2k-jh-LWi"/>
+                <constraint firstItem="J2S-mX-a0Z" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" constant="-32" id="UIv-cP-tOu"/>
+                <constraint firstItem="FDq-Vs-bAG" firstAttribute="top" secondItem="X5x-BI-uuE" secondAttribute="top" id="Wbo-BB-7g5"/>
+                <constraint firstItem="e5P-Yd-me3" firstAttribute="leading" secondItem="X5x-BI-uuE" secondAttribute="leading" id="Xay-r0-KdD"/>
+                <constraint firstItem="e5P-Yd-me3" firstAttribute="top" secondItem="X5x-BI-uuE" secondAttribute="bottom" constant="8" id="ajy-OG-BCc"/>
+                <constraint firstItem="X5x-BI-uuE" firstAttribute="top" secondItem="7xD-kR-ZWs" secondAttribute="bottom" constant="8" id="b6z-M2-3hw"/>
+                <constraint firstItem="PMc-T9-3fY" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" constant="-32" id="c3L-7V-z3L"/>
+                <constraint firstItem="rqE-pe-704" firstAttribute="top" secondItem="e5P-Yd-me3" secondAttribute="bottom" constant="32" id="fTi-KM-L0T"/>
+                <constraint firstItem="klV-PH-wnV" firstAttribute="leading" secondItem="pXQ-P7-eth" secondAttribute="trailing" constant="8" id="ge3-uX-w86"/>
+                <constraint firstItem="7WQ-jk-dDZ" firstAttribute="bottom" secondItem="pXQ-P7-eth" secondAttribute="top" constant="-32" id="hJ2-Aj-ZPU"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="7WQ-jk-dDZ" secondAttribute="trailing" id="ixf-Rx-7Mm"/>
+                <constraint firstItem="klV-PH-wnV" firstAttribute="width" secondItem="lrm-S1-l2a" secondAttribute="width" id="m0q-Kd-b4H"/>
+                <constraint firstItem="7xD-kR-ZWs" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="32" id="pBT-IC-d1z"/>
+                <constraint firstItem="pXQ-P7-eth" firstAttribute="width" secondItem="klV-PH-wnV" secondAttribute="width" id="q9X-5c-PTd"/>
+                <constraint firstItem="J2S-mX-a0Z" firstAttribute="top" secondItem="7xD-kR-ZWs" secondAttribute="top" id="xHo-U5-1BE"/>
+                <constraint firstItem="7xD-kR-ZWs" firstAttribute="top" secondItem="pXQ-P7-eth" secondAttribute="bottom" constant="32" id="xeO-ZE-kgL"/>
+                <constraint firstItem="rqE-pe-704" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="y4w-Vf-JRt"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+        </view>
+    </objects>
+</document>
