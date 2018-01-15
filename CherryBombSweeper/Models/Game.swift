@@ -21,11 +21,8 @@ class Game {
     var mineField: MineField
     var state: GameState = .new
     
-    init(mineField: MineField, gameOptions: GameOptions?) {
+    init(mineField: MineField = MineField(), gameOptions: GameOptions = GameServices.shared.gameOptions) {
         self.mineField = mineField
-        
-        if let gameOptions = gameOptions {
-            self.gameOptions = gameOptions
-        }
+        self.gameOptions = gameOptions
     }
 }

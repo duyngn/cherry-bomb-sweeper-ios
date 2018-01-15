@@ -10,9 +10,9 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="GameViewController" customModule="C4Sweeper" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="GameViewController" customModule="CherryBombSweeper" customModuleProvider="target">
             <connections>
-                <outlet property="testLabel" destination="yD3-X7-AAq" id="u6L-9K-HQa"/>
+                <outlet property="fieldContainer" destination="2X7-i2-Svz" id="0HO-wn-Pv3"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -21,17 +21,27 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yD3-X7-AAq">
-                    <rect key="frame" x="166" y="333" width="42" height="21"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                    <nil key="textColor"/>
-                    <nil key="highlightedColor"/>
-                </label>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xnb-lj-5zp" userLabel="Stats Container">
+                    <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="44" id="Wkg-3R-svI"/>
+                    </constraints>
+                </view>
+                <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2X7-i2-Svz" userLabel="Field Container">
+                    <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </view>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="yD3-X7-AAq" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="bbW-Gc-Jwq"/>
-                <constraint firstItem="yD3-X7-AAq" firstAttribute="centerY" secondItem="fnl-2z-Ty3" secondAttribute="centerY" id="vjv-UZ-qQf"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="xnb-lj-5zp" secondAttribute="trailing" id="B2C-Iy-Hp4"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="2X7-i2-Svz" secondAttribute="trailing" id="HwY-vj-4Sw"/>
+                <constraint firstItem="xnb-lj-5zp" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="RWi-6i-cB0"/>
+                <constraint firstItem="xnb-lj-5zp" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="Xmn-Ii-405"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="2X7-i2-Svz" secondAttribute="bottom" id="hWJ-NK-vjM"/>
+                <constraint firstItem="2X7-i2-Svz" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="kaU-Si-F1P"/>
+                <constraint firstItem="2X7-i2-Svz" firstAttribute="top" secondItem="xnb-lj-5zp" secondAttribute="bottom" id="xhl-Kf-REh"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
         </view>
