@@ -16,10 +16,8 @@ class GameViewController: UIViewController {
         static let gridCellIdentifier = "FieldGridCell"
     }
     
-    @IBOutlet weak var fieldContainer: UIView!
-//    @IBOutlet private weak var fieldGridCollectionView: UICollectionView!
-    
-    fileprivate var fieldGridView: UICollectionView?
+    @IBOutlet private weak var fieldGridView: UICollectionView!
+    @IBOutlet private weak var fieldContainer: UIView!
     
     fileprivate var gameOptions: GameOptions = GameServices.shared.gameOptions
     fileprivate var game: Game = Game()
@@ -42,7 +40,6 @@ class GameViewController: UIViewController {
             
             self.game = newGame
             
-//            self.calculateCellDimension()
             self.setupFieldGridView()
         }
     }()
@@ -51,10 +48,10 @@ class GameViewController: UIViewController {
         super.viewDidLoad()
 
         self.navigationItem.title = "Game View Controller"
-//        self.fieldGridCollectionView.dataSource = self
-//        self.fieldGridCollectionView.delegate = self
+        self.fieldGridView.dataSource = self
+        self.fieldGridView.delegate = self
         
-//        self.fieldGridCollectionView.register(UINib(nibName: Constants.gridCellIdentifier, bundle: nil), forCellWithReuseIdentifier: Constants.gridCellIdentifier)
+        self.fieldGridView.register(UINib(nibName: Constants.gridCellIdentifier, bundle: nil), forCellWithReuseIdentifier: Constants.gridCellIdentifier)
     }
     
     override func viewDidLayoutSubviews() {
@@ -62,14 +59,15 @@ class GameViewController: UIViewController {
         
         let _ = self.initGame
         
-        if self.enableZooming, let fieldGridView = self.fieldGridView {
+        if self.enableZooming {
                 let pinch = UIPinchGestureRecognizer(target: self, action: #selector(self.pinch(sender:)))
-                fieldGridView.addGestureRecognizer(pinch)
+                pinch.delegate = self
+                self.fieldGridView.addGestureRecognizer(pinch)
             
                 let pan = UIPanGestureRecognizer(target: self, action: #selector(self.pan(sender:)))
                 pan.delegate = self
-                fieldGridView.addGestureRecognizer(pan)
-                self.originalFieldCenter = fieldGridView.center
+                self.fieldGridView.addGestureRecognizer(pan)
+                self.originalFieldCenter = self.fieldGridView.center
         }
     }
     
@@ -107,37 +105,24 @@ class GameViewController: UIViewController {
                 totalFieldHeight > self.fieldContainer.bounds.height {
                 self.enableZooming = true
             }
+
+            self.fieldGridView.translatesAutoresizingMaskIntoConstraints = false
+            self.fieldGridView.widthAnchor.constraint(equalToConstant: totalFieldWidth).isActive = true
+            self.fieldGridView.heightAnchor.constraint(equalToConstant: totalFieldHeight).isActive = true
+            self.fieldGridView.centerXAnchor.constraint(equalTo: self.fieldContainer.centerXAnchor).isActive = true
+            self.fieldGridView.centerYAnchor.constraint(equalTo: self.fieldContainer.centerYAnchor).isActive = true
             
-            let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
-            layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-            layout.itemSize = CGSize(width: self.cellDimension, height: self.cellDimension)
-            
-            self.fieldGridView = UICollectionView(frame: self.fieldContainer.frame, collectionViewLayout: layout)
-            
-            if let fieldGridView = self.fieldGridView {
-                self.fieldContainer.addSubview(fieldGridView)
-                
-                fieldGridView.backgroundColor = UIColor.white
-                fieldGridView.dataSource = self
-                fieldGridView.delegate = self
-                fieldGridView.register(UINib(nibName: Constants.gridCellIdentifier, bundle: nil), forCellWithReuseIdentifier: Constants.gridCellIdentifier)
-                
-                fieldGridView.translatesAutoresizingMaskIntoConstraints = false
-                fieldGridView.widthAnchor.constraint(equalToConstant: totalFieldWidth).isActive = true
-                fieldGridView.heightAnchor.constraint(equalToConstant: totalFieldHeight).isActive = true
-                fieldGridView.centerXAnchor.constraint(equalTo: self.fieldContainer.centerXAnchor).isActive = true
-                fieldGridView.centerYAnchor.constraint(equalTo: self.fieldContainer.centerYAnchor).isActive = true
-                
-                DispatchQueue.main.async {
-                    fieldGridView.reloadData()
-                }
+            // Dispatching main async here forces this to be performed AFTER all of the setup above
+            DispatchQueue.main.async {
+                self.fieldGridView.reloadData()
             }
         }
     }
     
     func pinch(sender: UIPinchGestureRecognizer) {
-        guard self.enableZooming, let fieldGridView = self.fieldGridView else { return }
-        let currentScale = fieldGridView.frame.size.width / fieldGridView.bounds.size.width
+        guard self.enableZooming else { return }
+        
+        let currentScale = self.fieldGridView.frame.size.width / self.fieldGridView.bounds.size.width
         
         switch sender.state {
         case .began:
@@ -148,6 +133,7 @@ class GameViewController: UIViewController {
                 }
         case .changed:
             let newScale = currentScale * sender.scale
+            // Don't perform scaling if the new scaling factor exceeds the max scale factor
             guard let view = sender.view, newScale < self.maxScaleFactor else {
                 return
             }
@@ -164,9 +150,9 @@ class GameViewController: UIViewController {
         case .ended, .cancelled, .failed:
             if currentScale <= 1 {
                 UIView.animate(withDuration: 0.3, animations: {
-                    fieldGridView.transform = CGAffineTransform.identity
+                    self.fieldGridView.transform = CGAffineTransform.identity
                     if let center = self.originalFieldCenter {
-                        fieldGridView.center = center
+                        self.fieldGridView.center = center
                     }
                     self.isZoomed = false
                     self.enablePanning = false
@@ -207,6 +193,7 @@ class GameViewController: UIViewController {
             
             sender.setTranslation(CGPoint.zero, in: self.fieldContainer)
         case .ended, .cancelled, .failed:
+            // Figure out clamping after pan completes
             if let view = sender.view {
                 
                 var xDiff: CGFloat = 0
