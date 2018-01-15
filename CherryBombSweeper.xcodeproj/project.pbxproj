@@ -17,6 +17,8 @@
 		04E22D922006CFEB00DEC328 /* GameViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 04E22D902006CFEB00DEC328 /* GameViewController.xib */; };
 		04E22D952006D29500DEC328 /* GameServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E22D942006D29500DEC328 /* GameServices.swift */; };
 		04E22D972006D2F100DEC328 /* GameOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E22D962006D2F100DEC328 /* GameOptions.swift */; };
+		04FB4E15200B1E080007A329 /* FieldGridCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04FB4E13200B1E080007A329 /* FieldGridCell.swift */; };
+		04FB4E16200B1E080007A329 /* FieldGridCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 04FB4E14200B1E080007A329 /* FieldGridCell.xib */; };
 		270E607F90B97BD0BE53CF41 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 270E6AB37CD953F790C86C68 /* Info.plist */; };
 		270E61E349D485A4C4A83B5B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 270E601A1DBCD2934A3A3A51 /* AppDelegate.swift */; };
 		270E65B9713F1DDC9FF2001D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 270E657B121C3E32368710CB /* LaunchScreen.storyboard */; };
@@ -35,6 +37,8 @@
 		04E22D902006CFEB00DEC328 /* GameViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GameViewController.xib; sourceTree = "<group>"; };
 		04E22D942006D29500DEC328 /* GameServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameServices.swift; sourceTree = "<group>"; };
 		04E22D962006D2F100DEC328 /* GameOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameOptions.swift; sourceTree = "<group>"; };
+		04FB4E13200B1E080007A329 /* FieldGridCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldGridCell.swift; sourceTree = "<group>"; };
+		04FB4E14200B1E080007A329 /* FieldGridCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FieldGridCell.xib; sourceTree = "<group>"; };
 		270E601A1DBCD2934A3A3A51 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		270E602F70791CD493D700A4 /* CherryBombSweeper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CherryBombSweeper.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		270E64B34C9564019DB79BA3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -85,6 +89,15 @@
 			path = Services;
 			sourceTree = "<group>";
 		};
+		04FB4E0E200B1D240007A329 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				04FB4E13200B1E080007A329 /* FieldGridCell.swift */,
+				04FB4E14200B1E080007A329 /* FieldGridCell.xib */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		270E6797165905D1F6879EC4 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -104,6 +117,7 @@
 		270E6FFD6082501567BCD667 /* CherryBombSweeper */ = {
 			isa = PBXGroup;
 			children = (
+				04FB4E0E200B1D240007A329 /* Views */,
 				04E22D932006D27700DEC328 /* Services */,
 				0408124420068F17009B0BD4 /* Controllers */,
 				0408123F20068E2C009B0BD4 /* Models */,
@@ -181,6 +195,7 @@
 				270E6E9FDA5BE83CB42173AF /* Assets.xcassets in Resources */,
 				270E65B9713F1DDC9FF2001D /* LaunchScreen.storyboard in Resources */,
 				270E6E264E09B3A5FA6766E0 /* Main.storyboard in Resources */,
+				04FB4E16200B1E080007A329 /* FieldGridCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -197,6 +212,7 @@
 				04E22D952006D29500DEC328 /* GameServices.swift in Sources */,
 				0408124220068F12009B0BD4 /* HomeMenuViewController.swift in Sources */,
 				042168C72008368C0065854F /* MineField.swift in Sources */,
+				04FB4E15200B1E080007A329 /* FieldGridCell.swift in Sources */,
 				04E22D882006CC7800DEC328 /* Cell.swift in Sources */,
 				04E22D912006CFEB00DEC328 /* GameViewController.swift in Sources */,
 				04E22D8D2006CF8F00DEC328 /* OptionsViewController.swift in Sources */,
