@@ -32,8 +32,8 @@
                 <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2X7-i2-Svz" userLabel="Field Container">
                     <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                     <subviews>
-                        <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="XFb-4Q-cJ5" userLabel="Field Grid">
-                            <rect key="frame" x="67" y="237" width="240" height="128"/>
+                        <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="XFb-4Q-cJ5" userLabel="Field Grid" customClass="FieldGridCollectionView" customModule="CherryBombSweeper" customModuleProvider="target">
+                            <rect key="frame" x="162" y="276" width="50" height="50"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Yb9-tp-4oN">
@@ -58,6 +58,7 @@
                 <constraint firstItem="2X7-i2-Svz" firstAttribute="top" secondItem="xnb-lj-5zp" secondAttribute="bottom" id="xhl-Kf-REh"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <point key="canvasLocation" x="34.5" y="54.5"/>
         </view>
     </objects>
 </document>
