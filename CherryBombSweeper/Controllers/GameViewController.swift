@@ -41,7 +41,7 @@ class GameViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-//        self.navigationController?.setNavigationBarHidden(true, animated: animated)
+        self.navigationController?.setNavigationBarHidden(true, animated: animated)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -58,6 +58,10 @@ class GameViewController: UIViewController {
         DispatchQueue.main.async {
             self.fieldGridView.setupFieldGrid(with: self.game.mineField, containerView: self.fieldContainer, dataSource: self)
         }
+    }
+    
+    @IBAction func onBackPressed(_ sender: Any) {
+        self.navigationController?.popViewController(animated: true)
     }
 }
 

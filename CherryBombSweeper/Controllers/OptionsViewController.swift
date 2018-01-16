@@ -53,6 +53,22 @@ class OptionsViewController: UIViewController {
         mineCountPicker.dataSource = self
     }
     
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        let _ = initialize
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.setNavigationBarHidden(true, animated: animated)
+    }
+
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+    
     private func updateSelectedPickerIndices() {
         let currentRow = self.gameOptions.rowCount - Constants.minDimension
         let currentCol = self.gameOptions.columnCount - Constants.minDimension
@@ -65,17 +81,6 @@ class OptionsViewController: UIViewController {
         self.rowCountPicker.selectRow(self.selectedRowIndex, inComponent: 0, animated: false)
         self.columnCountPicker.selectRow(self.selectedColumnIndex, inComponent: 0, animated: false)
         self.mineCountPicker.selectRow(self.selectedMinesIndex, inComponent: 0, animated: false)
-    }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        
-        let _ = initialize
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     private func updateGameConfigLabels() {

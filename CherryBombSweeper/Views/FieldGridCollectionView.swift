@@ -11,14 +11,14 @@ import UIKit
 class FieldGridCollectionView: UICollectionView {
     
     enum Constants {
-        static let cellDimension = CGFloat(40)
+        static let optimalCellDimension = CGFloat(40)
         static let cellInset = CGFloat(1)
         static let gridCellIdentifier = "FieldGridCell"
     }
     
     fileprivate var containerView: UIView = UIView()
     fileprivate var mineField: MineField = MineField()
-    fileprivate var cellDimension: CGFloat = Constants.cellDimension
+    fileprivate var cellDimension: CGFloat = Constants.optimalCellDimension
     
     /// Pinch
     fileprivate var enableZooming: Bool = false
@@ -63,7 +63,7 @@ class FieldGridCollectionView: UICollectionView {
         let fieldAspect = fieldWidth / fieldHeight
         // fieldAspect > screenAspect = field width is wider
         self.minScaleFactor = (fieldAspect > screenAspect) ? screenWidth/fieldWidth : screenHeight/fieldHeight
-        self.maxScaleFactor = (Constants.cellDimension / self.cellDimension) + CGFloat(0.5)
+        self.maxScaleFactor = (Constants.optimalCellDimension / self.cellDimension) + CGFloat(0.5)
         
         // Setting field width and height via auto layout
         self.translatesAutoresizingMaskIntoConstraints = false
@@ -72,23 +72,19 @@ class FieldGridCollectionView: UICollectionView {
         self.centerXAnchor.constraint(equalTo: self.containerView.centerXAnchor).isActive = true
         self.centerYAnchor.constraint(equalTo: self.containerView.centerYAnchor).isActive = true
         
-        // Check if panning should be enabled
-        if fieldWidth > self.containerView.bounds.width ||
+        // Check if zooming and panning should be enabled
+        if self.cellDimension < Constants.optimalCellDimension ||
+            fieldWidth > self.containerView.bounds.width ||
             fieldHeight > self.containerView.bounds.height {
-            self.enablePanning = true
-            
-            let pan = UIPanGestureRecognizer(target: self, action: #selector(self.panHandler(sender:)))
-            pan.delegate = self
-            self.addGestureRecognizer(pan)
-        }
-        
-        // Check if zooming should be enabled
-        if self.cellDimension < Constants.cellDimension || self.enablePanning {
             self.enableZooming = true
-            
             let pinch = UIPinchGestureRecognizer(target: self, action: #selector(self.pinchHandler(sender:)))
             pinch.delegate = self
             self.addGestureRecognizer(pinch)
+            
+            self.enablePanning = true
+            let pan = UIPanGestureRecognizer(target: self, action: #selector(self.panHandler(sender:)))
+            pan.delegate = self
+            self.addGestureRecognizer(pan)
         }
         
         // Show and reload
