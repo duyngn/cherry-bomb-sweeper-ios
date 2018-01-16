@@ -14,6 +14,9 @@
             <connections>
                 <outlet property="fieldContainer" destination="2X7-i2-Svz" id="0HO-wn-Pv3"/>
                 <outlet property="fieldGridView" destination="XFb-4Q-cJ5" id="l7l-VN-j9j"/>
+                <outlet property="flagButton" destination="rux-02-Z5N" id="kuC-M7-KVK"/>
+                <outlet property="probeButton" destination="zcT-R8-z0X" id="nkx-AO-MXr"/>
+                <outlet property="revealButton" destination="X5c-Ob-WdD" id="p2W-1o-cPB"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -25,24 +28,52 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xnb-lj-5zp" userLabel="Stats Container">
                     <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                     <subviews>
-                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BcQ-df-XAl">
-                            <rect key="frame" x="8" y="7" width="46" height="30"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BcQ-df-XAl">
+                            <rect key="frame" x="8" y="7" width="34" height="30"/>
                             <state key="normal" title="Back"/>
                             <connections>
                                 <action selector="onBackPressed:" destination="-1" eventType="touchUpInside" id="Jbs-xm-x8o"/>
                             </connections>
                         </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="X5c-Ob-WdD" userLabel="Reveal">
+                            <rect key="frame" x="218" y="7" width="46" height="30"/>
+                            <state key="normal" title="Reveal"/>
+                            <connections>
+                                <action selector="onRevealPressed:" destination="-1" eventType="touchUpInside" id="pyf-ql-GZe"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zcT-R8-z0X" userLabel="Probe">
+                            <rect key="frame" x="280" y="7" width="41" height="30"/>
+                            <state key="normal" title="Probe"/>
+                            <connections>
+                                <action selector="onProbePressed:" destination="-1" eventType="touchUpInside" id="3z9-Q1-ooj"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rux-02-Z5N" userLabel="Flag">
+                            <rect key="frame" x="337" y="7" width="30" height="30"/>
+                            <state key="normal" title="Flag"/>
+                            <connections>
+                                <action selector="onFlagPressed:" destination="-1" eventType="touchUpInside" id="5MT-ZL-o3I"/>
+                            </connections>
+                        </button>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
+                        <constraint firstItem="X5c-Ob-WdD" firstAttribute="centerY" secondItem="xnb-lj-5zp" secondAttribute="centerY" id="8gX-aS-lfm"/>
+                        <constraint firstItem="BcQ-df-XAl" firstAttribute="centerY" secondItem="xnb-lj-5zp" secondAttribute="centerY" id="EPp-Ku-a1H"/>
+                        <constraint firstItem="rux-02-Z5N" firstAttribute="trailing" secondItem="xnb-lj-5zp" secondAttribute="trailing" constant="-8" id="JdU-SX-XDR"/>
+                        <constraint firstItem="rux-02-Z5N" firstAttribute="centerY" secondItem="xnb-lj-5zp" secondAttribute="centerY" id="NUA-Mh-f1v"/>
                         <constraint firstAttribute="height" constant="44" id="Wkg-3R-svI"/>
+                        <constraint firstItem="BcQ-df-XAl" firstAttribute="leading" secondItem="xnb-lj-5zp" secondAttribute="leading" constant="8" id="Z7r-fN-6Te"/>
+                        <constraint firstItem="zcT-R8-z0X" firstAttribute="trailing" secondItem="rux-02-Z5N" secondAttribute="leading" constant="-16" id="fyx-YJ-xYE"/>
+                        <constraint firstItem="zcT-R8-z0X" firstAttribute="centerY" secondItem="xnb-lj-5zp" secondAttribute="centerY" id="t6r-eN-ls7"/>
+                        <constraint firstItem="X5c-Ob-WdD" firstAttribute="trailing" secondItem="zcT-R8-z0X" secondAttribute="leading" constant="-16" id="zYR-bc-2AI"/>
                     </constraints>
                 </view>
                 <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2X7-i2-Svz" userLabel="Field Container">
                     <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                     <subviews>
-                        <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="XFb-4Q-cJ5" userLabel="Field Grid" customClass="FieldGridCollectionView" customModule="CherryBombSweeper" customModuleProvider="target">
+                        <collectionView multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="XFb-4Q-cJ5" userLabel="Field Grid" customClass="FieldGridCollectionView" customModule="CherryBombSweeper" customModuleProvider="target">
                             <rect key="frame" x="162" y="276" width="50" height="50"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
