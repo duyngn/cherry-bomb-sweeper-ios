@@ -11,15 +11,13 @@ import UIKit
 class FieldGridCollectionView: UICollectionView {
     
     enum Constants {
-        static let optimalCellDimension = CGFloat(40)
+        static let cellDimension = CGFloat(44)
         static let cellInset = CGFloat(1)
         static let gridCellIdentifier = "FieldGridCell"
     }
     
     fileprivate var containerView: UIView = UIView()
     fileprivate var mineField: MineField = MineField()
-    fileprivate var cellDimension: CGFloat = Constants.optimalCellDimension
-    var scaledFactor: CGFloat = 1
     
     /// Pinch
     fileprivate var enableZooming: Bool = false
@@ -41,31 +39,26 @@ class FieldGridCollectionView: UICollectionView {
     
     func setupFieldGrid(with mineField: MineField, containerView: UIView, dataSource: UICollectionViewDataSource) {
         self.dataSource = dataSource
-        
         self.mineField = mineField
         self.containerView = containerView
         
-        let screenWidth = containerView.bounds.width
-        let screenHeight = containerView.bounds.height
-        let floatRows = CGFloat(self.mineField.rows)
-        let floatColumns = CGFloat(self.mineField.columns)
+        let screenWidth = self.containerView.bounds.width
+        let screenHeight = self.containerView.bounds.height
+        let rows = CGFloat(self.mineField.rows)
+        let columns = CGFloat(self.mineField.columns)
         
-        let rowGuttersWidth = CGFloat(self.mineField.rows - 1) * Constants.cellInset
-        let columnGuttersWidth = CGFloat(self.mineField.columns - 1) * Constants.cellInset
+        let fieldWidth = (columns * (Constants.cellDimension + Constants.cellInset)) - Constants.cellInset
+        let fieldHeight = (rows * (Constants.cellDimension + Constants.cellInset)) - Constants.cellInset
         
-        let totalCellWidth = screenWidth - columnGuttersWidth
-        self.cellDimension = totalCellWidth / floatColumns
-        
-        let fieldWidth = (self.cellDimension * floatColumns) + columnGuttersWidth
-        let fieldHeight = (self.cellDimension * floatRows) + rowGuttersWidth
-        
-        self.scaledFactor = self.cellDimension / Constants.optimalCellDimension
-        // Figure out which dimension is wider than screen when normalized
+        // Figure out which dimension is wider than screen when normalized, that dimension would determine the mininum scale factor
+        // to fit the entire field into the container
         let screenAspect = screenWidth / screenHeight
         let fieldAspect = fieldWidth / fieldHeight
         // fieldAspect > screenAspect = field width is wider
-        self.minScaleFactor = (fieldAspect > screenAspect) ? screenWidth/fieldWidth : screenHeight/fieldHeight
-        self.maxScaleFactor = Constants.optimalCellDimension / self.cellDimension + CGFloat(0.5)
+        self.minScaleFactor = (fieldAspect > screenAspect)
+            ? screenWidth / fieldWidth
+            : screenHeight / fieldHeight
+        self.maxScaleFactor = CGFloat(1.5)
         
         // Setting field width and height via auto layout
         self.translatesAutoresizingMaskIntoConstraints = false
@@ -75,9 +68,7 @@ class FieldGridCollectionView: UICollectionView {
         self.centerYAnchor.constraint(equalTo: self.containerView.centerYAnchor).isActive = true
         
         // Check if zooming and panning should be enabled
-        if self.cellDimension < Constants.optimalCellDimension ||
-            fieldWidth > self.containerView.bounds.width ||
-            fieldHeight > self.containerView.bounds.height {
+        if fieldWidth > screenWidth || fieldHeight > screenHeight {
             self.enableZooming = true
             let pinch = UIPinchGestureRecognizer(target: self, action: #selector(self.pinchHandler(sender:)))
             pinch.delegate = self
@@ -88,6 +79,9 @@ class FieldGridCollectionView: UICollectionView {
             pan.delegate = self
             self.addGestureRecognizer(pan)
         }
+        
+        // Now scale the entire field to fit onto screen
+        self.transform = CGAffineTransform(scaleX: self.minScaleFactor, y: self.minScaleFactor)
         
         // Show and reload
         self.isHidden = false
@@ -106,15 +100,14 @@ class FieldGridCollectionView: UICollectionView {
         
         switch sender.state {
         case .began:
-            let newScale = currentScale * sender.scale
-            if newScale > 1 {
+            if (currentScale * sender.scale) > self.minScaleFactor {
                 self.isZoomed = true
                 self.enablePanning = true
             }
         case .changed:
-            let newScale = currentScale * sender.scale
+//            let newScale = currentScale * sender.scale
             // Don't perform scaling if the new scaling factor exceeds the max scale factor
-            guard let view = sender.view, newScale < self.maxScaleFactor else {
+            guard let view = sender.view, (currentScale * sender.scale) < self.maxScaleFactor else {
                 return
             }
             
@@ -128,24 +121,26 @@ class FieldGridCollectionView: UICollectionView {
             view.transform = transform
             sender.scale = 1
         case .ended, .cancelled, .failed:
-            guard let view = sender.view else {
+            guard let view = sender.view, currentScale <= self.minScaleFactor else {
                 return
             }
             
-            if currentScale <= self.minScaleFactor {
-                UIView.animate(withDuration: 0.3, animations: {
-                    self.transform = CGAffineTransform(scaleX: self.minScaleFactor, y: self.minScaleFactor)
-                })
-                
-                if let center = self.originalFieldCenter {
-                    self.center = center
-                }
-                
-                if view.frame.width <= self.containerView.bounds.width,
-                    view.frame.height <= self.containerView.bounds.height {
-                    self.enablePanning = false
-                }
+            // Zoom is now below minScaleFactor, so clamp it to minScaleFactor
+            UIView.animate(withDuration: 0.3, animations: {
+                self.transform = CGAffineTransform(scaleX: self.minScaleFactor, y: self.minScaleFactor)
+            })
+            
+            self.isZoomed = false
+            
+            if let center = self.originalFieldCenter {
+                self.center = center
             }
+            
+            if view.frame.width <= self.containerView.bounds.width,
+                view.frame.height <= self.containerView.bounds.height {
+                self.enablePanning = false
+            }
+            
             sender.scale = 1
         case .possible:
             break
@@ -165,53 +160,51 @@ class FieldGridCollectionView: UICollectionView {
             
             sender.setTranslation(CGPoint.zero, in: self.containerView)
         case .ended, .cancelled, .failed:
+            guard let view = sender.view else { return }
+            
             // Figure out clamping after pan completes
-            if let view = sender.view {
-                
-                var xDiff: CGFloat = 0
-                let viewLeftEdge = view.frame.minX
-                let viewRightEdge = view.frame.maxX
-                let containerLeftEdge = self.containerView.bounds.minX
-                let containerRightEdge = self.containerView.bounds.maxX
-                
-                if view.frame.width <= self.containerView.bounds.width {
-                    if viewLeftEdge < containerLeftEdge {
-                        xDiff = containerLeftEdge - viewLeftEdge // clamp leftedge
-                    } else if viewRightEdge > containerRightEdge {
-                        xDiff = containerRightEdge - viewRightEdge // clamp right edge
-                    }
-                } else if viewLeftEdge > containerLeftEdge {
-                    xDiff = containerLeftEdge - viewLeftEdge // lamp left edge
-                } else if viewRightEdge < containerRightEdge {
+            var xDiff: CGFloat = 0
+            let viewLeftEdge = view.frame.minX
+            let viewRightEdge = view.frame.maxX
+            let containerLeftEdge = self.containerView.bounds.minX
+            let containerRightEdge = self.containerView.bounds.maxX
+            
+            if view.frame.width <= self.containerView.bounds.width {
+                if viewLeftEdge < containerLeftEdge {
+                    xDiff = containerLeftEdge - viewLeftEdge // clamp leftedge
+                } else if viewRightEdge > containerRightEdge {
                     xDiff = containerRightEdge - viewRightEdge // clamp right edge
                 }
-                
-                var yDiff: CGFloat = 0
-                let viewTopEdge = view.frame.minY
-                let viewBottomEdge = view.frame.maxY
-                let containerTopEdge = self.containerView.bounds.minY
-                let containerBottomEdge = self.containerView.bounds.maxY
-                
-                if view.frame.height <= self.containerView.bounds.height {
-                    if viewTopEdge < containerTopEdge {
-                        yDiff = containerTopEdge - viewTopEdge // clamp top edge
-                    } else if viewBottomEdge > containerBottomEdge {
-                        yDiff = containerBottomEdge - viewBottomEdge // clamp bottom edge
-                    }
-                } else if viewTopEdge > containerTopEdge {
+            } else if viewLeftEdge > containerLeftEdge {
+                xDiff = containerLeftEdge - viewLeftEdge // lamp left edge
+            } else if viewRightEdge < containerRightEdge {
+                xDiff = containerRightEdge - viewRightEdge // clamp right edge
+            }
+            
+            var yDiff: CGFloat = 0
+            let viewTopEdge = view.frame.minY
+            let viewBottomEdge = view.frame.maxY
+            let containerTopEdge = self.containerView.bounds.minY
+            let containerBottomEdge = self.containerView.bounds.maxY
+            
+            if view.frame.height <= self.containerView.bounds.height {
+                if viewTopEdge < containerTopEdge {
                     yDiff = containerTopEdge - viewTopEdge // clamp top edge
-                } else if viewBottomEdge < containerBottomEdge {
+                } else if viewBottomEdge > containerBottomEdge {
                     yDiff = containerBottomEdge - viewBottomEdge // clamp bottom edge
                 }
-                
-                UIView.animate(withDuration: 0.3, animations: {
-                    view.center = CGPoint(x:view.center.x + xDiff,
-                                          y:view.center.y + yDiff)
-                    
-                    sender.setTranslation(CGPoint.zero, in: self.containerView)
-                })
+            } else if viewTopEdge > containerTopEdge {
+                yDiff = containerTopEdge - viewTopEdge // clamp top edge
+            } else if viewBottomEdge < containerBottomEdge {
+                yDiff = containerBottomEdge - viewBottomEdge // clamp bottom edge
             }
-            break
+            
+            UIView.animate(withDuration: 0.3, animations: {
+                view.center = CGPoint(x:view.center.x + xDiff,
+                                      y:view.center.y + yDiff)
+                
+                sender.setTranslation(CGPoint.zero, in: self.containerView)
+            })
         case .possible:
             break
         }
@@ -237,7 +230,7 @@ extension FieldGridCollectionView: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        return CGSize(width: self.cellDimension, height: self.cellDimension);
+        return CGSize(width: Constants.cellDimension, height: Constants.cellDimension);
     }
 }
 

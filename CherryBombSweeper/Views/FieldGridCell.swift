@@ -12,6 +12,18 @@ class FieldGridCell: UICollectionViewCell {
 
     enum Constants {
         static let defaultFontSize: CGFloat = 25
+        
+        static let numberColors: [UIColor] = [
+            UIColor.init(red: 0, green: 0, blue: 0, alpha: 0), // 0, transparent
+            UIColor.init(rgb: 0x0000FF),    // 1, blue
+            UIColor.init(rgb: 0x187B00),    // 2, green
+            UIColor.init(rgb: 0xFA1000),    // 3, red
+            UIColor.init(rgb: 0x000081),    // 4, purple
+            UIColor.init(rgb: 0x780200),    // 5, maroon
+            UIColor.init(rgb: 0x40e0d0),    // 6, turquoise
+            UIColor.gray,                   // 7, gray
+            UIColor.black                   // 8, black
+        ]
     }
     
     @IBOutlet private weak var adjacentBombsLabel: UILabel!
@@ -26,8 +38,8 @@ class FieldGridCell: UICollectionViewCell {
         self.adjacentBombsLabel.isHidden = true
     }
     
-    func setupCellView(with cell: Cell, scaledFactor: CGFloat) {
-        self.scaledFactor = scaledFactor
+    func setupCellView(with cell: Cell) {
+//        self.scaledFactor = scaledFactor
         
         if cell.hasBomb {
             self.cellIcon.isHidden = false
@@ -37,29 +49,12 @@ class FieldGridCell: UICollectionViewCell {
     }
     
     private func setAdjacentBombsCount(_ count: Int) {
-        var numberColor = UIColor.black
-        switch count {
-        case 1:
-            numberColor = UIColor.init(rgb: 0x0000FF)
-        case 2:
-            numberColor = UIColor.init(rgb: 0x187B00)
-        case 3:
-            numberColor = UIColor.init(rgb: 0xFA1000)
-        case 4:
-            numberColor = UIColor.init(rgb: 0x000081)
-        case 5:
-            numberColor = UIColor.init(rgb: 0x780200)
-        case 6:
-            numberColor = UIColor.init(rgb: 0x40e0d0)
-        case 7:
-            numberColor = UIColor.gray
-        default:
-            // already defaulted to black
-            break
-        }
+        let numberColor = (count > 0 && count < Constants.numberColors.count)
+            ? Constants.numberColors[count]
+            : Constants.numberColors[0] // transparent
         
-        let fontSize = self.scaledFactor * Constants.defaultFontSize
-        self.adjacentBombsLabel.font = self.adjacentBombsLabel.font.withSize(fontSize)
+//        let fontSize = self.scaledFactor * Constants.defaultFontSize
+//        self.adjacentBombsLabel.font = self.adjacentBombsLabel.font.withSize(fontSize)
        
         self.adjacentBombsLabel.textColor = numberColor
         self.adjacentBombsLabel.text = String(describing: count)
