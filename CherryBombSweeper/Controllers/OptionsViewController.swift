@@ -9,14 +9,14 @@
 import UIKit
 
 class OptionsViewController: UIViewController {
-    enum Constants {
+    enum Constant {
         static let minDimension: Int = 9
         static let maxDimension: Int = 30
         static let minMines: Int = 10
         static let maxMines: Int = 300
         
-        static let dimensionRange: [Int] = Array(Constants.minDimension...Constants.maxDimension)
-        static let mineRange: [Int] = Array(Constants.minMines...Constants.maxMines)
+        static let dimensionRange: [Int] = Array(Constant.minDimension...Constant.maxDimension)
+        static let mineRange: [Int] = Array(Constant.minMines...Constant.maxMines)
     }
 
     @IBOutlet private weak var gridSizeLabel: UILabel!
@@ -70,9 +70,9 @@ class OptionsViewController: UIViewController {
     }
     
     private func updateSelectedPickerIndices() {
-        let currentRow = self.gameOptions.rowCount - Constants.minDimension
-        let currentCol = self.gameOptions.columnCount - Constants.minDimension
-        let currentMines = self.gameOptions.minesCount - Constants.minMines
+        let currentRow = self.gameOptions.rowCount - Constant.minDimension
+        let currentCol = self.gameOptions.columnCount - Constant.minDimension
+        let currentMines = self.gameOptions.minesCount - Constant.minMines
         
         self.selectedRowIndex = (currentRow >= 0) ? currentRow : 0
         self.selectedColumnIndex = (currentCol >= 0) ? currentCol : 0
@@ -110,9 +110,9 @@ class OptionsViewController: UIViewController {
     }
     
     @IBAction func onSaveButtonPressed(_ sender: UIButton) {
-        let rowCount = Constants.dimensionRange[selectedRowIndex]
-        let columnCount = Constants.dimensionRange[selectedColumnIndex]
-        let minesCount = Constants.mineRange[selectedMinesIndex]
+        let rowCount = Constant.dimensionRange[selectedRowIndex]
+        let columnCount = Constant.dimensionRange[selectedColumnIndex]
+        let minesCount = Constant.mineRange[selectedMinesIndex]
         
         if let errorMessage = validateConfig(rowCount: rowCount, columnCount: columnCount, minesCount: minesCount) {
             self.showToast(message: errorMessage)
@@ -133,7 +133,6 @@ class OptionsViewController: UIViewController {
     }
     
     private func showToast(message: String) {
-        
         let toastLabel = UILabel(frame: CGRect(x: 8, y: self.view.frame.size.height-100, width: self.view.frame.size.width - 16, height: 35))
         toastLabel.backgroundColor = UIColor.black.withAlphaComponent(0.6)
         toastLabel.textColor = UIColor.white
@@ -162,9 +161,9 @@ extension OptionsViewController: UIPickerViewDelegate {
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         switch pickerView.tag {
         case 0, 1:
-            return String(describing: Constants.dimensionRange[row])
+            return String(describing: Constant.dimensionRange[row])
         case 2:
-            return String(describing: Constants.mineRange[row])
+            return String(describing: Constant.mineRange[row])
         default:
             return "-"
         }
@@ -192,9 +191,9 @@ extension OptionsViewController: UIPickerViewDataSource {
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         switch pickerView.tag {
         case 0, 1:
-            return Constants.dimensionRange.count
+            return Constant.dimensionRange.count
         case 2:
-            return Constants.mineRange.count
+            return Constant.mineRange.count
         default:
             return 0
         }

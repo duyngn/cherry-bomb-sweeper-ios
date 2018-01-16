@@ -10,8 +10,11 @@ import UIKit
 
 class FieldGridCell: UICollectionViewCell {
 
-    enum Constants {
+    enum Constant {
         static let defaultFontSize: CGFloat = 25
+        static let grassLightIconId: String = "grass-light-cell"
+        static let grassDarkIconId: String = "grass-dark-cell"
+        static let boomIconId: String = "boom-icon"
         
         static let numberColors: [UIColor] = [
             UIColor.init(red: 0, green: 0, blue: 0, alpha: 0), // 0, transparent
@@ -26,36 +29,73 @@ class FieldGridCell: UICollectionViewCell {
         ]
     }
     
+    @IBOutlet private weak var cellFlagIcon: UIImageView!
+    @IBOutlet private weak var cellCover: UIImageView!
     @IBOutlet private weak var adjacentBombsLabel: UILabel!
     @IBOutlet private weak var cellIcon: UIImageView!
-    
-    private var scaledFactor: CGFloat = 1
     
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        self.cellFlagIcon.isHidden = true
+        self.cellCover.isHidden = false
         self.cellIcon.isHidden = true
         self.adjacentBombsLabel.isHidden = true
     }
     
     func setupCellView(with cell: Cell) {
-//        self.scaledFactor = scaledFactor
-        
-        if cell.hasBomb {
-            self.cellIcon.isHidden = false
-        } else if cell.adjacentBombs > 0 {
-            self.setAdjacentBombsCount(cell.adjacentBombs)
+    
+        switch cell.state {
+        case .untouched:
+            if let image = self.getCellCoverGrass(for: cell) {
+                self.cellCover.image = image
+            }
+        case .revealed:
+            if cell.adjacentBombs > 0 {
+                self.setAdjacentBombsCount(cell.adjacentBombs)
+            }
+            
+            self.cellCover.isHidden = true
+        case .flagged:
+            self.cellFlagIcon.isHidden = false
+            
+            if let image = self.getCellCoverGrass(for: cell) {
+                self.cellCover.image = image
+            }
+        case .exploded:
+            if let image = UIImage(named: Constant.boomIconId) {
+                self.cellCover.image = image
+                self.cellCover.transform = CGAffineTransform(scaleX: 2, y: 2)
+            }
         }
     }
     
-    private func setAdjacentBombsCount(_ count: Int) {
-        let numberColor = (count > 0 && count < Constants.numberColors.count)
-            ? Constants.numberColors[count]
-            : Constants.numberColors[0] // transparent
+    private func getCellCoverGrass(for cell: Cell) -> UIImage? {
+        let row = cell.fieldCoord.row
+        let column = cell.fieldCoord.column
         
-//        let fontSize = self.scaledFactor * Constants.defaultFontSize
-//        self.adjacentBombsLabel.font = self.adjacentBombsLabel.font.withSize(fontSize)
-       
+        if row % 2 == 0 { // row starts with light color
+            if column % 2 == 0, let image = UIImage(named: Constant.grassLightIconId) {
+                return image
+            } else if let image = UIImage(named: Constant.grassDarkIconId) {
+                return image
+            }
+        } else { // row starts with dark color
+            if column % 2 == 0, let image = UIImage(named: Constant.grassDarkIconId) {
+                return image
+            } else if let image = UIImage(named: Constant.grassLightIconId) {
+                return image
+            }
+        }
+        
+        return nil
+    }
+    
+    private func setAdjacentBombsCount(_ count: Int) {
+        let numberColor = (count > 0 && count < Constant.numberColors.count)
+            ? Constant.numberColors[count]
+            : Constant.numberColors[0] // transparent
+        
         self.adjacentBombsLabel.textColor = numberColor
         self.adjacentBombsLabel.text = String(describing: count)
         self.adjacentBombsLabel.isHidden = false
@@ -63,6 +103,9 @@ class FieldGridCell: UICollectionViewCell {
 
     override func prepareForReuse() {
         super.prepareForReuse()
+        self.cellCover.isHidden = false
+        
+        self.cellFlagIcon.isHidden = true
         self.cellIcon.isHidden = true
         self.adjacentBombsLabel.isHidden = true
     }
