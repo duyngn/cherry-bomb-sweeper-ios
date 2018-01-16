@@ -75,7 +75,7 @@ extension GameViewController: UICollectionViewDataSource {
             if let cellCoord = self.game.mineField.cellCoordMap[indexPath.row] {
                 let cell = self.game.mineField.fieldGrid[cellCoord.row][cellCoord.column]
                 
-                cellView.setupCellView(with: cell, scaledFactor: self.fieldGridView.scaledFactor)
+                cellView.setupCellView(with: cell)
             }
             
             return cellView
