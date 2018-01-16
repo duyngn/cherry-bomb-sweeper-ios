@@ -19,6 +19,7 @@ class FieldGridCollectionView: UICollectionView {
     fileprivate var containerView: UIView = UIView()
     fileprivate var mineField: MineField = MineField()
     fileprivate var cellDimension: CGFloat = Constants.optimalCellDimension
+    var scaledFactor: CGFloat = 1
     
     /// Pinch
     fileprivate var enableZooming: Bool = false
@@ -58,12 +59,13 @@ class FieldGridCollectionView: UICollectionView {
         let fieldWidth = (self.cellDimension * floatColumns) + columnGuttersWidth
         let fieldHeight = (self.cellDimension * floatRows) + rowGuttersWidth
         
+        self.scaledFactor = self.cellDimension / Constants.optimalCellDimension
         // Figure out which dimension is wider than screen when normalized
         let screenAspect = screenWidth / screenHeight
         let fieldAspect = fieldWidth / fieldHeight
         // fieldAspect > screenAspect = field width is wider
         self.minScaleFactor = (fieldAspect > screenAspect) ? screenWidth/fieldWidth : screenHeight/fieldHeight
-        self.maxScaleFactor = (Constants.optimalCellDimension / self.cellDimension) + CGFloat(0.5)
+        self.maxScaleFactor = Constants.optimalCellDimension / self.cellDimension + CGFloat(0.5)
         
         // Setting field width and height via auto layout
         self.translatesAutoresizingMaskIntoConstraints = false

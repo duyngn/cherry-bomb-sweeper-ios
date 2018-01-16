@@ -10,7 +10,7 @@ import UIKit
 
 class GameViewController: UIViewController {
     
-    @IBOutlet private weak var fieldGridView: FieldGridCollectionView!
+    @IBOutlet fileprivate weak var fieldGridView: FieldGridCollectionView!
     @IBOutlet private weak var fieldContainer: UIView!
     
     fileprivate var gameOptions: GameOptions = GameServices.shared.gameOptions
@@ -75,9 +75,7 @@ extension GameViewController: UICollectionViewDataSource {
             if let cellCoord = self.game.mineField.cellCoordMap[indexPath.row] {
                 let cell = self.game.mineField.fieldGrid[cellCoord.row][cellCoord.column]
                 
-                if cell.hasBomb {
-                    cellView.cellIcon.isHidden = false
-                }
+                cellView.setupCellView(with: cell, scaledFactor: self.fieldGridView.scaledFactor)
             }
             
             return cellView
