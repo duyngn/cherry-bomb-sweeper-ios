@@ -67,6 +67,10 @@ class FieldGridCell: UICollectionViewCell {
                 self.cellCover.image = image
                 self.cellCover.transform = CGAffineTransform(scaleX: 2, y: 2)
             }
+        case .highlight:
+            break
+        case .showBomb:
+            break
         }
     }
     

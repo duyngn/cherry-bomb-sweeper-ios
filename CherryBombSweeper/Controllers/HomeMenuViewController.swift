@@ -14,7 +14,7 @@ class HomeMenuViewController: UIViewController {
     @IBOutlet private weak var minesCountLabel: UILabel!
     
     lazy private var preloadGame: Void = {
-        GameServices.shared.preloadGame()
+        GameGeneratorService.shared.preloadGame()
     }()
     
     override func viewDidLoad() {
@@ -30,8 +30,8 @@ class HomeMenuViewController: UIViewController {
     }
     
     private func updateGameConfigLabels() {
-        self.gridSizeLabel.text = "\(GameServices.shared.gameOptions.rowCount) x \(GameServices.shared.gameOptions.columnCount)"
-        self.minesCountLabel.text = "\(GameServices.shared.gameOptions.minesCount) Mines"
+        self.gridSizeLabel.text = "\(GameGeneratorService.shared.gameOptions.rowCount) x \(GameGeneratorService.shared.gameOptions.columnCount)"
+        self.minesCountLabel.text = "\(GameGeneratorService.shared.gameOptions.minesCount) Mines"
     }
 
     override func didReceiveMemoryWarning() {

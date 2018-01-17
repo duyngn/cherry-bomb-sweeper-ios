@@ -15,6 +15,7 @@
                 <outlet property="fieldContainer" destination="2X7-i2-Svz" id="0HO-wn-Pv3"/>
                 <outlet property="fieldGridView" destination="XFb-4Q-cJ5" id="l7l-VN-j9j"/>
                 <outlet property="flagButton" destination="rux-02-Z5N" id="kuC-M7-KVK"/>
+                <outlet property="minesRemainingLabel" destination="zVD-rx-edB" id="mXr-md-8rt"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -27,24 +28,24 @@
                     <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BcQ-df-XAl">
-                            <rect key="frame" x="8" y="7" width="34" height="30"/>
+                            <rect key="frame" x="16" y="7" width="34" height="30"/>
                             <state key="normal" title="Back"/>
                             <connections>
                                 <action selector="onBackPressed:" destination="-1" eventType="touchUpInside" id="Jbs-xm-x8o"/>
                             </connections>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rux-02-Z5N" userLabel="Tap">
-                            <rect key="frame" x="172.5" y="7" width="30" height="30"/>
-                            <state key="normal" title="Tap"/>
-                            <connections>
-                                <action selector="onActionModePressed:" destination="-1" eventType="touchUpInside" id="eSu-y7-491"/>
-                            </connections>
-                        </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zVD-rx-edB" userLabel="New Game">
-                            <rect key="frame" x="281" y="7" width="75" height="30"/>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zVD-rx-edB" userLabel="Mines Remaining">
+                            <rect key="frame" x="150" y="7" width="75" height="30"/>
                             <state key="normal" title="New Game"/>
                             <connections>
                                 <action selector="onNewGamePressed:" destination="-1" eventType="touchUpInside" id="tc5-rP-wDG"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rux-02-Z5N" userLabel="Tap">
+                            <rect key="frame" x="329" y="7" width="30" height="30"/>
+                            <state key="normal" title="Tap"/>
+                            <connections>
+                                <action selector="onActionModePressed:" destination="-1" eventType="touchUpInside" id="eSu-y7-491"/>
                             </connections>
                         </button>
                     </subviews>
@@ -52,11 +53,11 @@
                     <constraints>
                         <constraint firstItem="BcQ-df-XAl" firstAttribute="centerY" secondItem="xnb-lj-5zp" secondAttribute="centerY" id="EPp-Ku-a1H"/>
                         <constraint firstItem="rux-02-Z5N" firstAttribute="centerY" secondItem="xnb-lj-5zp" secondAttribute="centerY" id="NUA-Mh-f1v"/>
+                        <constraint firstItem="zVD-rx-edB" firstAttribute="centerX" secondItem="xnb-lj-5zp" secondAttribute="centerX" id="Q4v-i6-NeJ"/>
+                        <constraint firstItem="rux-02-Z5N" firstAttribute="trailing" secondItem="xnb-lj-5zp" secondAttribute="trailing" constant="-16" id="QhP-hb-Dq2"/>
                         <constraint firstAttribute="height" constant="44" id="Wkg-3R-svI"/>
-                        <constraint firstItem="BcQ-df-XAl" firstAttribute="leading" secondItem="xnb-lj-5zp" secondAttribute="leading" constant="8" id="Z7r-fN-6Te"/>
-                        <constraint firstAttribute="trailing" secondItem="zVD-rx-edB" secondAttribute="trailing" constant="19" id="lxO-0s-kKE"/>
+                        <constraint firstItem="BcQ-df-XAl" firstAttribute="leading" secondItem="xnb-lj-5zp" secondAttribute="leading" constant="16" id="Z7r-fN-6Te"/>
                         <constraint firstItem="zVD-rx-edB" firstAttribute="centerY" secondItem="xnb-lj-5zp" secondAttribute="centerY" id="wp9-pD-yuF"/>
-                        <constraint firstItem="rux-02-Z5N" firstAttribute="centerX" secondItem="xnb-lj-5zp" secondAttribute="centerX" id="y1o-iR-Ygu"/>
                     </constraints>
                 </view>
                 <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2X7-i2-Svz" userLabel="Field Container">

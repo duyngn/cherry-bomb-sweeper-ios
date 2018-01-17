@@ -13,6 +13,9 @@ enum CellState {
     case revealed
     case flagged
     case exploded
+    
+    case highlight
+    case showBomb
 }
 
 class Cell {
