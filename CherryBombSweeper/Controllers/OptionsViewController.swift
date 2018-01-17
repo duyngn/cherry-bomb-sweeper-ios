@@ -26,7 +26,7 @@ class OptionsViewController: UIViewController {
     @IBOutlet private weak var columnCountPicker: UIPickerView!
     @IBOutlet private weak var mineCountPicker: UIPickerView!
     
-    private var gameOptions: GameOptions = GameServices.shared.gameOptions
+    private var gameOptions: GameOptions = GameGeneratorService.shared.gameOptions
 
     fileprivate var selectedRowIndex: Int = 0
     fileprivate var selectedColumnIndex: Int = 0
@@ -160,10 +160,11 @@ class OptionsViewController: UIViewController {
     }
     
     private func saveConfig(row: Int, col: Int, mines: Int) {
-        GameServices.shared.gameOptions.rowCount = row
-        GameServices.shared.gameOptions.columnCount = col
-        GameServices.shared.gameOptions.minesCount = mines
-        GameServices.shared.preloadGame(forced: true)
+        GameGeneratorService.shared.gameOptions.rowCount = row
+        GameGeneratorService.shared.gameOptions.columnCount = col
+        GameGeneratorService.shared.gameOptions.minesCount = mines
+        
+        GameGeneratorService.shared.preloadGame(forced: true)
     }
 }
 

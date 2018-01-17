@@ -21,7 +21,11 @@ class MineField {
     
     var fieldGrid: [[Cell]]
     var cellCoordMap: FieldCoordMap = [:]
+    
+    var bombCellCoordMap: FieldCoordMap = [:]
+    
     var safeCellCoordMap: FieldCoordMap = [:]
+    var safeCellsCount: Int = 0
     
     static func constructAndPopulateMineField(rows: Int, columns: Int, mines: Int) -> MineField {
         // Construct the empty field
@@ -95,6 +99,7 @@ class MineField {
     private func populateMineFieldRecursive(mines: Int, emptyCoordsMap: FieldCoordMap) {
         guard mines > 0, !emptyCoordsMap.isEmpty else {
             self.safeCellCoordMap = emptyCoordsMap
+            self.safeCellsCount = self.safeCellCoordMap.count
             return
         }
         
@@ -107,6 +112,9 @@ class MineField {
         
         if let randomCoord = mutatableCoordsMap[randomKey] {
             self.fieldGrid[randomCoord.row][randomCoord.column].hasBomb = true
+            let cell = self.fieldGrid[randomCoord.row][randomCoord.column]
+            self.bombCellCoordMap[cell.id] = cell.fieldCoord
+            
             self.incrementBombCountsInAdjacentCells(to: self.fieldGrid[randomCoord.row][randomCoord.column])
             
             mutatableCoordsMap.removeValue(forKey: randomKey)

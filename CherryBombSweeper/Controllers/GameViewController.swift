@@ -18,13 +18,14 @@ typealias CellTapHandler = (_ cellIndex: Int) -> Void
 class GameViewController: UIViewController {
 
     // Controls
+    @IBOutlet private weak var minesRemainingLabel: UIButton!
     @IBOutlet private weak var flagButton: UIButton!
     
     // Grid
     @IBOutlet fileprivate weak var fieldGridView: FieldGridCollectionView!
     @IBOutlet private weak var fieldContainer: UIView!
     
-    fileprivate var gameOptions: GameOptions = GameServices.shared.gameOptions
+    fileprivate var gameOptions: GameOptions = GameGeneratorService.shared.gameOptions
     fileprivate var game: Game?
     
     private var currentUserAction: UserAction = .tap
@@ -36,6 +37,7 @@ class GameViewController: UIViewController {
     }
     
     lazy private var initGame: Void = {
+        GameProcessingService.shared.registerListener(self)
         self.startNewGame()
     }()
     
@@ -54,36 +56,49 @@ class GameViewController: UIViewController {
         guard let game = self.game else { return }
         
         DispatchQueue.main.async {
+            self.fieldGridView.isUserInteractionEnabled = true
+            
             self.fieldGridView.setupFieldGrid(with: game.mineField, containerView: self.fieldContainer, dataSource: self) { [weak self] (cellIndex) in
                 guard let `self` = self else { return }
                 
                 self.gameStarted()
                 
-                GameServices.shared.resolveUserAction(at: cellIndex, in: game, with: self.currentUserAction) { [weak self] (modifiedCell) in
-                    guard let `self` = self else { return }
-                    
-                    DispatchQueue.main.async {
-                        self.fieldGridView.reloadItems(at: [IndexPath(row: modifiedCell.id, section: 0)])
-                    }
-                }
+                GameProcessingService.shared.resolveUserAction(at: cellIndex, in: game, with: self.currentUserAction)
             }
         }
     }
     
     private func startNewGame() {
-        GameServices.shared.generateNewGame { [weak self] (newGame) in
+        GameGeneratorService.shared.generateNewGame { [weak self] (newGame) in
             guard let `self` = self else { return }
             
             newGame.state = .loaded
             
             self.game = newGame
             
+            self.updateRemainingMinesCountLabel()
             self.setupFieldGridView()
         }
     }
     
     private func gameStarted() {
         self.game?.state = .inProgress
+    }
+    
+    fileprivate func gameOver() {
+        DispatchQueue.main.async {
+            self.game?.state = .lost
+            self.fieldGridView.isUserInteractionEnabled = false
+        }
+    }
+    
+    fileprivate func gameCompleted() {
+        DispatchQueue.main.async {
+            self.game?.state = .win
+            self.fieldGridView.isUserInteractionEnabled = false
+            
+            self.minesRemainingLabel.setTitle("WINNER!", for: UIControlState.normal)
+        }
     }
     
     @IBAction func onBackPressed(_ sender: UIButton) {
@@ -100,13 +115,23 @@ class GameViewController: UIViewController {
     }
     
     private func updateActionModeButton(to action: UserAction) {
-        self.currentUserAction = action
-        
-        switch self.currentUserAction {
-        case .flag:
-            self.flagButton.setTitle("Flag", for: UIControlState.normal)
-        case .tap:
-            self.flagButton.setTitle("Tap", for: UIControlState.normal)
+        DispatchQueue.main.async {
+            self.currentUserAction = action
+            
+            switch self.currentUserAction {
+            case .flag:
+                self.flagButton.setTitle("Flag", for: UIControlState.normal)
+            case .tap:
+                self.flagButton.setTitle("Tap", for: UIControlState.normal)
+            }
+        }
+    }
+    
+    fileprivate func updateRemainingMinesCountLabel() {
+        if let minesCount = self.game?.minesRemaining {
+            DispatchQueue.main.async {
+                self.minesRemainingLabel.setTitle(String(describing: minesCount), for: UIControlState.normal)
+            }
         }
     }
 }
@@ -125,5 +150,65 @@ extension GameViewController: UICollectionViewDataSource {
         }
         
         return FieldGridCell()
+    }
+}
+
+extension GameViewController: GameStatusListener {
+    func onCellReveal(_ revealedCells: [Int]) {
+        var revealedIndexPaths: [IndexPath] = []
+        
+        for cellId in revealedCells {
+            revealedIndexPaths.append(IndexPath(row: cellId, section: 0))
+        }
+        
+        DispatchQueue.main.async {
+            self.fieldGridView.reloadItems(at: revealedIndexPaths)
+        }
+    }
+    
+    func onCellHighlight(_ highlightedCells: [Int]) {
+        var highlightIndexPaths: [IndexPath] = []
+        
+        for cellId in highlightedCells {
+            highlightIndexPaths.append(IndexPath(row: cellId, section: 0))
+        }
+        
+        DispatchQueue.main.async {
+            self.fieldGridView.reloadItems(at: highlightIndexPaths)
+        }
+    }
+    
+    func onCellFlagged(_ flaggedCell: Int) {
+        DispatchQueue.main.async {
+            self.fieldGridView.reloadItems(at: [IndexPath(row: flaggedCell, section: 0)])
+            
+            self.game?.minesRemaining -= 1
+            
+            self.updateRemainingMinesCountLabel()
+        }
+    }
+    
+    func onCellUnflagged(_ unflaggedCell: Int) {
+        DispatchQueue.main.async {
+            self.fieldGridView.reloadItems(at: [IndexPath(row: unflaggedCell, section: 0)])
+            
+            self.game?.minesRemaining += 1
+            
+            self.updateRemainingMinesCountLabel()
+        }
+    }
+    
+    func onCellExploded(_ explodedCell: Int) {
+        DispatchQueue.main.async {
+            self.fieldGridView.reloadItems(at: [IndexPath(row: explodedCell, section: 0)])
+            
+            self.gameOver()
+        }
+    }
+    
+    func onGameCompleted() {
+        DispatchQueue.main.async {
+            self.gameCompleted()
+        }
     }
 }
