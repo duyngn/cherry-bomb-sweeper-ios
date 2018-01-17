@@ -104,10 +104,12 @@ class FieldGridCell: UICollectionViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         self.cellCover.isHidden = false
+        self.cellCover.transform = CGAffineTransform.identity
         
         self.cellFlagIcon.isHidden = true
         self.cellIcon.isHidden = true
         self.adjacentBombsLabel.isHidden = true
+        self.adjacentBombsLabel.text = nil
     }
 }
 

@@ -31,10 +31,26 @@ class FieldGridCollectionView: UICollectionView {
     
     fileprivate var cellTapHandler: CellTapHandler?
     
+    lazy private var setupRecognizers: Void = {
+        let pinch = UIPinchGestureRecognizer(target: self, action: #selector(self.pinchHandler(sender:)))
+        pinch.delegate = self
+        self.addGestureRecognizer(pinch)
+        
+        let pan = UIPanGestureRecognizer(target: self, action: #selector(self.panHandler(sender:)))
+        pan.delegate = self
+        self.addGestureRecognizer(pan)
+    }()
+    
+    lazy private var captureFieldCenter: Void = {
+        self.originalFieldCenter = self.center
+    }()
+    
     override func layoutSubviews() {
         super.layoutSubviews()
         
         self.delegate = self
+        
+        let _ = setupRecognizers
         
         self.register(UINib(nibName: Constant.gridCellIdentifier, bundle: nil), forCellWithReuseIdentifier: Constant.gridCellIdentifier)
     }
@@ -74,14 +90,7 @@ class FieldGridCollectionView: UICollectionView {
         // Check if zooming and panning should be enabled
         if fieldWidth > screenWidth || fieldHeight > screenHeight {
             self.enableZooming = true
-            let pinch = UIPinchGestureRecognizer(target: self, action: #selector(self.pinchHandler(sender:)))
-            pinch.delegate = self
-            self.addGestureRecognizer(pinch)
-            
             self.enablePanning = true
-            let pan = UIPanGestureRecognizer(target: self, action: #selector(self.panHandler(sender:)))
-            pan.delegate = self
-            self.addGestureRecognizer(pan)
         }
         
         // Now scale the entire field to fit onto screen
@@ -93,11 +102,11 @@ class FieldGridCollectionView: UICollectionView {
         
         DispatchQueue.main.async {
             // Capture the field center for zoom resetting
-            self.originalFieldCenter = self.center
+            let _ = self.captureFieldCenter
         }
     }
     
-    func pinchHandler(sender: UIPinchGestureRecognizer) {
+    @objc private func pinchHandler(sender: UIPinchGestureRecognizer) {
         guard self.enableZooming else { return }
         
         let currentScale = self.frame.size.width / self.bounds.size.width
@@ -153,7 +162,7 @@ class FieldGridCollectionView: UICollectionView {
         }
     }
     
-    func panHandler(sender: UIPanGestureRecognizer) {
+    @objc private func panHandler(sender: UIPanGestureRecognizer) {
         guard self.enablePanning else { return }
         
         switch sender.state {

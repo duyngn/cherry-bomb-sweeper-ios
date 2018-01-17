@@ -13,6 +13,10 @@ class HomeMenuViewController: UIViewController {
     @IBOutlet private weak var gridSizeLabel: UILabel!
     @IBOutlet private weak var minesCountLabel: UILabel!
     
+    lazy private var preloadGame: Void = {
+        GameServices.shared.preloadGame()
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -21,6 +25,8 @@ class HomeMenuViewController: UIViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+        
+        let _ = preloadGame
     }
     
     private func updateGameConfigLabels() {

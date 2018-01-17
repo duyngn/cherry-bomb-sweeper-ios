@@ -90,21 +90,30 @@ class OptionsViewController: UIViewController {
     
     @IBAction func onEasyButtonPressed(_ sender: UIButton) {
         // 9x9, 10 mines
-        self.saveConfig(row: 9, col: 9, mines: 10)
+        self.gameOptions.rowCount = 9
+        self.gameOptions.columnCount = 9
+        self.gameOptions.minesCount = 10
+//        self.saveConfig(row: 9, col: 9, mines: 10)
         self.updateGameConfigLabels()
         self.updateSelectedPickerIndices()
     }
     
     @IBAction func onIntermediateButtonPressed(_ sender: UIButton) {
         // 16x16, 40 mines
-        self.saveConfig(row: 16, col: 16, mines: 40)
+//        self.saveConfig(row: 16, col: 16, mines: 40)
+        self.gameOptions.rowCount = 16
+        self.gameOptions.columnCount = 16
+        self.gameOptions.minesCount = 40
         self.updateGameConfigLabels()
         self.updateSelectedPickerIndices()
     }
     
     @IBAction func onExpertButtonPressed(_ sender: UIButton) {
         // 24x24, 99 mines
-        self.saveConfig(row: 24, col: 24, mines: 99)
+//        self.saveConfig(row: 24, col: 24, mines: 99)
+        self.gameOptions.rowCount = 24
+        self.gameOptions.columnCount = 24
+        self.gameOptions.minesCount = 99
         self.updateGameConfigLabels()
         self.updateSelectedPickerIndices()
     }
@@ -154,6 +163,7 @@ class OptionsViewController: UIViewController {
         GameServices.shared.gameOptions.rowCount = row
         GameServices.shared.gameOptions.columnCount = col
         GameServices.shared.gameOptions.minesCount = mines
+        GameServices.shared.preloadGame(forced: true)
     }
 }
 

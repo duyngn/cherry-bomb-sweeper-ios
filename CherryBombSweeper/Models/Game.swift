@@ -10,6 +10,7 @@ import Foundation
 
 enum GameState {
     case new
+    case loaded
     case inProgress
     case paused
     case lost
