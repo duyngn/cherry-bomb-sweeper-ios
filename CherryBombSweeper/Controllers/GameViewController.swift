@@ -9,8 +9,7 @@
 import UIKit
 
 enum UserAction {
-    case reveal
-    case probe
+    case tap
     case flag
 }
 
@@ -19,8 +18,6 @@ typealias CellTapHandler = (_ cellIndex: Int) -> Void
 class GameViewController: UIViewController {
 
     // Controls
-    @IBOutlet private weak var revealButton: UIButton!
-    @IBOutlet private weak var probeButton: UIButton!
     @IBOutlet private weak var flagButton: UIButton!
     
     // Grid
@@ -30,31 +27,22 @@ class GameViewController: UIViewController {
     fileprivate var gameOptions: GameOptions = GameServices.shared.gameOptions
     fileprivate var game: Game?
     
-    private var currentUserAction: UserAction = .reveal    // The first user action should always be reveal
-    
-    private lazy var initGame: Void = {
-        GameServices.shared.generateNewGame { [weak self] (newGame) in
-            guard let `self` = self else { return }
-            
-            self.game = newGame
-            
-            self.setupFieldGridView()
-        }
-    }()
+    private var currentUserAction: UserAction = .tap
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         self.fieldGridView.isHidden = true
-        self.navigationItem.title = "Game View Controller"
     }
+    
+    lazy private var initGame: Void = {
+        self.startNewGame()
+    }()
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        self.updateCurrentAction(to: self.currentUserAction)
-        
-        let _ = self.initGame
+        let _ = initGame
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -67,9 +55,11 @@ class GameViewController: UIViewController {
         
         DispatchQueue.main.async {
             self.fieldGridView.setupFieldGrid(with: game.mineField, containerView: self.fieldContainer, dataSource: self) { [weak self] (cellIndex) in
-                guard let `self` = self, let game = self.game else { return }
+                guard let `self` = self else { return }
                 
-                GameServices.resolveUserAction(at: cellIndex, in: game.mineField, with: self.currentUserAction) { [weak self] (modifiedCell) in
+                self.gameStarted()
+                
+                GameServices.shared.resolveUserAction(at: cellIndex, in: game, with: self.currentUserAction) { [weak self] (modifiedCell) in
                     guard let `self` = self else { return }
                     
                     DispatchQueue.main.async {
@@ -80,54 +70,43 @@ class GameViewController: UIViewController {
         }
     }
     
+    private func startNewGame() {
+        GameServices.shared.generateNewGame { [weak self] (newGame) in
+            guard let `self` = self else { return }
+            
+            newGame.state = .loaded
+            
+            self.game = newGame
+            
+            self.setupFieldGridView()
+        }
+    }
+    
+    private func gameStarted() {
+        self.game?.state = .inProgress
+    }
+    
     @IBAction func onBackPressed(_ sender: UIButton) {
         self.navigationController?.popViewController(animated: true)
     }
     
-    @IBAction func onRevealPressed(_ sender: UIButton) {
-        self.updateCurrentAction(to: .reveal)
+    @IBAction func onActionModePressed(_ sender: UIButton) {
+        self.updateActionModeButton(to: (self.currentUserAction == .tap) ? .flag : .tap)
     }
     
-    @IBAction func onProbePressed(_ sender: UIButton) {
-        self.updateCurrentAction(to: .probe)
+    @IBAction func onNewGamePressed(_ sender: UIButton) {
+        self.startNewGame()
+        self.updateActionModeButton(to: .tap)
     }
     
-    @IBAction func onFlagPressed(_ sender: UIButton) {
-        self.updateCurrentAction(to: .flag)
-    }
-    
-    private func updateCurrentAction(to action: UserAction) {
+    private func updateActionModeButton(to action: UserAction) {
         self.currentUserAction = action
         
-        var button: UIButton = self.revealButton
-        switch action {
-        case .reveal:
-            self.probeButton.titleLabel?.attributedText = nil
-            self.probeButton.titleLabel?.text = "Probe"
-            
-            self.flagButton.titleLabel?.attributedText = nil
-            self.flagButton.titleLabel?.text = "Flag"
-        case .probe:
-            button = self.probeButton
-            self.revealButton.titleLabel?.attributedText = nil
-            self.revealButton.titleLabel?.text = "Reveal"
-            
-            self.flagButton.titleLabel?.attributedText = nil
-            self.flagButton.titleLabel?.text = "Flag"
+        switch self.currentUserAction {
         case .flag:
-            button = self.flagButton
-            self.revealButton.titleLabel?.attributedText = nil
-            self.revealButton.titleLabel?.text = "Reveal"
-            
-            self.probeButton.titleLabel?.attributedText = nil
-            self.probeButton.titleLabel?.text = "Probe"
-        }
-        
-        if let buttonLabel = button.titleLabel, let text = buttonLabel.text {
-            let textRange = NSMakeRange(0, text.count)
-            let attributedText = NSMutableAttributedString(string: text)
-            attributedText.addAttribute(NSUnderlineStyleAttributeName , value: NSUnderlineStyle.styleSingle.rawValue, range: textRange)
-            buttonLabel.attributedText = attributedText
+            self.flagButton.setTitle("Flag", for: UIControlState.normal)
+        case .tap:
+            self.flagButton.setTitle("Tap", for: UIControlState.normal)
         }
     }
 }

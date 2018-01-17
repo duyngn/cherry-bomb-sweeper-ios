@@ -19,12 +19,45 @@ class GameServices: NSObject {
     private let serviceQueue: DispatchQueue = DispatchQueue(label: "gameServiceQueue")
     
     var gameOptions: GameOptions
+    var currentGame: Game?
+    var preloadedGame: Game?
     
     fileprivate override init() {
         self.gameOptions = GameOptions()
     }
     
+    func preloadGame(forced: Bool = false) {
+        self.serviceQueue.async {
+            if forced || self.preloadedGame == nil {
+                self.generateGame { (newGame) in
+                    // Can ignore this handler since newGame was already captured
+                    self.preloadedGame = newGame
+                }
+            }
+        }
+    }
+    
     func generateNewGame(completionHandler: @escaping GenerateNewGameCompletionHandler) {
+        self.serviceQueue.async {
+            if let preloadedGame = self.preloadedGame {
+                // return preloaded
+                completionHandler(preloadedGame)
+                
+                // now preload another one
+                self.preloadedGame = nil
+                self.preloadGame()
+            } else {
+                self.generateGame { (newGame) in
+                    completionHandler(newGame)
+                    
+                    // Since we didn't have a game preloaded, let's preload now
+                    self.preloadGame()
+                }
+            }
+        }
+    }
+    
+    private func generateGame(completionHandler: @escaping GenerateNewGameCompletionHandler) {
         self.serviceQueue.async {
             self.generateMineField { [weak self, completionHandler] (mineField) in
                 guard let `self` = self else { return }
@@ -36,7 +69,7 @@ class GameServices: NSObject {
         }
     }
     
-    func generateMineField(completionHandler: @escaping GenerateMineFieldCompletionHandler) {
+    private func generateMineField(completionHandler: @escaping GenerateMineFieldCompletionHandler) {
         self.serviceQueue.async { [weak self] in
             guard let `self` = self else { return }
             
@@ -53,73 +86,112 @@ class GameServices: NSObject {
     
     // GAME ACTITIVITES
     
-    static func resolveUserAction(at cellIndex: Int, in mineField: MineField, with userAction: UserAction, updateCellHandler: @escaping UpdateCellHandler) {
-        GameServices.shared.serviceQueue.async {
-            switch userAction {
-            case .reveal:
-                GameServices.revealCell(at: cellIndex, in: mineField, updateCellHandler: updateCellHandler)
-            case .probe:
-                GameServices.probeCell(at: cellIndex, in: mineField, updateCellHandler: updateCellHandler)
-            case .flag:
-                GameServices.flagCell(at: cellIndex, in: mineField, updateCellHandler: updateCellHandler)
+    func resolveUserAction(at cellIndex: Int, in game: Game, with userAction: UserAction, updateCellHandler: @escaping UpdateCellHandler) {
+        self.serviceQueue.async {
+            self.currentGame = game
+            
+            if let cell = game.mineField.getCell(at: cellIndex) {
+                switch userAction {
+                case .tap:
+                    self.tapCell(at: cell, updateCellHandler: updateCellHandler)
+                case .flag:
+                    self.flagCell(at: cell, updateCellHandler: updateCellHandler)
+                }
             }
         }
     }
     
-    static func revealCell(at cellIndex: Int, in mineField: MineField, updateCellHandler: @escaping UpdateCellHandler) {
-        GameServices.shared.serviceQueue.async {
-            if let cell = mineField.getCell(at: cellIndex) {
-                guard cell.state != .revealed else { return }
+    private func tapCell(at cell: Cell, updateCellHandler: @escaping UpdateCellHandler) {
+        if cell.state == .flagged {
+            self.flagCell(at: cell, updateCellHandler: updateCellHandler)
+        } else if cell.state == .revealed, !cell.isEmpty {
+            self.probeCell(at: cell, updateCellHandler: updateCellHandler)
+        } else if cell.hasBomb {
+            self.explodeCell(at: cell, updateCellHandler: updateCellHandler)
+        } else {
+            self.revealCell(at: cell.id, updateCellHandler: updateCellHandler)
+        }
+    }
+    
+    private func revealCell(at cellIndex: Int, updateCellHandler: @escaping UpdateCellHandler) {
+        self.serviceQueue.async {
+            if let cell = self.currentGame?.mineField.getCell(at: cellIndex) {
                 
-                if cell.state == .flagged {
-                    cell.state = .untouched
-                } else if cell.hasBomb {
-                    cell.state = .exploded
+                guard cell.state == .untouched else { return }
+                
+                if cell.hasBomb {
+                    self.explodeCell(at: cell, updateCellHandler: updateCellHandler)
                 } else {
                     cell.state = .revealed
-                }
-                
-                mineField.updateCell(cell)
-                
-                updateCellHandler(cell)
-                
-                if cell.state == .revealed, cell.isEmpty {
-                    // recursive reveal
-                    GameServices.revealEmptyAdjacentCells(at: cellIndex, in: mineField, updateCellHandler: updateCellHandler)
-                }
-            }
-        }
-    }
-    
-    static func revealEmptyAdjacentCells(at cellIndex: Int, in mineField: MineField, updateCellHandler: @escaping UpdateCellHandler) {
-        GameServices.shared.serviceQueue.async {
-            if let cell = mineField.getCell(at: cellIndex) {
-                let adjacentCellsMap = cell.adjacentCellsCoordMap
-                
-                for index in adjacentCellsMap.keys {
-                    if let adjacentCell = mineField.getCell(at: index), !adjacentCell.hasBomb, adjacentCell.state == .untouched {
-                        GameServices.revealCell(at: index, in: mineField, updateCellHandler: updateCellHandler)
+                    
+                    self.currentGame?.mineField.updateCell(cell)
+                    
+                    updateCellHandler(cell)
+                    
+                    if cell.isEmpty {
+                        // recursive reveal
+                        self.revealEmptyAdjacentCells(to: cell, updateCellHandler: updateCellHandler)
                     }
                 }
             }
         }
     }
     
-    static func probeCell(at cellIndex: Int, in mineField: MineField, updateCellHandler: @escaping UpdateCellHandler) {
+    private func revealEmptyAdjacentCells(to cell: Cell, updateCellHandler: @escaping UpdateCellHandler) {
+        let emptyCellsCoordMap = cell.adjacentCellsCoordMap.filter {
+            if let cell = self.currentGame?.mineField.getCell(at: $0.key), !cell.hasBomb, cell.state == .untouched {
+                return true
+            }
+            return false
+        }
         
+        for cellCoordMap in emptyCellsCoordMap {
+            self.revealCell(at: cellCoordMap.key, updateCellHandler: updateCellHandler)
+        }
     }
     
-    static func flagCell(at cellIndex: Int, in mineField: MineField, updateCellHandler: @escaping UpdateCellHandler) {
-        GameServices.shared.serviceQueue.async {
-            if let cell = mineField.getCell(at: cellIndex) {
-                guard cell.state == .untouched else { return }
-                
-                cell.state = .flagged
-                
-                mineField.updateCell(cell)
-                
-                updateCellHandler(cell)
+    private func explodeCell(at cell: Cell, updateCellHandler: @escaping UpdateCellHandler) {
+        guard cell.state == .untouched else { return }
+        
+        cell.state = .exploded
+        
+        self.currentGame?.mineField.updateCell(cell)
+        
+        updateCellHandler(cell)
+    }
+    
+    private func probeCell(at cell: Cell, updateCellHandler: @escaping UpdateCellHandler) {
+        guard let mineField = self.currentGame?.mineField, cell.state == .revealed, !cell.isEmpty else { return }
+        
+        let flaggedCells = cell.adjacentCellsCoordMap.filter {
+            mineField.getCell(at: $0.key)?.state == .flagged
+        }
+        
+        if flaggedCells.count >= cell.adjacentBombs {
+            let untouchedCells = cell.adjacentCellsCoordMap.filter {
+                mineField.getCell(at: $0.key)?.state == .untouched
             }
+            
+            for cell in untouchedCells {
+                self.revealCell(at: cell.key, updateCellHandler: updateCellHandler)
+            }
+        } else {
+            // flash the cells
+        }
+    }
+    
+    private func flagCell(at cell: Cell, updateCellHandler: @escaping UpdateCellHandler) {
+        switch cell.state {
+        case .revealed:
+            if !cell.isEmpty {
+                self.probeCell(at: cell, updateCellHandler: updateCellHandler)
+            }
+        case .untouched, .flagged:
+            cell.state = (cell.state == .flagged) ? .untouched : .flagged
+            self.currentGame?.mineField.updateCell(cell)
+            updateCellHandler(cell)
+        default:
+            break
         }
     }
 }
