@@ -8,8 +8,7 @@
 
 import UIKit
 
-protocol FieldGridLayoutDelegate: UICollectionViewDelegateFlowLayout {
-    func collectionView(rowCountForFieldGrid collectionView: UICollectionView) -> Int
+protocol FieldGridLayoutDelegate: class {
     func collectionView(columnCountForFieldGrid collectionView: UICollectionView) -> Int
     func collectionView(cellDimensionForFieldGrid collectionView: UICollectionView) -> CGFloat
     func collectionView(_ collectionView: UICollectionView, cellPaddingForIndexPath indexPath: IndexPath) -> CGFloat
@@ -45,24 +44,19 @@ class FieldGridCollectionViewLayout: UICollectionViewLayout {
             return
         }
         
-        self.numberOfRows = self.delegate.collectionView(rowCountForFieldGrid: collectionView)
         self.numberOfColumns = self.delegate.collectionView(columnCountForFieldGrid: collectionView)
         self.cellDimension = self.delegate.collectionView(cellDimensionForFieldGrid: collectionView)
         
-        let rowHeight = self.contentHeight / CGFloat(self.numberOfRows)
         let columnWidth = self.contentWidth / CGFloat(self.numberOfColumns)
-        
-        var rowOffset = [CGFloat]()
-        for row in 0 ..< self.numberOfRows {
-            rowOffset.append(CGFloat(row) * rowHeight)
-        }
+        let rowHeight = columnWidth
         
         var columnOffset = [CGFloat]()
         for column in 0 ..< self.numberOfColumns {
             columnOffset.append(CGFloat(column) * columnWidth)
         }
         
-        var row = 0
+        var rowOffset = [CGFloat](repeating: 0, count: numberOfColumns)
+        
         var column = 0
         
         for item in 0 ..< collectionView.numberOfItems(inSection: 0) {
@@ -72,7 +66,7 @@ class FieldGridCollectionViewLayout: UICollectionViewLayout {
             let cellPadding = self.delegate.collectionView(collectionView, cellPaddingForIndexPath: indexPath)
             
             let height = cellPadding * 2 + rowHeight
-            let frame = CGRect(x: columnOffset[column], y: rowOffset[row], width: columnWidth, height: height)
+            let frame = CGRect(x: columnOffset[column], y: rowOffset[column], width: columnWidth, height: height)
             let insetFrame = frame.insetBy(dx: cellPadding, dy: cellPadding)
             
             let attributes = UICollectionViewLayoutAttributes(forCellWith: indexPath)
@@ -80,12 +74,9 @@ class FieldGridCollectionViewLayout: UICollectionViewLayout {
             self.cache.append(attributes)
             
             self.contentHeight = max(contentHeight, frame.maxY)
+            rowOffset[column] = rowOffset[column] + height
             
             column = column < (self.numberOfColumns - 1) ? (column + 1) : 0
-            
-            if column == 0, row < (self.numberOfRows - 1) {
-                row += 1
-            }
         }
     }
     

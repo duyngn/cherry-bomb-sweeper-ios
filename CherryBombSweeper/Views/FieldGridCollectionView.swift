@@ -49,6 +49,10 @@ class FieldGridCollectionView: UICollectionView {
         
         self.delegate = self
         
+        if let layout = self.collectionViewLayout as? FieldGridCollectionViewLayout {
+            layout.delegate = self
+        }
+        
 //        let _ = setupRecognizers
         
         self.register(UINib(nibName: Constant.gridCellIdentifier, bundle: nil), forCellWithReuseIdentifier: Constant.gridCellIdentifier)
@@ -243,7 +247,7 @@ extension FieldGridCollectionView: FieldGridLayoutDelegate {
     }
     
     func collectionView(columnCountForFieldGrid collectionView: UICollectionView) -> Int {
-        return self.mineField?.rows ?? 0
+        return self.mineField?.columns ?? 0
     }
     
     func collectionView(cellDimensionForFieldGrid collectionView: UICollectionView) -> CGFloat {
@@ -253,7 +257,9 @@ extension FieldGridCollectionView: FieldGridLayoutDelegate {
     func collectionView(_ collectionView: UICollectionView, cellPaddingForIndexPath indexPath: IndexPath) -> CGFloat {
         return 0
     }
-    
+}
+
+extension FieldGridCollectionView: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt: IndexPath) {
         self.cellTapHandler?(didSelectItemAt.row)
     }
