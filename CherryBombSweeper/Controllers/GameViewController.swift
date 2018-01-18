@@ -56,14 +56,16 @@ class GameViewController: UIViewController {
         guard let game = self.game else { return }
         
         DispatchQueue.main.async {
-            self.fieldGridView.isUserInteractionEnabled = true
+            let actionableState: Set<GameState> = Set([.loaded, .new, .inProgress])
             
             self.fieldGridView.setupFieldGrid(with: game.mineField, containerView: self.fieldContainer, dataSource: self) { [weak self] (cellIndex) in
                 guard let `self` = self else { return }
                 
-                self.gameStarted()
-                
-                GameProcessingService.shared.resolveUserAction(at: cellIndex, in: game, with: self.currentUserAction)
+                if actionableState.contains(game.state) {
+                    self.gameStarted()
+                    
+                    GameProcessingService.shared.resolveUserAction(at: cellIndex, in: game, with: self.currentUserAction)
+                }
             }
         }
     }
@@ -82,22 +84,24 @@ class GameViewController: UIViewController {
     }
     
     private func gameStarted() {
+        guard let game = self.game, game.state != .inProgress else { return }
+        
         self.game?.state = .inProgress
     }
     
     fileprivate func gameOver() {
         DispatchQueue.main.async {
             self.game?.state = .lost
-            self.fieldGridView.isUserInteractionEnabled = false
+            
+            self.minesRemainingLabel.setTitle("GAME OVER", for: UIControlState.normal)
         }
     }
     
     fileprivate func gameCompleted() {
         DispatchQueue.main.async {
             self.game?.state = .win
-            self.fieldGridView.isUserInteractionEnabled = false
             
-            self.minesRemainingLabel.setTitle("WINNER!", for: UIControlState.normal)
+            self.minesRemainingLabel.setTitle("WINNER", for: UIControlState.normal)
         }
     }
     
@@ -138,7 +142,7 @@ class GameViewController: UIViewController {
 
 extension GameViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.game?.mineField.cellCoordMap.count ?? 0
+        return self.game?.mineField.cellIndexToCoordMap.count ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -154,24 +158,16 @@ extension GameViewController: UICollectionViewDataSource {
 }
 
 extension GameViewController: GameStatusListener {
-    func onCellReveal(_ revealedCells: [Int]) {
-        var revealedIndexPaths: [IndexPath] = []
-        
-        for cellId in revealedCells {
-            revealedIndexPaths.append(IndexPath(row: cellId, section: 0))
-        }
+    func onCellReveal(_ revealedCells: Set<Int>) {
+        let revealedIndexPaths = revealedCells.map { return IndexPath(row: $0, section: 0) }
         
         DispatchQueue.main.async {
             self.fieldGridView.reloadItems(at: revealedIndexPaths)
         }
     }
     
-    func onCellHighlight(_ highlightedCells: [Int]) {
-        var highlightIndexPaths: [IndexPath] = []
-        
-        for cellId in highlightedCells {
-            highlightIndexPaths.append(IndexPath(row: cellId, section: 0))
-        }
+    func onCellHighlight(_ highlightedCells: Set<Int>) {
+        let highlightIndexPaths = highlightedCells.map { return IndexPath(row: $0, section: 0) }
         
         DispatchQueue.main.async {
             self.fieldGridView.reloadItems(at: highlightIndexPaths)
