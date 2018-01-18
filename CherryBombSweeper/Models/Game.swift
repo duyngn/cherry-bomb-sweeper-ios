@@ -26,6 +26,6 @@ class Game {
     init(mineField: MineField = MineField(), gameOptions: GameOptions = GameGeneratorService.shared.gameOptions) {
         self.mineField = mineField
         self.gameOptions = gameOptions
-        self.minesRemaining = mineField.bombCellCoordMap.count
+        self.minesRemaining = mineField.bombCellIndices.count
     }
 }
