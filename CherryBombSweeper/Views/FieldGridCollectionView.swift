@@ -17,229 +17,243 @@ class FieldGridCollectionView: UICollectionView {
         static let maxScaleFactor: CGFloat = 1.5
     }
     
-    fileprivate var containerView: UIView?
     fileprivate var mineField: MineField?
     
     /// Pinch
-    fileprivate var enableZooming: Bool = false
+    fileprivate var enableZooming: Bool = true
     fileprivate var isZoomed: Bool = false
     fileprivate var enablePanning: Bool = false
     fileprivate var minScaleFactor: CGFloat = 1
     
     /// Pan
-    fileprivate var originalFieldCenter: CGPoint?
+//    fileprivate var originalFieldCenter: CGPoint?
     
     fileprivate var cellTapHandler: CellTapHandler?
     
-    lazy private var setupRecognizers: Void = {
-        let pinch = UIPinchGestureRecognizer(target: self, action: #selector(self.pinchHandler(sender:)))
-        pinch.delegate = self
-        self.addGestureRecognizer(pinch)
-        
-        let pan = UIPanGestureRecognizer(target: self, action: #selector(self.panHandler(sender:)))
-        pan.delegate = self
-        self.addGestureRecognizer(pan)
-    }()
+//    lazy private var setupRecognizers: Void = {
+//        let pinch = UIPinchGestureRecognizer(target: self, action: #selector(self.pinchHandler(sender:)))
+//        pinch.delegate = self
+//        self.addGestureRecognizer(pinch)
+//
+//        let pan = UIPanGestureRecognizer(target: self, action: #selector(self.panHandler(sender:)))
+//        pan.delegate = self
+//        self.addGestureRecognizer(pan)
+//    }()
     
-    lazy private var captureFieldCenter: Void = {
-        self.originalFieldCenter = self.center
-    }()
+//    lazy private var captureFieldCenter: Void = {
+//        self.originalFieldCenter = self.center
+//    }()
     
     override func layoutSubviews() {
         super.layoutSubviews()
         
         self.delegate = self
         
-        let _ = setupRecognizers
+//        let _ = setupRecognizers
         
         self.register(UINib(nibName: Constant.gridCellIdentifier, bundle: nil), forCellWithReuseIdentifier: Constant.gridCellIdentifier)
     }
     
-    func setupFieldGrid(with mineField: MineField, containerView: UIView,
+    func setupFieldGrid(with mineField: MineField,
                         dataSource: UICollectionViewDataSource,
                         cellTapHandler: @escaping CellTapHandler) {
         self.dataSource = dataSource
         self.mineField = mineField
-        self.containerView = containerView
         self.cellTapHandler = cellTapHandler
         
-        let screenWidth = containerView.bounds.width
-        let screenHeight = containerView.bounds.height
-        let rows = CGFloat(mineField.rows)
-        let columns = CGFloat(mineField.columns)
+//        let screenWidth = containerView.bounds.width
+//        let screenHeight = containerView.bounds.height
+//        let rows = CGFloat(mineField.rows)
+//        let columns = CGFloat(mineField.columns)
         
-        let fieldWidth = (columns * (Constant.cellDimension + Constant.cellInset)) - Constant.cellInset
-        let fieldHeight = (rows * (Constant.cellDimension + Constant.cellInset)) - Constant.cellInset
+//        let fieldWidth = (columns * (Constant.cellDimension + Constant.cellInset)) - Constant.cellInset
+//        let fieldHeight = (rows * (Constant.cellDimension + Constant.cellInset)) - Constant.cellInset
         
         // Figure out which dimension is wider than screen when normalized, that dimension would determine the mininum scale factor
         // to fit the entire field into the container
-        let screenAspect = screenWidth / screenHeight
-        let fieldAspect = fieldWidth / fieldHeight
+//        let screenAspect = screenWidth / screenHeight
+//        let fieldAspect = fieldWidth / fieldHeight
         // fieldAspect > screenAspect = field width is wider
-        self.minScaleFactor = (fieldAspect > screenAspect)
-            ? screenWidth / fieldWidth
-            : screenHeight / fieldHeight
+//        self.minScaleFactor = (fieldAspect > screenAspect)
+//            ? screenWidth / fieldWidth
+//            : screenHeight / fieldHeight
         
         // Setting field width and height via auto layout
-        self.translatesAutoresizingMaskIntoConstraints = false
-        self.widthAnchor.constraint(equalToConstant: fieldWidth).isActive = true
-        self.heightAnchor.constraint(equalToConstant: fieldHeight).isActive = true
-        self.centerXAnchor.constraint(equalTo: containerView.centerXAnchor).isActive = true
-        self.centerYAnchor.constraint(equalTo: containerView.centerYAnchor).isActive = true
+//        self.translatesAutoresizingMaskIntoConstraints = false
+//        self.widthAnchor.constraint(equalToConstant: fieldWidth).isActive = true
+//        self.heightAnchor.constraint(equalToConstant: fieldHeight).isActive = true
+//        self.centerXAnchor.constraint(equalTo: containerView.centerXAnchor).isActive = true
+//        self.centerYAnchor.constraint(equalTo: containerView.centerYAnchor).isActive = true
         
         // Check if zooming and panning should be enabled
-        if fieldWidth > screenWidth || fieldHeight > screenHeight {
-            self.enableZooming = true
-            self.enablePanning = true
-        }
+//        if fieldWidth > screenWidth || fieldHeight > screenHeight {
+//            self.enableZooming = true
+//            self.enablePanning = true
+//        }
         
         // Now scale the entire field to fit onto screen
-        self.transform = CGAffineTransform(scaleX: self.minScaleFactor, y: self.minScaleFactor)
+//        self.transform = CGAffineTransform(scaleX: self.minScaleFactor, y: self.minScaleFactor)
         
         // Show and reload
-        self.isHidden = false
+//        self.isHidden = false
         self.reloadData()
         
-        DispatchQueue.main.async {
+//        DispatchQueue.main.async {
             // Capture the field center for zoom resetting
-            let _ = self.captureFieldCenter
-        }
+//            let _ = self.captureFieldCenter
+//        }
     }
     
-    @objc private func pinchHandler(sender: UIPinchGestureRecognizer) {
-        guard self.enableZooming else { return }
-        
-        let currentScale = self.frame.size.width / self.bounds.size.width
-        
-        switch sender.state {
-        case .began:
-            let newScale = currentScale * sender.scale
-            if newScale > self.minScaleFactor {
-                self.isZoomed = true
-                self.enablePanning = true
-            }
-        case .changed:
-            let newScale = currentScale * sender.scale
-            // Don't perform scaling if the new scaling factor exceeds the max scale factor
-            guard let view = sender.view, newScale < Constant.maxScaleFactor else {
-                return
-            }
-            
-            let pinchCenter = CGPoint(x: sender.location(in: view).x - view.bounds.midX,
-                                      y: sender.location(in: view).y - view.bounds.midY)
-            
-            let transform = view.transform.translatedBy(x: pinchCenter.x, y: pinchCenter.y)
-                .scaledBy(x: sender.scale, y: sender.scale)
-                .translatedBy(x: -pinchCenter.x, y: -pinchCenter.y)
-            
-            view.transform = transform
-            sender.scale = 1
-        case .ended, .cancelled, .failed:
-            guard currentScale <= self.minScaleFactor, let view = sender.view,
-                let containerView = self.containerView else {
-                return
-            }
-            
-            // Zoom is now below minScaleFactor, so clamp it to minScaleFactor
-            UIView.animate(withDuration: 0.3, animations: {
-                self.transform = CGAffineTransform(scaleX: self.minScaleFactor, y: self.minScaleFactor)
-            })
-   
-            self.isZoomed = false
-            
-            if let center = self.originalFieldCenter {
-                self.center = center
-            }
-            
-            if view.frame.width <= containerView.bounds.width,
-                view.frame.height <= containerView.bounds.height {
-                self.enablePanning = false
-            }
-
-            sender.scale = 1
-        case .possible:
-            break
-        }
-    }
+//    @objc private func pinchHandler(sender: UIPinchGestureRecognizer) {
+//        guard self.enableZooming else { return }
+//
+//        let currentScale = self.frame.size.width / self.bounds.size.width
+//
+//        switch sender.state {
+//        case .began:
+//            let newScale = currentScale * sender.scale
+//            if newScale > self.minScaleFactor {
+//                self.isZoomed = true
+//                self.enablePanning = true
+//            }
+//        case .changed:
+//            let newScale = currentScale * sender.scale
+//            // Don't perform scaling if the new scaling factor exceeds the max scale factor
+//            guard let view = sender.view, newScale < Constant.maxScaleFactor else {
+//                return
+//            }
+//
+//            let pinchCenter = CGPoint(x: sender.location(in: view).x - view.bounds.midX,
+//                                      y: sender.location(in: view).y - view.bounds.midY)
+//
+//            let transform = view.transform.translatedBy(x: pinchCenter.x, y: pinchCenter.y)
+//                .scaledBy(x: sender.scale, y: sender.scale)
+//                .translatedBy(x: -pinchCenter.x, y: -pinchCenter.y)
+//
+//            view.transform = transform
+//            sender.scale = 1
+//        case .ended, .cancelled, .failed:
+//            guard currentScale <= self.minScaleFactor, let view = sender.view,
+//                let containerView = self.containerView else {
+//                return
+//            }
+//
+//            // Zoom is now below minScaleFactor, so clamp it to minScaleFactor
+//            UIView.animate(withDuration: 0.3, animations: {
+//                self.transform = CGAffineTransform(scaleX: self.minScaleFactor, y: self.minScaleFactor)
+//            })
+//
+//            self.isZoomed = false
+//
+////            if let center = self.originalFieldCenter {
+////                self.center = center
+////            }
+//
+//            if view.frame.width <= containerView.bounds.width,
+//                view.frame.height <= containerView.bounds.height {
+//                self.enablePanning = false
+//            }
+//
+//            sender.scale = 1
+//        case .possible:
+//            break
+//        }
+//    }
     
-    @objc private func panHandler(sender: UIPanGestureRecognizer) {
-        guard self.enablePanning else { return }
-        
-        switch sender.state {
-        case .began, .changed:
-            let translation = sender.translation(in: self.containerView)
-            if let view = sender.view {
-                view.center = CGPoint(x:view.center.x + translation.x,
-                                      y:view.center.y + translation.y)
-            }
-            
-            sender.setTranslation(CGPoint.zero, in: self.containerView)
-        case .ended, .cancelled, .failed:
-            guard let view = sender.view, let containerView = self.containerView else { return }
-            
-            // Fetching some values in the main thread
-            let viewLeftEdge = view.frame.minX
-            let viewRightEdge = view.frame.maxX
-            let containerLeftEdge = containerView.bounds.minX
-            let containerRightEdge = containerView.bounds.maxX
-            let isSmallWidth: Bool = view.frame.width <= containerView.bounds.width
-            
-            let viewTopEdge = view.frame.minY
-            let viewBottomEdge = view.frame.maxY
-            let containerTopEdge = containerView.bounds.minY
-            let containerBottomEdge = containerView.bounds.maxY
-            let isSmallHeight: Bool = view.frame.height <= containerView.bounds.height
-            
-            // Now do calculations in the background thread
-            DispatchQueue.global(qos: .userInteractive).async { [weak self] in
-                guard let `self` = self else { return }
-                
-                // Figure out clamping after pan completes
-                var xDiff: CGFloat = 0
-                if isSmallWidth {
-                    if viewLeftEdge < containerLeftEdge {
-                        xDiff = containerLeftEdge - viewLeftEdge // clamp leftedge
-                    } else if viewRightEdge > containerRightEdge {
-                        xDiff = containerRightEdge - viewRightEdge // clamp right edge
-                    }
-                } else if viewLeftEdge > containerLeftEdge {
-                    xDiff = containerLeftEdge - viewLeftEdge // lamp left edge
-                } else if viewRightEdge < containerRightEdge {
-                    xDiff = containerRightEdge - viewRightEdge // clamp right edge
-                }
-                
-                var yDiff: CGFloat = 0
-                if isSmallHeight {
-                    if viewTopEdge < containerTopEdge {
-                        yDiff = containerTopEdge - viewTopEdge // clamp top edge
-                    } else if viewBottomEdge > containerBottomEdge {
-                        yDiff = containerBottomEdge - viewBottomEdge // clamp bottom edge
-                    }
-                } else if viewTopEdge > containerTopEdge {
-                    yDiff = containerTopEdge - viewTopEdge // clamp top edge
-                } else if viewBottomEdge < containerBottomEdge {
-                    yDiff = containerBottomEdge - viewBottomEdge // clamp bottom edge
-                }
-                
-                // Then finally execute animation on the main thread
-                DispatchQueue.main.async {  [weak self, xDiff, yDiff] in
-                    guard let `self` = self else { return }
-                    
-                    UIView.animate(withDuration: 0.3, animations: {
-                        view.center = CGPoint(x:view.center.x + xDiff,
-                                              y:view.center.y + yDiff)
-                        
-                        sender.setTranslation(CGPoint.zero, in: self.containerView)
-                    })
-                }
-            }
-        case .possible:
-            break
-        }
-    }
+//    @objc private func panHandler(sender: UIPanGestureRecognizer) {
+//        guard self.enablePanning else { return }
+//
+//        switch sender.state {
+//        case .began, .changed:
+//            let translation = sender.translation(in: self.containerView)
+//            if let view = sender.view {
+//                view.center = CGPoint(x:view.center.x + translation.x,
+//                                      y:view.center.y + translation.y)
+//            }
+//
+//            sender.setTranslation(CGPoint.zero, in: self.containerView)
+//        case .ended, .cancelled, .failed:
+//            guard let view = sender.view, let containerView = self.containerView else { return }
+//
+//            // Fetching some values in the main thread
+//            let viewLeftEdge = view.frame.minX
+//            let viewRightEdge = view.frame.maxX
+//            let containerLeftEdge = containerView.bounds.minX
+//            let containerRightEdge = containerView.bounds.maxX
+//            let isSmallWidth: Bool = view.frame.width <= containerView.bounds.width
+//
+//            let viewTopEdge = view.frame.minY
+//            let viewBottomEdge = view.frame.maxY
+//            let containerTopEdge = containerView.bounds.minY
+//            let containerBottomEdge = containerView.bounds.maxY
+//            let isSmallHeight: Bool = view.frame.height <= containerView.bounds.height
+//
+//            // Now do calculations in the background thread
+//            DispatchQueue.global(qos: .userInteractive).async { [weak self] in
+//                guard let `self` = self else { return }
+//
+//                // Figure out clamping after pan completes
+//                var xDiff: CGFloat = 0
+//                if isSmallWidth {
+//                    if viewLeftEdge < containerLeftEdge {
+//                        xDiff = containerLeftEdge - viewLeftEdge // clamp leftedge
+//                    } else if viewRightEdge > containerRightEdge {
+//                        xDiff = containerRightEdge - viewRightEdge // clamp right edge
+//                    }
+//                } else if viewLeftEdge > containerLeftEdge {
+//                    xDiff = containerLeftEdge - viewLeftEdge // lamp left edge
+//                } else if viewRightEdge < containerRightEdge {
+//                    xDiff = containerRightEdge - viewRightEdge // clamp right edge
+//                }
+//
+//                var yDiff: CGFloat = 0
+//                if isSmallHeight {
+//                    if viewTopEdge < containerTopEdge {
+//                        yDiff = containerTopEdge - viewTopEdge // clamp top edge
+//                    } else if viewBottomEdge > containerBottomEdge {
+//                        yDiff = containerBottomEdge - viewBottomEdge // clamp bottom edge
+//                    }
+//                } else if viewTopEdge > containerTopEdge {
+//                    yDiff = containerTopEdge - viewTopEdge // clamp top edge
+//                } else if viewBottomEdge < containerBottomEdge {
+//                    yDiff = containerBottomEdge - viewBottomEdge // clamp bottom edge
+//                }
+//
+//                // Then finally execute animation on the main thread
+//                DispatchQueue.main.async {  [weak self, xDiff, yDiff] in
+//                    guard let `self` = self else { return }
+//
+//                    UIView.animate(withDuration: 0.3, animations: {
+//                        view.center = CGPoint(x:view.center.x + xDiff,
+//                                              y:view.center.y + yDiff)
+//
+//                        sender.setTranslation(CGPoint.zero, in: self.containerView)
+//                    })
+//                }
+//            }
+//        case .possible:
+//            break
+//        }
+//    }
 }
 
-extension FieldGridCollectionView: UICollectionViewDelegateFlowLayout {
+extension FieldGridCollectionView: FieldGridLayoutDelegate {
+    func collectionView(rowCountForFieldGrid collectionView: UICollectionView) -> Int {
+        return self.mineField?.rows ?? 0
+    }
+    
+    func collectionView(columnCountForFieldGrid collectionView: UICollectionView) -> Int {
+        return self.mineField?.rows ?? 0
+    }
+    
+    func collectionView(cellDimensionForFieldGrid collectionView: UICollectionView) -> CGFloat {
+        return Constant.cellDimension
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellPaddingForIndexPath indexPath: IndexPath) -> CGFloat {
+        return 0
+    }
+    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt: IndexPath) {
         self.cellTapHandler?(didSelectItemAt.row)
     }

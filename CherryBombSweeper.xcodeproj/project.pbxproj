@@ -11,6 +11,7 @@
 		042168C72008368C0065854F /* MineField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042168C62008368C0065854F /* MineField.swift */; };
 		0423F03C200D653000DE76CF /* FieldGridCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0423F03B200D653000DE76CF /* FieldGridCollectionView.swift */; };
 		04A50C71200F3CB80075A9BE /* GameProcessingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A50C70200F3CB80075A9BE /* GameProcessingService.swift */; };
+		04B44FCA201124B300CF63EB /* FieldGridCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B44FC9201124B300CF63EB /* FieldGridCollectionViewLayout.swift */; };
 		04E22D882006CC7800DEC328 /* Cell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E22D872006CC7800DEC328 /* Cell.swift */; };
 		04E22D8A2006CC8500DEC328 /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E22D892006CC8500DEC328 /* Game.swift */; };
 		04E22D8D2006CF8F00DEC328 /* OptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E22D8B2006CF8F00DEC328 /* OptionsViewController.swift */; };
@@ -33,6 +34,7 @@
 		042168C62008368C0065854F /* MineField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MineField.swift; sourceTree = "<group>"; };
 		0423F03B200D653000DE76CF /* FieldGridCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldGridCollectionView.swift; sourceTree = "<group>"; };
 		04A50C70200F3CB80075A9BE /* GameProcessingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameProcessingService.swift; sourceTree = "<group>"; };
+		04B44FC9201124B300CF63EB /* FieldGridCollectionViewLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldGridCollectionViewLayout.swift; sourceTree = "<group>"; };
 		04E22D872006CC7800DEC328 /* Cell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cell.swift; sourceTree = "<group>"; };
 		04E22D892006CC8500DEC328 /* Game.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
 		04E22D8B2006CF8F00DEC328 /* OptionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsViewController.swift; sourceTree = "<group>"; };
@@ -100,6 +102,7 @@
 				04FB4E13200B1E080007A329 /* FieldGridCell.swift */,
 				04FB4E14200B1E080007A329 /* FieldGridCell.xib */,
 				0423F03B200D653000DE76CF /* FieldGridCollectionView.swift */,
+				04B44FC9201124B300CF63EB /* FieldGridCollectionViewLayout.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -224,6 +227,7 @@
 				04E22D882006CC7800DEC328 /* Cell.swift in Sources */,
 				04E22D912006CFEB00DEC328 /* GameViewController.swift in Sources */,
 				04E22D8D2006CF8F00DEC328 /* OptionsViewController.swift in Sources */,
+				04B44FCA201124B300CF63EB /* FieldGridCollectionViewLayout.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
