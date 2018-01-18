@@ -23,7 +23,7 @@ class GameViewController: UIViewController {
     
     // Grid
     @IBOutlet fileprivate weak var fieldGridView: FieldGridCollectionView!
-    @IBOutlet private weak var fieldContainer: UIView!
+//    @IBOutlet private weak var fieldContainer: UIView!
     
     fileprivate var gameOptions: GameOptions = GameGeneratorService.shared.gameOptions
     fileprivate var game: Game?
@@ -58,7 +58,7 @@ class GameViewController: UIViewController {
         DispatchQueue.main.async {
             let actionableState: Set<GameState> = Set([.loaded, .new, .inProgress])
             
-            self.fieldGridView.setupFieldGrid(with: game.mineField, containerView: self.fieldContainer, dataSource: self) { [weak self] (cellIndex) in
+            self.fieldGridView.setupFieldGrid(with: game.mineField, dataSource: self) { [weak self] (cellIndex) in
                 guard let `self` = self else { return }
                 
                 if actionableState.contains(game.state) {
