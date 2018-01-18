@@ -138,7 +138,7 @@ class GameViewController: UIViewController {
 
 extension GameViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.game?.mineField.cellCoordMap.count ?? 0
+        return self.game?.mineField.cellIndexToCoordMap.count ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -154,24 +154,16 @@ extension GameViewController: UICollectionViewDataSource {
 }
 
 extension GameViewController: GameStatusListener {
-    func onCellReveal(_ revealedCells: [Int]) {
-        var revealedIndexPaths: [IndexPath] = []
-        
-        for cellId in revealedCells {
-            revealedIndexPaths.append(IndexPath(row: cellId, section: 0))
-        }
+    func onCellReveal(_ revealedCells: Set<Int>) {
+        let revealedIndexPaths = revealedCells.map { return IndexPath(row: $0, section: 0) }
         
         DispatchQueue.main.async {
             self.fieldGridView.reloadItems(at: revealedIndexPaths)
         }
     }
     
-    func onCellHighlight(_ highlightedCells: [Int]) {
-        var highlightIndexPaths: [IndexPath] = []
-        
-        for cellId in highlightedCells {
-            highlightIndexPaths.append(IndexPath(row: cellId, section: 0))
-        }
+    func onCellHighlight(_ highlightedCells: Set<Int>) {
+        let highlightIndexPaths = highlightedCells.map { return IndexPath(row: $0, section: 0) }
         
         DispatchQueue.main.async {
             self.fieldGridView.reloadItems(at: highlightIndexPaths)
