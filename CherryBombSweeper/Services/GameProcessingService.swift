@@ -65,55 +65,47 @@ class GameProcessingService: NSObject {
         self.processingQueue.async {
             if let cell = self.currentGame?.mineField.getCell(at: cellIndex) {
                 
-                guard cell.state == .untouched else { return }
+                // process reveal this single cell
+                self.processRevealCell(at: cellIndex)
                 
-                if cell.hasBomb {
-                    self.explode(at: cell)
+                if cell.connectedEmptyCluster.isEmpty {
+                    revealCellHandler(Set([cell.index]))
                 } else {
-                    cell.state = .revealed
+                    // Since it has a connected empty cell cluster, reveal those too
+                    self.processRevealCell(cluster: cell.connectedEmptyCluster)
                     
-                    self.currentGame?.mineField.updateCell(cell)
-                    self.currentGame?.mineField.safeCellsCount -= 1
-                    
-                    if self.currentGame?.mineField.safeCellsCount == 0 {
-                        self.gameListener?.onGameCompleted()
-                    }
-                    
-                    
-                    if cell.connectedEmptyCluster.isEmpty {
-                        revealCellHandler(Set([cell.index]))
-                    } else {
-                        revealCellHandler(cell.connectedEmptyCluster)
-                    }
-//
-//
-//                    let revealedCell: [Int] = [cell.index]
-//
-//                    if cell.isEmpty {
-//
-//                        revealCellHandler(revealedCell)
-//
-//                        self.revealEmptyAdjacentCells(to: cell, revealCellHandler: revealCellHandler)
-//                    } else {
-//                        revealCellHandler(revealedCell)
-//                    }
+                    revealCellHandler(cell.connectedEmptyCluster)
                 }
             }
         }
     }
     
-//    private func revealEmptyAdjacentCells(to cell: Cell, revealCellHandler: @escaping CellRevealHandler) {
-//        let emptyCellIdices = cell.adjacentCellIndices.filter {
-//            if let cell = self.currentGame?.mineField.getCell(at: $0), !cell.hasBomb, cell.state == .untouched {
-//                return true
-//            }
-//            return false
-//        }
-//
-//        for cellIdex in emptyCellIdices {
-//            self.reveal(at: cellIdex, revealCellHandler: revealCellHandler)
-//        }
-//    }
+    private func processRevealCell(cluster indicesCluster: Set<Int>) {
+        self.processingQueue.async {
+            for cellIndex in indicesCluster {
+                self.processRevealCell(at: cellIndex)
+            }
+        }
+    }
+    
+    private func processRevealCell(at cellIndex: Int) {
+        if let cell = self.currentGame?.mineField.getCell(at: cellIndex) {
+            guard cell.state == .untouched else { return }
+            
+            if cell.hasBomb {
+                self.explode(at: cell)
+            } else {
+                cell.state = .revealed
+                
+                self.currentGame?.mineField.updateCell(cell)
+                self.currentGame?.mineField.safeCellsCount -= 1
+                
+                if self.currentGame?.mineField.safeCellsCount == 0 {
+                    self.gameListener?.onGameCompleted()
+                }
+            }
+        }
+    }
     
     private func explode(at cell: Cell) {
         guard cell.state == .untouched else { return }

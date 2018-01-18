@@ -56,14 +56,16 @@ class GameViewController: UIViewController {
         guard let game = self.game else { return }
         
         DispatchQueue.main.async {
-            self.fieldGridView.isUserInteractionEnabled = true
+            let actionableState: Set<GameState> = Set([.loaded, .new, .inProgress])
             
             self.fieldGridView.setupFieldGrid(with: game.mineField, containerView: self.fieldContainer, dataSource: self) { [weak self] (cellIndex) in
                 guard let `self` = self else { return }
                 
-                self.gameStarted()
-                
-                GameProcessingService.shared.resolveUserAction(at: cellIndex, in: game, with: self.currentUserAction)
+                if actionableState.contains(game.state) {
+                    self.gameStarted()
+                    
+                    GameProcessingService.shared.resolveUserAction(at: cellIndex, in: game, with: self.currentUserAction)
+                }
             }
         }
     }
@@ -82,22 +84,24 @@ class GameViewController: UIViewController {
     }
     
     private func gameStarted() {
+        guard let game = self.game, game.state != .inProgress else { return }
+        
         self.game?.state = .inProgress
     }
     
     fileprivate func gameOver() {
         DispatchQueue.main.async {
             self.game?.state = .lost
-            self.fieldGridView.isUserInteractionEnabled = false
+            
+            self.minesRemainingLabel.setTitle("GAME OVER", for: UIControlState.normal)
         }
     }
     
     fileprivate func gameCompleted() {
         DispatchQueue.main.async {
             self.game?.state = .win
-            self.fieldGridView.isUserInteractionEnabled = false
             
-            self.minesRemainingLabel.setTitle("WINNER!", for: UIControlState.normal)
+            self.minesRemainingLabel.setTitle("WINNER", for: UIControlState.normal)
         }
     }
     
