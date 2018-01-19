@@ -11,21 +11,22 @@ import UIKit
 class FieldGridCollectionView: UICollectionView {
     
     enum Constant {
-        static let cellDimension = CGFloat(40)
+        static let cellDimension = CGFloat(41)
         static let cellInset = CGFloat(1)
         static let gridCellIdentifier = "FieldGridCell"
-        static let maxScaleFactor: CGFloat = 2.5
+//        static let maxScaleFactor: CGFloat = 3
     }
     
     fileprivate var mineField: MineField?
     
     /// Pinch
-//    fileprivate var enableZooming: Bool = false
+//    fileprivate var pinchGesture: UIPinchGestureRecognizer?
+//    fileprivate var enableZooming: Bool = true
 //    fileprivate var isZoomed: Bool = false
 //    fileprivate var enablePanning: Bool = false
-//    fileprivate var minScaleFactor: CGFloat = 1
+    fileprivate var minScaleFactor: CGFloat = 1
     fileprivate var cellDimension: CGFloat = Constant.cellDimension
-//    fileprivate var currentScaleFactor: CGFloat = 1
+//    fileprivate var scaleFactor: CGFloat = 1
     
     /// Pan
 //    fileprivate var originalFieldCenter: CGPoint?
@@ -74,18 +75,18 @@ class FieldGridCollectionView: UICollectionView {
 //        let screenHeight = self.frame.height
 //        let rows = CGFloat(mineField.rows)
 //        let columns = CGFloat(mineField.columns)
-//
-//        let fieldWidth = (columns * (Constant.cellDimension + Constant.cellInset)) - Constant.cellInset
-//        let fieldHeight = (rows * (Constant.cellDimension + Constant.cellInset)) - Constant.cellInset
+
+//        let fieldWidth = (columns * (self.cellDimension + Constant.cellInset)) - Constant.cellInset
+//        let fieldHeight = (rows * (self.cellDimension + Constant.cellInset)) - Constant.cellInset
 //
 //        // Figure out which dimension is wider than screen when normalized, that dimension would determine the mininum scale factor
 //        // to fit the entire field into the container
 //        let screenAspect = screenWidth / screenHeight
 //        let fieldAspect = fieldWidth / fieldHeight
-////         fieldAspect > screenAspect = field width is wider
-//        self.minScaleFactor = (fieldAspect > screenAspect)
-//            ? screenWidth / fieldWidth
-//            : screenHeight / fieldHeight
+//         fieldAspect > screenAspect = field width is wider
+//        self.cellDimension = (fieldAspect > screenAspect)
+//            ? (screenWidth - (8 * Constant.cellInset)) / 9
+//            : (screenHeight - (8 * Constant.cellInset)) / 9
         
         // Check if zooming and panning should be enabled
 //        if fieldWidth > screenWidth || fieldHeight > screenHeight {
@@ -109,25 +110,35 @@ class FieldGridCollectionView: UICollectionView {
 //    @objc private func pinchHandler(sender: UIPinchGestureRecognizer) {
 //        guard self.enableZooming else { return }
 //
-//        let currentScale = self.frame.size.width / self.bounds.size.width
+////        let currentScale = self.frame.size.width / self.bounds.size.width
+////        var currentScale: CGFloat = self.scaleFactor
 //
 //        switch sender.state {
 //        case .began:
-//            let newScale = currentScale * sender.scale
-//            if newScale > self.minScaleFactor {
-//                self.isZoomed = true
-//            }
+////            currentScale = self.scaleFactor
+////            let newScale = currentScale * sender.scale
+////            if newScale > self.minScaleFactor {
+////                self.isZoomed = true
+////            }
+//            break
 //        case .changed:
-//            let newScale = currentScale * sender.scale
-//            // Don't perform scaling if the new scaling factor exceeds the max scale factor
-//            guard let view = sender.view, newScale < Constant.maxScaleFactor else {
+//            guard let layout = self.collectionViewLayout as? FieldGridCollectionViewLayout else {
 //                return
 //            }
 //
-//            view.contentScaleFactor = sender.scale
-//            if let layout = self.collectionViewLayout as? FieldGridCollectionViewLayout {
-//                layout.invalidateLayout()
+//            let newScale = self.scaleFactor * sender.scale
+//            // Don't perform scaling if the new scaling factor exceeds the max scale factor
+//            if sender.scale < 1, newScale < self.minScaleFactor {
+//                return
+//            } else if sender.scale > 1, newScale > Constant.maxScaleFactor {
+//                return
 //            }
+//
+//            self.scaleFactor = newScale
+//            print(self.scaleFactor)
+//            layout.invalidateLayout()
+//
+////            sender.scale = newScale
 ////            view.invalidateIntrinsicContentSize()
 ////            let pinchCenter = CGPoint(x: sender.location(in: view).x - view.bounds.midX,
 ////                                      y: sender.location(in: view).y - view.bounds.midY)
@@ -137,24 +148,24 @@ class FieldGridCollectionView: UICollectionView {
 ////                .translatedBy(x: -pinchCenter.x, y: -pinchCenter.y)
 ////
 ////            view.transform = transform
-//            sender.scale = 1
 //        case .ended, .cancelled, .failed:
-//            guard currentScale <= self.minScaleFactor else {
-//                    return
-//            }
+////            guard currentScale <= self.minScaleFactor else {
+////                    return
+////            }
+////
+////            // Zoom is now below minScaleFactor, so clamp it to minScaleFactor
+////            UIView.animate(withDuration: 0.3, animations: {
+////                self.transform = CGAffineTransform(scaleX: self.minScaleFactor, y: self.minScaleFactor)
+////            })
+////
+////            self.isZoomed = false
+////
+////            if let center = self.originalFieldCenter {
+////                self.center = center
+////            }
 //
-//            // Zoom is now below minScaleFactor, so clamp it to minScaleFactor
-//            UIView.animate(withDuration: 0.3, animations: {
-//                self.transform = CGAffineTransform(scaleX: self.minScaleFactor, y: self.minScaleFactor)
-//            })
-//
-//            self.isZoomed = false
-//
-//            if let center = self.originalFieldCenter {
-//                self.center = center
-//            }
-//
-//            sender.scale = 1
+////            sender.scale = 1
+//            break
 //        case .possible:
 //            break
 //        }
@@ -257,7 +268,7 @@ extension FieldGridCollectionView: FieldGridLayoutDelegate {
     }
     
     func collectionView(cellDimensionForFieldGrid collectionView: UICollectionView) -> CGFloat {
-        return self.cellDimension
+        return self.cellDimension // * self.scaleFactor
     }
     
     func collectionView(cellSpacingForFieldGrid collectionView: UICollectionView) -> CGFloat {
@@ -283,7 +294,7 @@ extension FieldGridCollectionView: UICollectionViewDelegateFlowLayout {
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: Constant.cellDimension, height: Constant.cellDimension);
+        return CGSize(width: self.cellDimension, height: self.cellDimension);
     }
 }
 

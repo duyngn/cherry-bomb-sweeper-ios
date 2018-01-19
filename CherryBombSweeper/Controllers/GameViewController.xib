@@ -24,6 +24,22 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
+                <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="I8A-se-vqr" userLabel="Field Container">
+                    <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                    <subviews>
+                        <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="XFb-4Q-cJ5" userLabel="Field Grid" customClass="FieldGridCollectionView" customModule="CherryBombSweeper" customModuleProvider="target">
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
+                            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <collectionViewLayout key="collectionViewLayout" id="wWD-3R-e36" customClass="FieldGridCollectionViewLayout" customModule="CherryBombSweeper" customModuleProvider="target"/>
+                        </collectionView>
+                    </subviews>
+                    <constraints>
+                        <constraint firstItem="XFb-4Q-cJ5" firstAttribute="centerY" secondItem="I8A-se-vqr" secondAttribute="centerY" id="Q0E-wV-VHp"/>
+                        <constraint firstItem="XFb-4Q-cJ5" firstAttribute="height" secondItem="I8A-se-vqr" secondAttribute="height" id="Zof-QN-0EV"/>
+                        <constraint firstItem="XFb-4Q-cJ5" firstAttribute="width" secondItem="I8A-se-vqr" secondAttribute="width" id="utu-gV-IcT"/>
+                        <constraint firstItem="XFb-4Q-cJ5" firstAttribute="centerX" secondItem="I8A-se-vqr" secondAttribute="centerX" id="yDW-12-dJA"/>
+                    </constraints>
+                </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xnb-lj-5zp" userLabel="Stats Container">
                     <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                     <subviews>
@@ -60,31 +76,15 @@
                         <constraint firstItem="zVD-rx-edB" firstAttribute="centerY" secondItem="xnb-lj-5zp" secondAttribute="centerY" id="wp9-pD-yuF"/>
                     </constraints>
                 </view>
-                <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="I8A-se-vqr" userLabel="Field Container">
-                    <rect key="frame" x="0.0" y="64" width="375" height="603"/>
-                    <subviews>
-                        <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="XFb-4Q-cJ5" userLabel="Field Grid" customClass="FieldGridCollectionView" customModule="CherryBombSweeper" customModuleProvider="target">
-                            <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
-                            <collectionViewLayout key="collectionViewLayout" id="wWD-3R-e36" customClass="FieldGridCollectionViewLayout" customModule="CherryBombSweeper" customModuleProvider="target"/>
-                        </collectionView>
-                    </subviews>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    <constraints>
-                        <constraint firstItem="XFb-4Q-cJ5" firstAttribute="centerY" secondItem="I8A-se-vqr" secondAttribute="centerY" id="Q0E-wV-VHp"/>
-                        <constraint firstItem="XFb-4Q-cJ5" firstAttribute="height" secondItem="I8A-se-vqr" secondAttribute="height" id="Zof-QN-0EV"/>
-                        <constraint firstItem="XFb-4Q-cJ5" firstAttribute="width" secondItem="I8A-se-vqr" secondAttribute="width" id="utu-gV-IcT"/>
-                        <constraint firstItem="XFb-4Q-cJ5" firstAttribute="centerX" secondItem="I8A-se-vqr" secondAttribute="centerX" id="yDW-12-dJA"/>
-                    </constraints>
-                </view>
             </subviews>
-            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
                 <constraint firstItem="xnb-lj-5zp" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="B2C-Iy-Hp4"/>
                 <constraint firstItem="I8A-se-vqr" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="N0Q-Rb-rTF"/>
                 <constraint firstItem="I8A-se-vqr" firstAttribute="top" secondItem="xnb-lj-5zp" secondAttribute="bottom" id="R3Y-yo-AG9"/>
                 <constraint firstItem="xnb-lj-5zp" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="RWi-6i-cB0"/>
                 <constraint firstItem="xnb-lj-5zp" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="Xmn-Ii-405"/>
-                <constraint firstItem="I8A-se-vqr" firstAttribute="bottom" secondItem="fnl-2z-Ty3" secondAttribute="bottom" id="ZtT-1G-5eY"/>
+                <constraint firstItem="I8A-se-vqr" firstAttribute="bottom" secondItem="i5M-Pr-FkT" secondAttribute="bottom" id="ZtT-1G-5eY"/>
                 <constraint firstItem="I8A-se-vqr" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="bEa-oc-d6e"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
