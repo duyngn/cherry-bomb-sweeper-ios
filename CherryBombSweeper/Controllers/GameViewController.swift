@@ -22,6 +22,7 @@ class GameViewController: UIViewController {
     @IBOutlet private weak var flagButton: UIButton!
     
     // Grid
+    @IBOutlet fileprivate weak var scrollViewContainer: UIScrollView!
     @IBOutlet fileprivate weak var fieldGridView: FieldGridCollectionView!
     @IBOutlet private weak var fieldContainer: UIView!
     
@@ -32,8 +33,6 @@ class GameViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        self.fieldGridView.isHidden = true
     }
     
     lazy private var initGame: Void = {
