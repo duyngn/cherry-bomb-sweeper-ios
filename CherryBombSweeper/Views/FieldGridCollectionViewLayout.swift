@@ -61,7 +61,6 @@ class FieldGridCollectionViewLayout: UICollectionViewLayout, FieldGridLayoutDele
         self.numberOfColumns = (self.delegate ?? self).collectionView(columnCountForFieldGrid: collectionView)
         self.cellDimension = (self.delegate ?? self).collectionView(cellDimensionForFieldGrid: collectionView)
         self.cellSpacing = (self.delegate ?? self).collectionView(cellSpacingForFieldGrid: collectionView)
-        self.containerRect = (self.delegate ?? self).collectionView(viewWindowForFieldGrid: collectionView)
         
         let columnWidth = self.contentWidth / CGFloat(self.numberOfColumns)
         let rowHeight = columnWidth
@@ -94,8 +93,13 @@ class FieldGridCollectionViewLayout: UICollectionViewLayout, FieldGridLayoutDele
     }
     
     override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
-        let windowRect = self.containerRect ?? rect
-        return self.itemAttributesCache.filter { $0.frame.intersects(windowRect) }
+//        var windowRect = rect
+//
+//        if let collectionView = self.collectionView, let delegate = self.delegate {
+//            windowRect = delegate.collectionView(viewWindowForFieldGrid: collectionView) ?? rect
+//        }
+        
+        return self.itemAttributesCache.filter { $0.frame.intersects(rect) }
     }
     
     override func layoutAttributesForItem(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
