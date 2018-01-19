@@ -24,6 +24,14 @@ class FieldGridScrollView: UIScrollView {
     
     fileprivate var cellTapHandler: CellTapHandler?
     
+    lazy private var setupGridCollectionView: Void = {
+        let fieldGrid = FieldGridCollectionView(frame: self.frame, collectionViewLayout: FieldGridCollectionViewLayout())
+        self.fieldGridCollection = fieldGrid
+        fieldGrid.isHidden = true
+        
+        self.addSubview(fieldGrid)
+    }()
+    
     lazy private var setupRecognizers: Void = {
         let pinch = UIPinchGestureRecognizer(target: self, action: #selector(self.pinchHandler(sender:)))
         pinch.delegate = self
@@ -39,12 +47,23 @@ class FieldGridScrollView: UIScrollView {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        let fieldGrid = FieldGridCollectionView(frame: self.frame, collectionViewLayout: FieldGridCollectionViewLayout())
-        self.fieldGridCollection = fieldGrid
-        fieldGrid.isHidden = true
-        self.addSubview(fieldGrid)
+        let _ = setupGridCollectionView
         
         let _ = setupRecognizers
+        
+        self.isScrollEnabled = true
+        
+//        if !self.bounds.size.equalTo(self.intrinsicContentSize) {
+//            self.invalidateIntrinsicContentSize()
+//        }
+    }
+    
+    override var intrinsicContentSize: CGSize {
+        get {
+//            let intrinsicContentSize = self.contentSize
+            
+            return self.fieldGridCollection?.frame.size ?? self.contentSize
+        }
     }
     
     func setupFieldGrid(with mineField: MineField,
@@ -52,37 +71,66 @@ class FieldGridScrollView: UIScrollView {
                         cellTapHandler: @escaping CellTapHandler) {
         guard let fieldGridCollection = self.fieldGridCollection else { return }
         
-        fieldGridCollection.setupFieldGrid(with: mineField, container: self, dataSource: dataSource, cellTapHandler: cellTapHandler)
-        
-        let windowWidth = self.frame.width
-        let windowHeight = self.frame.height
-        
-        let fieldWidth = fieldGridCollection.frame.width
-        let fieldHeight = fieldGridCollection.frame.height
-        
-        // Figure out which dimension is wider than screen when normalized, that dimension would determine the mininum scale factor
-        // to fit the entire field into the container
-        let screenAspect = windowWidth / windowHeight
-        let fieldAspect = fieldWidth / fieldHeight
-        // fieldAspect > screenAspect = field width is wider
-        self.minScaleFactor = (fieldAspect > screenAspect)
-            ? windowWidth / fieldWidth
-            : windowHeight / fieldHeight
-        
-        // Check if zooming and panning should be enabled
-        if fieldWidth > windowWidth || fieldHeight > windowHeight {
-            self.enableZooming = true
+        fieldGridCollection.setupFieldGrid(with: mineField, dataSource: dataSource, cellTapHandler: cellTapHandler) { [weak self] (fieldWidth, fieldHeight) in
+            guard let `self` = self else { return }
+            
+            let windowWidth = self.frame.width
+            let windowHeight = self.frame.height
+    
+            self.contentSize.width = fieldWidth
+            self.contentSize.height = fieldHeight
+            
+            // Figure out which dimension is wider than screen when normalized, that dimension would determine the mininum scale factor
+            // to fit the entire field into the container
+            let screenAspect = windowWidth / windowHeight
+            let fieldAspect = fieldWidth / fieldHeight
+            // fieldAspect > screenAspect = field width is wider
+            self.minScaleFactor = (fieldAspect > screenAspect)
+                ? windowWidth / fieldWidth
+                : windowHeight / fieldHeight
+            
+            // Check if zooming and panning should be enabled
+            if fieldWidth > windowWidth || fieldHeight > windowHeight {
+                self.enableZooming = true
+            }
+            
+            // Setting field width and height via auto layout
+            fieldGridCollection.translatesAutoresizingMaskIntoConstraints = false
+            fieldGridCollection.widthAnchor.constraint(equalToConstant: fieldWidth).isActive = true
+            fieldGridCollection.heightAnchor.constraint(equalToConstant: fieldHeight).isActive = true
+            fieldGridCollection.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
+            fieldGridCollection.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+            fieldGridCollection.isScrollEnabled = false
+            
+            // Now scale the entire field to fit onto screen
+//            self.scaleContent(self.minScaleFactor)
+//            self.transformContent(with: CGAffineTransform(scaleX: self.minScaleFactor, y: self.minScaleFactor))
+//            self.contentSize.width = self.contentSize.width * self.minScaleFactor
+//            self.contentSize.height = self.contentSize.height * self.minScaleFactor
+//            self.contentScaleFactor = self.minScaleFactor
+            
+            // Show and reload
+            fieldGridCollection.isHidden = false
+            fieldGridCollection.reloadData()
+            
+            DispatchQueue.main.async {
+                // Capture the field center for zoom resetting
+                let _ = self.captureFieldCenter
+            }
         }
+    }
+    
+    private func transformContent(with transform: CGAffineTransform) {
+        guard let fieldGridCollection = self.fieldGridCollection else { return }
         
-        // Now scale the entire field to fit onto screen
-        fieldGridCollection.transform = CGAffineTransform(scaleX: self.minScaleFactor, y: self.minScaleFactor)
+        fieldGridCollection.transform = transform
+        self.invalidateIntrinsicContentSize()
+    }
+    
+    func updateCells(at indexPaths: [IndexPath]) {
+        guard let fieldGridCollection = self.fieldGridCollection else { return }
         
-        fieldGridCollection.reloadData()
-        
-        DispatchQueue.main.async {
-            // Capture the field center for zoom resetting
-            let _ = self.captureFieldCenter
-        }
+        fieldGridCollection.reloadItems(at: indexPaths)
     }
     
     @objc private func pinchHandler(sender: UIPinchGestureRecognizer) {
@@ -110,7 +158,11 @@ class FieldGridScrollView: UIScrollView {
                 .scaledBy(x: sender.scale, y: sender.scale)
                 .translatedBy(x: -pinchCenter.x, y: -pinchCenter.y)
             
-            fieldGridCollection.transform = transform
+//            fieldGridCollection.transform = transform
+            self.transformContent(with: transform)
+//            self.contentSize.width = self.contentSize.width * sender.scale
+//            self.contentSize.height = self.contentSize.height * sender.scale
+//            self.contentScaleFactor = sender.scale
             sender.scale = 1
         case .ended, .cancelled, .failed:
             guard currentScale <= self.minScaleFactor, let fieldGridCollection = self.fieldGridCollection else {
@@ -119,7 +171,11 @@ class FieldGridScrollView: UIScrollView {
             
             // Zoom is now below minScaleFactor, so clamp it to minScaleFactor
             UIView.animate(withDuration: 0.3, animations: {
-                fieldGridCollection.transform = CGAffineTransform(scaleX: self.minScaleFactor, y: self.minScaleFactor)
+//                fieldGridCollection.transform = CGAffineTransform(scaleX: self.minScaleFactor, y: self.minScaleFactor)
+                self.transformContent(with: CGAffineTransform(scaleX: self.minScaleFactor, y: self.minScaleFactor))
+//                self.contentSize.width = self.contentSize.width * self.minScaleFactor
+//                self.contentSize.height = self.contentSize.height * self.minScaleFactor
+//                self.contentScaleFactor = self.minScaleFactor
             })
             
             self.isZoomed = false

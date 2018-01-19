@@ -8,6 +8,8 @@
 
 import UIKit
 
+typealias FieldSetupCompletionHandler = (_ fieldWidth: CGFloat, _ fieldHeight: CGFloat) -> Void
+
 class FieldGridCollectionView: UICollectionView {
     
     enum Constant {
@@ -20,45 +22,51 @@ class FieldGridCollectionView: UICollectionView {
     
     fileprivate var cellDimension: CGFloat = Constant.cellDimension
     
-    fileprivate var containerView: UIView?
-    
     fileprivate var cellTapHandler: CellTapHandler?
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
+    override init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout) {
+        super.init(frame: frame, collectionViewLayout: layout)
+        
+        if let layout = layout as? FieldGridCollectionViewLayout {
+            layout.delegate = self
+        }
         
         self.delegate = self
         
         self.register(UINib(nibName: Constant.gridCellIdentifier, bundle: nil), forCellWithReuseIdentifier: Constant.gridCellIdentifier)
+        self.backgroundColor = UIColor.brown
     }
     
-    func setupFieldGrid(with mineField: MineField, container: UIView,
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+    
+    func setupFieldGrid(with mineField: MineField,
                         dataSource: UICollectionViewDataSource,
-                        cellTapHandler: @escaping CellTapHandler) {
+                        cellTapHandler: @escaping CellTapHandler,
+                        completionHandler: FieldSetupCompletionHandler?) {
         self.dataSource = dataSource
         self.mineField = mineField
         self.cellTapHandler = cellTapHandler
-        self.containerView = container
-        
-        if let layout = self.collectionViewLayout as? FieldGridCollectionViewLayout {
-            layout.delegate = self
-        }
+//        self.containerView = container
         
         let rows = CGFloat(mineField.rows)
         let columns = CGFloat(mineField.columns)
         
-        let fieldWidth = (columns * (Constant.cellDimension + Constant.cellInset)) - Constant.cellInset
-        let fieldHeight = (rows * (Constant.cellDimension + Constant.cellInset)) - Constant.cellInset
+        let fieldWidth = (columns * (self.cellDimension + Constant.cellInset)) - Constant.cellInset
+        let fieldHeight = (rows * (self.cellDimension + Constant.cellInset)) - Constant.cellInset
         
-        // Setting field width and height via auto layout
-        self.translatesAutoresizingMaskIntoConstraints = false
-        self.widthAnchor.constraint(equalToConstant: fieldWidth).isActive = true
-        self.heightAnchor.constraint(equalToConstant: fieldHeight).isActive = true
-        self.centerXAnchor.constraint(equalTo: container.centerXAnchor).isActive = true
-        self.centerYAnchor.constraint(equalTo: container.centerYAnchor).isActive = true
+//        // Setting field width and height via auto layout
+//        self.translatesAutoresizingMaskIntoConstraints = false
+//        self.widthAnchor.constraint(equalToConstant: fieldWidth).isActive = true
+//        self.heightAnchor.constraint(equalToConstant: fieldHeight).isActive = true
+//        self.centerXAnchor.constraint(equalTo: container.centerXAnchor).isActive = true
+//        self.centerYAnchor.constraint(equalTo: container.centerYAnchor).isActive = true
         
         // Show and reload
-        self.reloadData()
+//        self.reloadData()
+        
+        completionHandler?(fieldWidth, fieldHeight)
     }
 }
 
@@ -80,7 +88,7 @@ extension FieldGridCollectionView: FieldGridLayoutDelegate {
     }
     
     func collectionView(viewWindowForFieldGrid collectionView: UICollectionView) -> CGRect? {
-        return self.containerView?.bounds
+        return self.superview?.frame
     }
 }
 
@@ -103,11 +111,5 @@ extension FieldGridCollectionView: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: self.cellDimension, height: self.cellDimension);
-    }
-}
-
-extension FieldGridCollectionView: UIGestureRecognizerDelegate {
-    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        return true
     }
 }

@@ -13,8 +13,8 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="GameViewController" customModule="CherryBombSweeper" customModuleProvider="target">
             <connections>
                 <outlet property="flagButton" destination="rux-02-Z5N" id="kuC-M7-KVK"/>
+                <outlet property="minefieldView" destination="pFT-ro-d5Y" id="p41-OZ-FRb"/>
                 <outlet property="minesRemainingLabel" destination="zVD-rx-edB" id="mXr-md-8rt"/>
-                <outlet property="scrollViewContainer" destination="pFT-ro-d5Y" id="cUZ-xA-DPH"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -25,6 +25,7 @@
             <subviews>
                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pFT-ro-d5Y" customClass="FieldGridScrollView" customModule="CherryBombSweeper" customModuleProvider="target">
                     <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </scrollView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xnb-lj-5zp" userLabel="Stats Container">
                     <rect key="frame" x="0.0" y="20" width="375" height="44"/>

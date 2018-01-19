@@ -22,9 +22,7 @@ class GameViewController: UIViewController {
     @IBOutlet private weak var flagButton: UIButton!
     
     // Grid
-    @IBOutlet fileprivate weak var scrollViewContainer: UIScrollView!
-    @IBOutlet fileprivate weak var fieldGridView: FieldGridCollectionView!
-    @IBOutlet private weak var fieldContainer: UIView!
+    @IBOutlet fileprivate weak var minefieldView: FieldGridScrollView!
     
     fileprivate var gameOptions: GameOptions = GameGeneratorService.shared.gameOptions
     fileprivate var game: Game?
@@ -57,7 +55,7 @@ class GameViewController: UIViewController {
         DispatchQueue.main.async {
             let actionableState: Set<GameState> = Set([.loaded, .new, .inProgress])
             
-            self.fieldGridView.setupFieldGrid(with: game.mineField, dataSource: self) { [weak self] (cellIndex) in
+            self.minefieldView.setupFieldGrid(with: game.mineField, dataSource: self) { [weak self] (cellIndex) in
                 guard let `self` = self else { return }
                 
                 if actionableState.contains(game.state) {
@@ -161,7 +159,7 @@ extension GameViewController: GameStatusListener {
         let revealedIndexPaths = revealedCells.map { return IndexPath(row: $0, section: 0) }
         
         DispatchQueue.main.async {
-            self.fieldGridView.reloadItems(at: revealedIndexPaths)
+            self.minefieldView.updateCells(at: revealedIndexPaths)
         }
     }
     
@@ -169,13 +167,13 @@ extension GameViewController: GameStatusListener {
         let highlightIndexPaths = highlightedCells.map { return IndexPath(row: $0, section: 0) }
         
         DispatchQueue.main.async {
-            self.fieldGridView.reloadItems(at: highlightIndexPaths)
+            self.minefieldView.updateCells(at: highlightIndexPaths)
         }
     }
     
     func onCellFlagged(_ flaggedCell: Int) {
         DispatchQueue.main.async {
-            self.fieldGridView.reloadItems(at: [IndexPath(row: flaggedCell, section: 0)])
+            self.minefieldView.updateCells(at: [IndexPath(row: flaggedCell, section: 0)])
             
             self.game?.minesRemaining -= 1
             
@@ -185,7 +183,7 @@ extension GameViewController: GameStatusListener {
     
     func onCellUnflagged(_ unflaggedCell: Int) {
         DispatchQueue.main.async {
-            self.fieldGridView.reloadItems(at: [IndexPath(row: unflaggedCell, section: 0)])
+            self.minefieldView.updateCells(at: [IndexPath(row: unflaggedCell, section: 0)])
             
             self.game?.minesRemaining += 1
             
@@ -195,7 +193,7 @@ extension GameViewController: GameStatusListener {
     
     func onCellExploded(_ explodedCell: Int) {
         DispatchQueue.main.async {
-            self.fieldGridView.reloadItems(at: [IndexPath(row: explodedCell, section: 0)])
+            self.minefieldView.updateCells(at: [IndexPath(row: explodedCell, section: 0)])
             
             self.gameOver()
         }
