@@ -12,6 +12,7 @@
 		0423F03C200D653000DE76CF /* FieldGridCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0423F03B200D653000DE76CF /* FieldGridCollectionView.swift */; };
 		04A50C71200F3CB80075A9BE /* GameProcessingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A50C70200F3CB80075A9BE /* GameProcessingService.swift */; };
 		04B44FCA201124B300CF63EB /* FieldGridCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B44FC9201124B300CF63EB /* FieldGridCollectionViewLayout.swift */; };
+		04B44FCC2012952000CF63EB /* FieldGridScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B44FCB2012952000CF63EB /* FieldGridScrollView.swift */; };
 		04E22D882006CC7800DEC328 /* Cell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E22D872006CC7800DEC328 /* Cell.swift */; };
 		04E22D8A2006CC8500DEC328 /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E22D892006CC8500DEC328 /* Game.swift */; };
 		04E22D8D2006CF8F00DEC328 /* OptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E22D8B2006CF8F00DEC328 /* OptionsViewController.swift */; };
@@ -35,6 +36,7 @@
 		0423F03B200D653000DE76CF /* FieldGridCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldGridCollectionView.swift; sourceTree = "<group>"; };
 		04A50C70200F3CB80075A9BE /* GameProcessingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameProcessingService.swift; sourceTree = "<group>"; };
 		04B44FC9201124B300CF63EB /* FieldGridCollectionViewLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldGridCollectionViewLayout.swift; sourceTree = "<group>"; };
+		04B44FCB2012952000CF63EB /* FieldGridScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldGridScrollView.swift; sourceTree = "<group>"; };
 		04E22D872006CC7800DEC328 /* Cell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cell.swift; sourceTree = "<group>"; };
 		04E22D892006CC8500DEC328 /* Game.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
 		04E22D8B2006CF8F00DEC328 /* OptionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsViewController.swift; sourceTree = "<group>"; };
@@ -103,6 +105,7 @@
 				04FB4E14200B1E080007A329 /* FieldGridCell.xib */,
 				0423F03B200D653000DE76CF /* FieldGridCollectionView.swift */,
 				04B44FC9201124B300CF63EB /* FieldGridCollectionViewLayout.swift */,
+				04B44FCB2012952000CF63EB /* FieldGridScrollView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -221,6 +224,7 @@
 				04E22D972006D2F100DEC328 /* GameOptions.swift in Sources */,
 				04E22D952006D29500DEC328 /* GameGeneratorService.swift in Sources */,
 				0408124220068F12009B0BD4 /* HomeMenuViewController.swift in Sources */,
+				04B44FCC2012952000CF63EB /* FieldGridScrollView.swift in Sources */,
 				04A50C71200F3CB80075A9BE /* GameProcessingService.swift in Sources */,
 				042168C72008368C0065854F /* MineField.swift in Sources */,
 				04FB4E15200B1E080007A329 /* FieldGridCell.swift in Sources */,

@@ -11,6 +11,7 @@ import UIKit
 protocol FieldGridLayoutDelegate: class {
     func collectionView(columnCountForFieldGrid collectionView: UICollectionView) -> Int
     func collectionView(cellDimensionForFieldGrid collectionView: UICollectionView) -> CGFloat
+    func collectionView(viewWindowForFieldGrid collectionView: UICollectionView) -> CGRect?
 }
 
 extension FieldGridLayoutDelegate {
@@ -25,6 +26,10 @@ extension FieldGridLayoutDelegate {
     func collectionView(cellSpacingForFieldGrid collectionView: UICollectionView) -> CGFloat {
         return 1
     }
+    
+    func collectionView(viewWindowForFieldGrid collectionView: UICollectionView) -> CGRect? {
+        return nil
+    }
 }
 
 class FieldGridCollectionViewLayout: UICollectionViewLayout, FieldGridLayoutDelegate {
@@ -38,6 +43,7 @@ class FieldGridCollectionViewLayout: UICollectionViewLayout, FieldGridLayoutDele
     fileprivate var itemAttributesCache = [UICollectionViewLayoutAttributes]()
     
     fileprivate var contentHeight: CGFloat = 0
+    fileprivate var containerRect: CGRect?
     
     fileprivate var contentWidth: CGFloat {
         return (CGFloat(self.numberOfColumns) * (self.cellDimension + self.cellSpacing)) - self.cellSpacing
@@ -55,6 +61,7 @@ class FieldGridCollectionViewLayout: UICollectionViewLayout, FieldGridLayoutDele
         self.numberOfColumns = (self.delegate ?? self).collectionView(columnCountForFieldGrid: collectionView)
         self.cellDimension = (self.delegate ?? self).collectionView(cellDimensionForFieldGrid: collectionView)
         self.cellSpacing = (self.delegate ?? self).collectionView(cellSpacingForFieldGrid: collectionView)
+        self.containerRect = (self.delegate ?? self).collectionView(viewWindowForFieldGrid: collectionView)
         
         let columnWidth = self.contentWidth / CGFloat(self.numberOfColumns)
         let rowHeight = columnWidth
@@ -87,7 +94,8 @@ class FieldGridCollectionViewLayout: UICollectionViewLayout, FieldGridLayoutDele
     }
     
     override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
-        return self.itemAttributesCache.filter { $0.frame.intersects(rect) }
+        let windowRect = self.containerRect ?? rect
+        return self.itemAttributesCache.filter { $0.frame.intersects(windowRect) }
     }
     
     override func layoutAttributesForItem(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
