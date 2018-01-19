@@ -23,7 +23,7 @@ class GameViewController: UIViewController {
     
     // Grid
     @IBOutlet fileprivate weak var fieldGridView: FieldGridCollectionView!
-//    @IBOutlet private weak var fieldContainer: UIView!
+    @IBOutlet private weak var fieldContainer: UIView!
     
     fileprivate var gameOptions: GameOptions = GameGeneratorService.shared.gameOptions
     fileprivate var game: Game?

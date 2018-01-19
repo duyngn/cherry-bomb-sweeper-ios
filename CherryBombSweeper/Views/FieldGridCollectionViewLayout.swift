@@ -11,28 +11,36 @@ import UIKit
 protocol FieldGridLayoutDelegate: class {
     func collectionView(columnCountForFieldGrid collectionView: UICollectionView) -> Int
     func collectionView(cellDimensionForFieldGrid collectionView: UICollectionView) -> CGFloat
-    func collectionView(_ collectionView: UICollectionView, cellPaddingForIndexPath indexPath: IndexPath) -> CGFloat
 }
 
-class FieldGridCollectionViewLayout: UICollectionViewLayout {
+extension FieldGridLayoutDelegate {
+    func collectionView(columnCountForFieldGrid collectionView: UICollectionView) -> Int {
+        return 9
+    }
+    
+    func collectionView(cellDimensionForFieldGrid collectionView: UICollectionView) -> CGFloat {
+        return 9
+    }
+    
+    func collectionView(cellSpacingForFieldGrid collectionView: UICollectionView) -> CGFloat {
+        return 1
+    }
+}
 
-    weak var delegate: FieldGridLayoutDelegate!
+class FieldGridCollectionViewLayout: UICollectionViewLayout, FieldGridLayoutDelegate {
+
+    weak var delegate: FieldGridLayoutDelegate?
     
-    fileprivate var numberOfRows = 9
     fileprivate var numberOfColumns = 9
-    fileprivate var cellDimension: CGFloat = CGFloat(44)
+    fileprivate var cellDimension: CGFloat = 0
+    fileprivate var cellSpacing: CGFloat = 0
     
-    fileprivate var cache = [UICollectionViewLayoutAttributes]()
+    fileprivate var itemAttributesCache = [UICollectionViewLayoutAttributes]()
     
     fileprivate var contentHeight: CGFloat = 0
     
     fileprivate var contentWidth: CGFloat {
-        guard let collectionView = self.collectionView else {
-            return 0
-        }
-        
-        let insets = collectionView.contentInset
-        return (CGFloat(self.numberOfColumns) * self.cellDimension) - (insets.left + insets.right)
+        return (CGFloat(self.numberOfColumns) * (self.cellDimension + self.cellSpacing)) - self.cellSpacing
     }
     
     override var collectionViewContentSize: CGSize {
@@ -40,12 +48,13 @@ class FieldGridCollectionViewLayout: UICollectionViewLayout {
     }
     
     override func prepare() {
-        guard self.cache.isEmpty == true, let collectionView = self.collectionView else {
+        guard self.itemAttributesCache.isEmpty == true, let collectionView = self.collectionView else {
             return
         }
         
-        self.numberOfColumns = self.delegate.collectionView(columnCountForFieldGrid: collectionView)
-        self.cellDimension = self.delegate.collectionView(cellDimensionForFieldGrid: collectionView)
+        self.numberOfColumns = (self.delegate ?? self).collectionView(columnCountForFieldGrid: collectionView)
+        self.cellDimension = (self.delegate ?? self).collectionView(cellDimensionForFieldGrid: collectionView)
+        self.cellSpacing = (self.delegate ?? self).collectionView(cellSpacingForFieldGrid: collectionView)
         
         let columnWidth = self.contentWidth / CGFloat(self.numberOfColumns)
         let rowHeight = columnWidth
@@ -63,37 +72,32 @@ class FieldGridCollectionViewLayout: UICollectionViewLayout {
             
             let indexPath = IndexPath(item: item, section: 0)
             
-            let cellPadding = self.delegate.collectionView(collectionView, cellPaddingForIndexPath: indexPath)
-            
-            let height = cellPadding * 2 + rowHeight
-            let frame = CGRect(x: columnOffset[column], y: rowOffset[column], width: columnWidth, height: height)
-            let insetFrame = frame.insetBy(dx: cellPadding, dy: cellPadding)
+            let frame = CGRect(x: columnOffset[column], y: rowOffset[column], width: columnWidth, height: rowHeight)
+            let insetFrame = frame.insetBy(dx: self.cellSpacing, dy: self.cellSpacing)
             
             let attributes = UICollectionViewLayoutAttributes(forCellWith: indexPath)
             attributes.frame = insetFrame
-            self.cache.append(attributes)
+            self.itemAttributesCache.append(attributes)
             
-            self.contentHeight = max(contentHeight, frame.maxY)
-            rowOffset[column] = rowOffset[column] + height
+            self.contentHeight = max(contentHeight, frame.maxY) + self.cellSpacing
+            rowOffset[column] = rowOffset[column] + rowHeight
             
             column = column < (self.numberOfColumns - 1) ? (column + 1) : 0
         }
     }
     
     override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
-        
-        var visibleLayoutAttributes = [UICollectionViewLayoutAttributes]()
-        
-        // Loop through the cache and look for items in the rect
-        for attributes in self.cache {
-            if attributes.frame.intersects(rect) {
-                visibleLayoutAttributes.append(attributes)
-            }
-        }
-        return visibleLayoutAttributes
+        return self.itemAttributesCache.filter { $0.frame.intersects(rect) }
     }
     
     override func layoutAttributesForItem(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
-        return self.cache[indexPath.item]
+        return self.itemAttributesCache[indexPath.item]
+    }
+    
+    override func invalidateLayout() {
+        super.invalidateLayout()
+        
+        itemAttributesCache = []
+        self.contentHeight = 0
     }
 }
