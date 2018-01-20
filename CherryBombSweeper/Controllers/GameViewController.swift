@@ -16,14 +16,21 @@ enum UserAction {
 typealias CellTapHandler = (_ cellIndex: Int) -> Void
 
 class GameViewController: UIViewController {
+    
+    enum Constant {
+        static let bkgPatternName = "grass-dark-cell"
+        static let loadingScale: CGFloat = 1.5
+    }
 
     // Controls
+    @IBOutlet private weak var controlsContainer: UIView!
     @IBOutlet private weak var minesRemainingLabel: UIButton!
     @IBOutlet private weak var flagButton: UIButton!
     
+    @IBOutlet private weak var loadingSpinner: UIActivityIndicatorView!
+    
     // Grid
-    @IBOutlet fileprivate weak var fieldGridView: FieldGridCollectionView!
-    @IBOutlet private weak var fieldContainer: UIView!
+    @IBOutlet fileprivate weak var minefieldView: FieldGridScrollView!
     
     fileprivate var gameOptions: GameOptions = GameGeneratorService.shared.gameOptions
     fileprivate var game: Game?
@@ -32,8 +39,12 @@ class GameViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        self.fieldGridView.isHidden = true
+        
+        if let dirtImage = UIImage(named: Constant.bkgPatternName) {
+            self.view.backgroundColor = UIColor.init(patternImage: dirtImage)
+        }
+        
+        self.loadingSpinner.transform = CGAffineTransform(scaleX: Constant.loadingScale, y: Constant.loadingScale)
     }
     
     lazy private var initGame: Void = {
@@ -56,9 +67,12 @@ class GameViewController: UIViewController {
         guard let game = self.game else { return }
         
         DispatchQueue.main.async {
+            
+            self.loadingSpinner.startAnimating()
+            
             let actionableState: Set<GameState> = Set([.loaded, .new, .inProgress])
             
-            self.fieldGridView.setupFieldGrid(with: game.mineField, containerView: self.fieldContainer, dataSource: self) { [weak self] (cellIndex) in
+            self.minefieldView.setupFieldGrid(with: game.mineField, dataSource: self, cellTapHandler: { [weak self] (cellIndex) in
                 guard let `self` = self else { return }
                 
                 if actionableState.contains(game.state) {
@@ -66,6 +80,8 @@ class GameViewController: UIViewController {
                     
                     GameProcessingService.shared.resolveUserAction(at: cellIndex, in: game, with: self.currentUserAction)
                 }
+            }) { [weak self] (_, _) in
+                self?.loadingSpinner.stopAnimating()
             }
         }
     }
@@ -162,7 +178,7 @@ extension GameViewController: GameStatusListener {
         let revealedIndexPaths = revealedCells.map { return IndexPath(row: $0, section: 0) }
         
         DispatchQueue.main.async {
-            self.fieldGridView.reloadItems(at: revealedIndexPaths)
+            self.minefieldView.updateCells(at: revealedIndexPaths)
         }
     }
     
@@ -170,13 +186,13 @@ extension GameViewController: GameStatusListener {
         let highlightIndexPaths = highlightedCells.map { return IndexPath(row: $0, section: 0) }
         
         DispatchQueue.main.async {
-            self.fieldGridView.reloadItems(at: highlightIndexPaths)
+            self.minefieldView.updateCells(at: highlightIndexPaths)
         }
     }
     
     func onCellFlagged(_ flaggedCell: Int) {
         DispatchQueue.main.async {
-            self.fieldGridView.reloadItems(at: [IndexPath(row: flaggedCell, section: 0)])
+            self.minefieldView.updateCells(at: [IndexPath(row: flaggedCell, section: 0)])
             
             self.game?.minesRemaining -= 1
             
@@ -186,7 +202,7 @@ extension GameViewController: GameStatusListener {
     
     func onCellUnflagged(_ unflaggedCell: Int) {
         DispatchQueue.main.async {
-            self.fieldGridView.reloadItems(at: [IndexPath(row: unflaggedCell, section: 0)])
+            self.minefieldView.updateCells(at: [IndexPath(row: unflaggedCell, section: 0)])
             
             self.game?.minesRemaining += 1
             
@@ -196,7 +212,7 @@ extension GameViewController: GameStatusListener {
     
     func onCellExploded(_ explodedCell: Int) {
         DispatchQueue.main.async {
-            self.fieldGridView.reloadItems(at: [IndexPath(row: explodedCell, section: 0)])
+            self.minefieldView.updateCells(at: [IndexPath(row: explodedCell, section: 0)])
             
             self.gameOver()
         }

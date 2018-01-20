@@ -20,7 +20,10 @@ class HomeMenuViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Do any additional setup after loading the view.
+        if let grassImage = UIImage(named: "grass-dark-cell") {
+            let backgroundPattern = UIColor.init(patternImage: grassImage)
+            self.view.backgroundColor = backgroundPattern
+        }
     }
     
     override func viewDidLayoutSubviews() {
@@ -47,7 +50,7 @@ class HomeMenuViewController: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        self.navigationController?.setNavigationBarHidden(false, animated: animated)
+//        self.navigationController?.setNavigationBarHidden(false, animated: animated)
     }
     
     @IBAction func onNewGamePressed(_ sender: UIButton) {
