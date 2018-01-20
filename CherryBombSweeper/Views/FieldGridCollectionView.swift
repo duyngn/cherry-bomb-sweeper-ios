@@ -48,7 +48,6 @@ class FieldGridCollectionView: UICollectionView {
         self.dataSource = dataSource
         self.mineField = mineField
         self.cellTapHandler = cellTapHandler
-//        self.containerView = container
         
         let rows = CGFloat(mineField.rows)
         let columns = CGFloat(mineField.columns)
@@ -56,15 +55,12 @@ class FieldGridCollectionView: UICollectionView {
         let fieldWidth = (columns * (self.cellDimension + Constant.cellInset)) - Constant.cellInset
         let fieldHeight = (rows * (self.cellDimension + Constant.cellInset)) - Constant.cellInset
         
-//        // Setting field width and height via auto layout
-//        self.translatesAutoresizingMaskIntoConstraints = false
-//        self.widthAnchor.constraint(equalToConstant: fieldWidth).isActive = true
-//        self.heightAnchor.constraint(equalToConstant: fieldHeight).isActive = true
-//        self.centerXAnchor.constraint(equalTo: container.centerXAnchor).isActive = true
-//        self.centerYAnchor.constraint(equalTo: container.centerYAnchor).isActive = true
+        self.isScrollEnabled = false
         
-        // Show and reload
-//        self.reloadData()
+//        // Setting field width and height via auto layout
+        self.translatesAutoresizingMaskIntoConstraints = false
+        self.widthAnchor.constraint(equalToConstant: fieldWidth).isActive = true
+        self.heightAnchor.constraint(equalToConstant: fieldHeight).isActive = true
         
         completionHandler?(fieldWidth, fieldHeight)
     }
@@ -80,7 +76,7 @@ extension FieldGridCollectionView: FieldGridLayoutDelegate {
     }
     
     func collectionView(cellDimensionForFieldGrid collectionView: UICollectionView) -> CGFloat {
-        return self.cellDimension // * self.scaleFactor
+        return self.cellDimension
     }
     
     func collectionView(cellSpacingForFieldGrid collectionView: UICollectionView) -> CGFloat {
