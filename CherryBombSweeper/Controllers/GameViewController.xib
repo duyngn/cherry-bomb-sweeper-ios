@@ -71,8 +71,8 @@
                 <constraint firstItem="xnb-lj-5zp" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="RWi-6i-cB0"/>
                 <constraint firstItem="xnb-lj-5zp" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="Xmn-Ii-405"/>
                 <constraint firstItem="pFT-ro-d5Y" firstAttribute="bottom" secondItem="i5M-Pr-FkT" secondAttribute="bottom" id="bC7-UO-baK"/>
-                <constraint firstItem="pFT-ro-d5Y" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="d49-BJ-qs2"/>
-                <constraint firstItem="pFT-ro-d5Y" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="hTn-Ke-7Fl"/>
+                <constraint firstItem="pFT-ro-d5Y" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="d49-BJ-qs2"/>
+                <constraint firstItem="pFT-ro-d5Y" firstAttribute="trailing" secondItem="i5M-Pr-FkT" secondAttribute="trailing" id="hTn-Ke-7Fl"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <point key="canvasLocation" x="34.5" y="54.5"/>

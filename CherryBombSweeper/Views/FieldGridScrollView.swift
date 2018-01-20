@@ -20,7 +20,7 @@ class FieldGridScrollView: UIScrollView {
     fileprivate var enableZooming: Bool = true
     fileprivate var isZoomed: Bool = false
     fileprivate var minScaleFactor: CGFloat = 1
-    fileprivate var originalFieldCenter: CGPoint?
+    fileprivate var fieldOrigin: CGPoint?
     
     fileprivate var cellTapHandler: CellTapHandler?
     
@@ -32,16 +32,16 @@ class FieldGridScrollView: UIScrollView {
         self.addSubview(fieldGrid)
     }()
     
-    lazy private var setupRecognizers: Void = {
-        let pinch = UIPinchGestureRecognizer(target: self, action: #selector(self.pinchHandler(sender:)))
-        pinch.delegate = self
-        self.addGestureRecognizer(pinch)
-    }()
-    
-    lazy private var captureFieldCenter: Void = {
+    lazy private var setupFieldConstraint: Void = {
         guard let fieldGridCollection = self.fieldGridCollection else { return }
         
-        self.originalFieldCenter = fieldGridCollection.center
+        fieldGridCollection.translatesAutoresizingMaskIntoConstraints = false
+        fieldGridCollection.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
+        fieldGridCollection.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
+    }()
+    
+    lazy private var captureFieldOrigin: Void = {
+        self.fieldOrigin = self.fieldGridCollection?.frame.origin
     }()
     
     override func layoutSubviews() {
@@ -49,21 +49,9 @@ class FieldGridScrollView: UIScrollView {
         
         let _ = setupGridCollectionView
         
-        let _ = setupRecognizers
+        self.delegate = self
         
         self.isScrollEnabled = true
-        
-//        if !self.bounds.size.equalTo(self.intrinsicContentSize) {
-//            self.invalidateIntrinsicContentSize()
-//        }
-    }
-    
-    override var intrinsicContentSize: CGSize {
-        get {
-//            let intrinsicContentSize = self.contentSize
-            
-            return self.fieldGridCollection?.frame.size ?? self.contentSize
-        }
     }
     
     func setupFieldGrid(with mineField: MineField,
@@ -77,9 +65,6 @@ class FieldGridScrollView: UIScrollView {
             let windowWidth = self.frame.width
             let windowHeight = self.frame.height
     
-            self.contentSize.width = fieldWidth
-            self.contentSize.height = fieldHeight
-            
             // Figure out which dimension is wider than screen when normalized, that dimension would determine the mininum scale factor
             // to fit the entire field into the container
             let screenAspect = windowWidth / windowHeight
@@ -94,37 +79,24 @@ class FieldGridScrollView: UIScrollView {
                 self.enableZooming = true
             }
             
-            // Setting field width and height via auto layout
-            fieldGridCollection.translatesAutoresizingMaskIntoConstraints = false
-            fieldGridCollection.widthAnchor.constraint(equalToConstant: fieldWidth).isActive = true
-            fieldGridCollection.heightAnchor.constraint(equalToConstant: fieldHeight).isActive = true
-            fieldGridCollection.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
-            fieldGridCollection.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-            fieldGridCollection.isScrollEnabled = false
+            self.minimumZoomScale = self.minScaleFactor
+            self.maximumZoomScale = Constant.maxScaleFactor
+            self.contentSize = CGSize(width: fieldWidth, height: fieldHeight)
             
-            // Now scale the entire field to fit onto screen
-//            self.scaleContent(self.minScaleFactor)
-//            self.transformContent(with: CGAffineTransform(scaleX: self.minScaleFactor, y: self.minScaleFactor))
-//            self.contentSize.width = self.contentSize.width * self.minScaleFactor
-//            self.contentSize.height = self.contentSize.height * self.minScaleFactor
-//            self.contentScaleFactor = self.minScaleFactor
+            let _ = self.setupFieldConstraint
+            
+            if let fieldOrigin = self.fieldOrigin {
+                self.setContentOffset(fieldOrigin, animated: true)
+            }
             
             // Show and reload
             fieldGridCollection.isHidden = false
             fieldGridCollection.reloadData()
             
             DispatchQueue.main.async {
-                // Capture the field center for zoom resetting
-                let _ = self.captureFieldCenter
+                let _ = self.captureFieldOrigin
             }
         }
-    }
-    
-    private func transformContent(with transform: CGAffineTransform) {
-        guard let fieldGridCollection = self.fieldGridCollection else { return }
-        
-        fieldGridCollection.transform = transform
-        self.invalidateIntrinsicContentSize()
     }
     
     func updateCells(at indexPaths: [IndexPath]) {
@@ -132,62 +104,11 @@ class FieldGridScrollView: UIScrollView {
         
         fieldGridCollection.reloadItems(at: indexPaths)
     }
-    
-    @objc private func pinchHandler(sender: UIPinchGestureRecognizer) {
-        guard self.enableZooming else { return }
-        
-        let currentScale = self.frame.size.width / self.bounds.size.width
-        
-        switch sender.state {
-        case .began:
-            let newScale = currentScale * sender.scale
-            if newScale > self.minScaleFactor {
-                self.isZoomed = true
-            }
-        case .changed:
-            let newScale = currentScale * sender.scale
-            // Don't perform scaling if the new scaling factor exceeds the max scale factor
-            guard let view = sender.view, let fieldGridCollection = self.fieldGridCollection, newScale < Constant.maxScaleFactor else {
-                return
-            }
-            
-            let pinchCenter = CGPoint(x: sender.location(in: view).x - view.bounds.midX,
-                                      y: sender.location(in: view).y - view.bounds.midY)
-            
-            let transform = fieldGridCollection.transform.translatedBy(x: pinchCenter.x, y: pinchCenter.y)
-                .scaledBy(x: sender.scale, y: sender.scale)
-                .translatedBy(x: -pinchCenter.x, y: -pinchCenter.y)
-            
-//            fieldGridCollection.transform = transform
-            self.transformContent(with: transform)
-//            self.contentSize.width = self.contentSize.width * sender.scale
-//            self.contentSize.height = self.contentSize.height * sender.scale
-//            self.contentScaleFactor = sender.scale
-            sender.scale = 1
-        case .ended, .cancelled, .failed:
-            guard currentScale <= self.minScaleFactor, let fieldGridCollection = self.fieldGridCollection else {
-                    return
-            }
-            
-            // Zoom is now below minScaleFactor, so clamp it to minScaleFactor
-            UIView.animate(withDuration: 0.3, animations: {
-//                fieldGridCollection.transform = CGAffineTransform(scaleX: self.minScaleFactor, y: self.minScaleFactor)
-                self.transformContent(with: CGAffineTransform(scaleX: self.minScaleFactor, y: self.minScaleFactor))
-//                self.contentSize.width = self.contentSize.width * self.minScaleFactor
-//                self.contentSize.height = self.contentSize.height * self.minScaleFactor
-//                self.contentScaleFactor = self.minScaleFactor
-            })
-            
-            self.isZoomed = false
-            
-            if let center = self.originalFieldCenter {
-                fieldGridCollection.center = center
-            }
-            
-            sender.scale = 1
-        case .possible:
-            break
-        }
+}
+
+extension FieldGridScrollView: UIScrollViewDelegate {
+    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
+        return self.fieldGridCollection
     }
 }
 
