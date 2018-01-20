@@ -12,6 +12,7 @@ class FieldGridScrollView: UIScrollView {
     
     enum Constant {
         static let maxScaleFactor: CGFloat = 3
+        static let borderWidth: CGFloat = 2
     }
     
     fileprivate var fieldGridCollection: FieldGridCollectionView?
@@ -26,6 +27,8 @@ class FieldGridScrollView: UIScrollView {
     
     lazy private var setupGridCollectionView: Void = {
         let fieldGrid = FieldGridCollectionView(frame: self.frame, collectionViewLayout: FieldGridCollectionViewLayout())
+        fieldGrid.layer.borderWidth = Constant.borderWidth
+        fieldGrid.layer.borderColor = UIColor.black.cgColor
         self.fieldGridCollection = fieldGrid
         fieldGrid.isHidden = true
         
@@ -56,7 +59,8 @@ class FieldGridScrollView: UIScrollView {
     
     func setupFieldGrid(with mineField: MineField,
                         dataSource: UICollectionViewDataSource,
-                        cellTapHandler: @escaping CellTapHandler) {
+                        cellTapHandler: @escaping CellTapHandler,
+                        completionHandler: FieldSetupCompletionHandler?) {
         guard let fieldGridCollection = self.fieldGridCollection else { return }
         
         fieldGridCollection.setupFieldGrid(with: mineField, dataSource: dataSource, cellTapHandler: cellTapHandler) { [weak self] (fieldWidth, fieldHeight) in
@@ -92,6 +96,8 @@ class FieldGridScrollView: UIScrollView {
             // Show and reload
             fieldGridCollection.isHidden = false
             fieldGridCollection.reloadData()
+            
+            completionHandler?(fieldWidth, fieldHeight)
             
             DispatchQueue.main.async {
                 let _ = self.captureFieldOrigin

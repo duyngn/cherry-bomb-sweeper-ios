@@ -27,7 +27,6 @@
                                         <rect key="frame" x="0.0" y="100" width="255" height="134"/>
                                     </imageView>
                                 </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstItem="G8b-2j-OX9" firstAttribute="centerY" secondItem="UB8-bO-lsd" secondAttribute="centerY" id="07c-ir-br2"/>
                                     <constraint firstAttribute="trailing" secondItem="G8b-2j-OX9" secondAttribute="trailing" id="0bO-7S-10h"/>
@@ -35,29 +34,35 @@
                                 </constraints>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xh4-sC-xlw" userLabel="New Game">
-                                <rect key="frame" x="150" y="398" width="75" height="30"/>
-                                <state key="normal" title="New Game"/>
+                                <rect key="frame" x="133.5" y="398" width="108" height="36"/>
+                                <fontDescription key="fontDescription" type="system" weight="black" pointSize="20"/>
+                                <state key="normal" title="New Game">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
                                 <connections>
                                     <action selector="onNewGamePressed:" destination="rWA-5D-JqD" eventType="touchUpInside" id="sKk-ub-Qq2"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="glQ-z5-Wc2" userLabel="Options">
-                                <rect key="frame" x="160" y="436" width="54" height="30"/>
-                                <state key="normal" title="Options"/>
+                                <rect key="frame" x="151.5" y="442" width="71" height="34"/>
+                                <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="18"/>
+                                <state key="normal" title="Options">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
                                 <connections>
                                     <action selector="onOptionsPressed:" destination="rWA-5D-JqD" eventType="touchUpInside" id="DQC-Be-UcF"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="20x10" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kTZ-RB-JVO" userLabel="Grid Size">
-                                <rect key="frame" x="170" y="498" width="35" height="15"/>
+                                <rect key="frame" x="170" y="508" width="35" height="15"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="20 mines" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BSz-Ig-rKY" userLabel="Mines Count">
-                                <rect key="frame" x="162" y="513" width="52" height="15"/>
+                                <rect key="frame" x="162" y="523" width="52" height="15"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>

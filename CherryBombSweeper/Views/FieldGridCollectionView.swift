@@ -34,7 +34,6 @@ class FieldGridCollectionView: UICollectionView {
         self.delegate = self
         
         self.register(UINib(nibName: Constant.gridCellIdentifier, bundle: nil), forCellWithReuseIdentifier: Constant.gridCellIdentifier)
-        self.backgroundColor = UIColor.brown
     }
     
     required init?(coder aDecoder: NSCoder) {
