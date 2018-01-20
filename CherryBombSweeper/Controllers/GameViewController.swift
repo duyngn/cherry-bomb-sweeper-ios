@@ -16,10 +16,18 @@ enum UserAction {
 typealias CellTapHandler = (_ cellIndex: Int) -> Void
 
 class GameViewController: UIViewController {
+    
+    enum Constant {
+        static let bkgPatternName = "grass-dark-cell"
+        static let loadingScale: CGFloat = 1.5
+    }
 
     // Controls
+    @IBOutlet private weak var controlsContainer: UIView!
     @IBOutlet private weak var minesRemainingLabel: UIButton!
     @IBOutlet private weak var flagButton: UIButton!
+    
+    @IBOutlet private weak var loadingSpinner: UIActivityIndicatorView!
     
     // Grid
     @IBOutlet fileprivate weak var minefieldView: FieldGridScrollView!
@@ -31,6 +39,12 @@ class GameViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        if let dirtImage = UIImage(named: Constant.bkgPatternName) {
+            self.view.backgroundColor = UIColor.init(patternImage: dirtImage)
+        }
+        
+        self.loadingSpinner.transform = CGAffineTransform(scaleX: Constant.loadingScale, y: Constant.loadingScale)
     }
     
     lazy private var initGame: Void = {
@@ -53,9 +67,12 @@ class GameViewController: UIViewController {
         guard let game = self.game else { return }
         
         DispatchQueue.main.async {
+            
+            self.loadingSpinner.startAnimating()
+            
             let actionableState: Set<GameState> = Set([.loaded, .new, .inProgress])
             
-            self.minefieldView.setupFieldGrid(with: game.mineField, dataSource: self) { [weak self] (cellIndex) in
+            self.minefieldView.setupFieldGrid(with: game.mineField, dataSource: self, cellTapHandler: { [weak self] (cellIndex) in
                 guard let `self` = self else { return }
                 
                 if actionableState.contains(game.state) {
@@ -63,6 +80,8 @@ class GameViewController: UIViewController {
                     
                     GameProcessingService.shared.resolveUserAction(at: cellIndex, in: game, with: self.currentUserAction)
                 }
+            }) { [weak self] (_, _) in
+                self?.loadingSpinner.stopAnimating()
             }
         }
     }

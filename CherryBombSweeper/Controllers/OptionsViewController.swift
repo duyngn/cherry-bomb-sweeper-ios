@@ -15,12 +15,11 @@ class OptionsViewController: UIViewController {
         static let minMines: Int = 10
         static let maxMines: Int = 300
         
+        static let bkgPatternName = "grass-dark-cell"
+        
         static let dimensionRange: [Int] = Array(Constant.minDimension...Constant.maxDimension)
         static let mineRange: [Int] = Array(Constant.minMines...Constant.maxMines)
     }
-
-    @IBOutlet private weak var gridSizeLabel: UILabel!
-    @IBOutlet private weak var minesCountLabel: UILabel!
     
     @IBOutlet private weak var rowCountPicker: UIPickerView!
     @IBOutlet private weak var columnCountPicker: UIPickerView!
@@ -33,15 +32,15 @@ class OptionsViewController: UIViewController {
     fileprivate var selectedMinesIndex: Int = 0
     
     fileprivate lazy var initialize: Void = {
-        self.updateGameConfigLabels()
         self.updateSelectedPickerIndices()
     }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.navigationItem.title = "Options"
-        // Do any additional setup after loading the view.
+        if let dirtImage = UIImage(named: Constant.bkgPatternName) {
+            self.view.backgroundColor = UIColor.init(patternImage: dirtImage)
+        }
         
         rowCountPicker.delegate = self
         rowCountPicker.dataSource = self
@@ -83,18 +82,12 @@ class OptionsViewController: UIViewController {
         self.mineCountPicker.selectRow(self.selectedMinesIndex, inComponent: 0, animated: false)
     }
     
-    private func updateGameConfigLabels() {
-        self.gridSizeLabel.text = "\(self.gameOptions.rowCount) x \(self.gameOptions.columnCount)"
-        self.minesCountLabel.text = "\(self.gameOptions.minesCount) Mines"
-    }
-    
     @IBAction func onEasyButtonPressed(_ sender: UIButton) {
         // 9x9, 10 mines
         self.gameOptions.rowCount = 9
         self.gameOptions.columnCount = 9
         self.gameOptions.minesCount = 10
 //        self.saveConfig(row: 9, col: 9, mines: 10)
-        self.updateGameConfigLabels()
         self.updateSelectedPickerIndices()
     }
     
@@ -104,7 +97,6 @@ class OptionsViewController: UIViewController {
         self.gameOptions.rowCount = 16
         self.gameOptions.columnCount = 16
         self.gameOptions.minesCount = 40
-        self.updateGameConfigLabels()
         self.updateSelectedPickerIndices()
     }
     
@@ -114,7 +106,6 @@ class OptionsViewController: UIViewController {
         self.gameOptions.rowCount = 24
         self.gameOptions.columnCount = 24
         self.gameOptions.minesCount = 99
-        self.updateGameConfigLabels()
         self.updateSelectedPickerIndices()
     }
     
@@ -169,15 +160,19 @@ class OptionsViewController: UIViewController {
 }
 
 extension OptionsViewController: UIPickerViewDelegate {
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+    func pickerView(_ pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
+        var valueStr = "-"
+        
         switch pickerView.tag {
         case 0, 1:
-            return String(describing: Constant.dimensionRange[row])
+            valueStr = String(describing: Constant.dimensionRange[row])
         case 2:
-            return String(describing: Constant.mineRange[row])
+            valueStr = String(describing: Constant.mineRange[row])
         default:
-            return "-"
+            break
         }
+        
+        return NSAttributedString(string: valueStr, attributes: [NSForegroundColorAttributeName: UIColor.white])
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {

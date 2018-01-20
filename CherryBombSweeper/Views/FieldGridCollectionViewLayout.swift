@@ -16,11 +16,11 @@ protocol FieldGridLayoutDelegate: class {
 
 extension FieldGridLayoutDelegate {
     func collectionView(columnCountForFieldGrid collectionView: UICollectionView) -> Int {
-        return 9
+        return FieldGridCollectionViewLayout.Constant.defaultColumns
     }
     
     func collectionView(cellDimensionForFieldGrid collectionView: UICollectionView) -> CGFloat {
-        return 9
+        return FieldGridCollectionViewLayout.Constant.defaultCellDimension
     }
     
     func collectionView(cellSpacingForFieldGrid collectionView: UICollectionView) -> CGFloat {
@@ -34,9 +34,14 @@ extension FieldGridLayoutDelegate {
 
 class FieldGridCollectionViewLayout: UICollectionViewLayout, FieldGridLayoutDelegate {
 
+    enum Constant {
+        static let defaultColumns: Int = 9
+        static let defaultCellDimension = CGFloat(41)
+    }
+    
     weak var delegate: FieldGridLayoutDelegate?
     
-    fileprivate var numberOfColumns = 9
+    fileprivate var numberOfColumns = Constant.defaultColumns
     fileprivate var cellDimension: CGFloat = 0
     fileprivate var cellSpacing: CGFloat = 0
     
@@ -95,8 +100,9 @@ class FieldGridCollectionViewLayout: UICollectionViewLayout, FieldGridLayoutDele
     override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
 //        var windowRect = rect
 //
-//        if let collectionView = self.collectionView, let delegate = self.delegate {
-//            windowRect = delegate.collectionView(viewWindowForFieldGrid: collectionView) ?? rect
+//        if let collectionView = self.collectionView, let delegate = self.delegate,
+//            let containerRect = delegate.collectionView(viewWindowForFieldGrid: collectionView) {
+//            windowRect = containerRect.intersection(rect)
 //        }
         
         return self.itemAttributesCache.filter { $0.frame.intersects(rect) }
