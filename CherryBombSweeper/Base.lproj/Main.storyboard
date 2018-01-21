@@ -6,100 +6,140 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
-        <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Home Menu View Controller-->
-        <scene sceneID="MWL-YT-ifT">
+        <!--Game View Controller-->
+        <scene sceneID="I5j-ff-uuZ">
             <objects>
-                <viewController id="rWA-5D-JqD" customClass="HomeMenuViewController" customModule="CherryBombSweeper" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="48Y-HU-ibi">
+                <viewController id="cKM-BE-w3S" customClass="GameViewController" customModule="CherryBombSweeper" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="BTW-RZ-51A">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UB8-bO-lsd" userLabel="Game Icon Container">
-                                <rect key="frame" x="60" y="64" width="255" height="334"/>
+                            <scrollView multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="b5B-6w-8p9" customClass="FieldGridScrollView" customModule="CherryBombSweeper" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="108" width="375" height="559"/>
+                            </scrollView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lh7-Kx-vxV" userLabel="Controls Container">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="108"/>
                                 <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="cherry-bomb-1024" translatesAutoresizingMaskIntoConstraints="NO" id="G8b-2j-OX9" userLabel="Game Icon">
-                                        <rect key="frame" x="0.0" y="100" width="255" height="134"/>
-                                    </imageView>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WvL-IU-jSd" userLabel="Stats Container">
+                                        <rect key="frame" x="0.0" y="64" width="375" height="44"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IBH-w7-m0i" userLabel="Options">
+                                                <rect key="frame" x="16" y="2" width="40" height="40"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="40" id="quY-kq-zza"/>
+                                                    <constraint firstAttribute="height" constant="40" id="tsj-hA-eUe"/>
+                                                </constraints>
+                                                <state key="normal" image="gear-icon">
+                                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="onOptionsPressed:" destination="cKM-BE-w3S" eventType="touchUpInside" id="HIB-G9-tor"/>
+                                                </connections>
+                                            </button>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="TIMER" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="B1e-lm-PzS" userLabel="Timer">
+                                                <rect key="frame" x="52" y="10" width="115.5" height="24"/>
+                                                <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="20"/>
+                                                <color key="textColor" red="0.0" green="0.99143940210000003" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <button opaque="NO" contentMode="scaleAspectFit" semanticContentAttribute="forceRightToLeft" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8c0-Ri-wWo" userLabel="New Game">
+                                                <rect key="frame" x="167.5" y="2" width="40" height="40"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="40" id="ImC-nG-vBV"/>
+                                                    <constraint firstAttribute="height" constant="40" id="aAR-Bm-eb6"/>
+                                                </constraints>
+                                                <state key="normal" image="cherry-bomb-cell">
+                                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="onNewGamePressed:" destination="cKM-BE-w3S" eventType="touchUpInside" id="Kij-AV-So7"/>
+                                                </connections>
+                                            </button>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="otB-5h-P9O" userLabel="Mine Count">
+                                                <rect key="frame" x="239" y="9.5" width="53.5" height="24"/>
+                                                <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="20"/>
+                                                <color key="textColor" red="0.0" green="0.99143940210000003" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Rdf-kh-KOT" userLabel="Action Mode">
+                                                <rect key="frame" x="319" y="2" width="40" height="40"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="40" id="Vfs-XW-aCi"/>
+                                                    <constraint firstAttribute="width" constant="40" id="XMk-vE-jwR"/>
+                                                </constraints>
+                                                <state key="normal" image="shovel-icon">
+                                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="onActionModePressed:" destination="cKM-BE-w3S" eventType="touchUpInside" id="CgO-bB-9EM"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstItem="otB-5h-P9O" firstAttribute="centerY" secondItem="8c0-Ri-wWo" secondAttribute="centerY" id="0Lq-0X-I30"/>
+                                            <constraint firstItem="IBH-w7-m0i" firstAttribute="leading" secondItem="WvL-IU-jSd" secondAttribute="leading" constant="16" id="9im-vh-mnn"/>
+                                            <constraint firstItem="B1e-lm-PzS" firstAttribute="centerX" secondItem="8c0-Ri-wWo" secondAttribute="centerX" multiplier="0.5" constant="16" id="De9-Fz-Z5B"/>
+                                            <constraint firstItem="IBH-w7-m0i" firstAttribute="centerY" secondItem="WvL-IU-jSd" secondAttribute="centerY" id="Im1-cC-d3G"/>
+                                            <constraint firstItem="otB-5h-P9O" firstAttribute="centerX" secondItem="8c0-Ri-wWo" secondAttribute="centerX" multiplier="1.5" constant="-16" id="ImE-yW-e5t"/>
+                                            <constraint firstItem="B1e-lm-PzS" firstAttribute="centerY" secondItem="8c0-Ri-wWo" secondAttribute="centerY" id="KyE-4a-L9S"/>
+                                            <constraint firstItem="Rdf-kh-KOT" firstAttribute="trailing" secondItem="WvL-IU-jSd" secondAttribute="trailing" constant="-16" id="OeK-kH-d6e"/>
+                                            <constraint firstItem="8c0-Ri-wWo" firstAttribute="centerY" secondItem="WvL-IU-jSd" secondAttribute="centerY" id="QKJ-oU-req"/>
+                                            <constraint firstAttribute="height" constant="44" id="fEp-lM-XXy"/>
+                                            <constraint firstItem="8c0-Ri-wWo" firstAttribute="centerX" secondItem="WvL-IU-jSd" secondAttribute="centerX" id="ldi-Fd-1fz"/>
+                                            <constraint firstItem="Rdf-kh-KOT" firstAttribute="centerY" secondItem="WvL-IU-jSd" secondAttribute="centerY" id="rGT-um-X39"/>
+                                            <constraint firstItem="8c0-Ri-wWo" firstAttribute="leading" secondItem="B1e-lm-PzS" secondAttribute="trailing" id="sjL-T4-ilD"/>
+                                        </constraints>
+                                    </view>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstItem="G8b-2j-OX9" firstAttribute="centerY" secondItem="UB8-bO-lsd" secondAttribute="centerY" id="07c-ir-br2"/>
-                                    <constraint firstAttribute="trailing" secondItem="G8b-2j-OX9" secondAttribute="trailing" id="0bO-7S-10h"/>
-                                    <constraint firstItem="G8b-2j-OX9" firstAttribute="leading" secondItem="UB8-bO-lsd" secondAttribute="leading" id="UAs-nS-Hxu"/>
+                                    <constraint firstItem="WvL-IU-jSd" firstAttribute="trailing" secondItem="lh7-Kx-vxV" secondAttribute="trailing" id="IJG-4G-xUb"/>
+                                    <constraint firstAttribute="bottom" secondItem="WvL-IU-jSd" secondAttribute="bottom" id="wPM-Wb-kTT"/>
+                                    <constraint firstItem="WvL-IU-jSd" firstAttribute="leading" secondItem="lh7-Kx-vxV" secondAttribute="leading" id="zb7-Jt-2pT"/>
                                 </constraints>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xh4-sC-xlw" userLabel="New Game">
-                                <rect key="frame" x="133.5" y="398" width="108" height="36"/>
-                                <fontDescription key="fontDescription" type="system" weight="black" pointSize="20"/>
-                                <state key="normal" title="New Game">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                </state>
-                                <connections>
-                                    <action selector="onNewGamePressed:" destination="rWA-5D-JqD" eventType="touchUpInside" id="sKk-ub-Qq2"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="glQ-z5-Wc2" userLabel="Options">
-                                <rect key="frame" x="151.5" y="442" width="71" height="34"/>
-                                <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="18"/>
-                                <state key="normal" title="Options">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                </state>
-                                <connections>
-                                    <action selector="onOptionsPressed:" destination="rWA-5D-JqD" eventType="touchUpInside" id="DQC-Be-UcF"/>
-                                </connections>
-                            </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="20x10" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kTZ-RB-JVO" userLabel="Grid Size">
-                                <rect key="frame" x="170" y="508" width="35" height="15"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="20 mines" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BSz-Ig-rKY" userLabel="Mines Count">
-                                <rect key="frame" x="162" y="523" width="52" height="15"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="gsg-tY-T6R">
+                                <rect key="frame" x="162" y="341" width="50" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="50" id="V05-YZ-Oxw"/>
+                                    <constraint firstAttribute="height" constant="50" id="ZGq-U9-EBi"/>
+                                </constraints>
+                                <color key="color" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="UB8-bO-lsd" firstAttribute="leading" secondItem="0AT-F3-amg" secondAttribute="leading" constant="60" id="0EX-6C-1Cv"/>
-                            <constraint firstItem="xh4-sC-xlw" firstAttribute="top" secondItem="UB8-bO-lsd" secondAttribute="bottom" id="4xg-1Z-T9Y"/>
-                            <constraint firstItem="glQ-z5-Wc2" firstAttribute="top" secondItem="xh4-sC-xlw" secondAttribute="bottom" constant="8" id="FP0-Ff-8XD"/>
-                            <constraint firstItem="BSz-Ig-rKY" firstAttribute="centerX" secondItem="0AT-F3-amg" secondAttribute="centerX" id="Ij6-VH-AXk"/>
-                            <constraint firstItem="UB8-bO-lsd" firstAttribute="centerX" secondItem="0AT-F3-amg" secondAttribute="centerX" id="JII-OX-pzP"/>
-                            <constraint firstItem="kTZ-RB-JVO" firstAttribute="centerX" secondItem="0AT-F3-amg" secondAttribute="centerX" id="Q4W-f2-uNK"/>
-                            <constraint firstItem="G8b-2j-OX9" firstAttribute="height" secondItem="48Y-HU-ibi" secondAttribute="height" multiplier="0.2" id="TLS-tr-qqE"/>
-                            <constraint firstItem="G8b-2j-OX9" firstAttribute="centerY" secondItem="UB8-bO-lsd" secondAttribute="bottom" id="Vq8-e6-IWJ"/>
-                            <constraint firstItem="0AT-F3-amg" firstAttribute="trailing" secondItem="UB8-bO-lsd" secondAttribute="trailing" constant="60" id="a3T-eG-fWd"/>
-                            <constraint firstItem="UB8-bO-lsd" firstAttribute="top" secondItem="0AT-F3-amg" secondAttribute="top" id="dJB-4A-Q4o"/>
-                            <constraint firstItem="BSz-Ig-rKY" firstAttribute="top" secondItem="kTZ-RB-JVO" secondAttribute="bottom" id="g4V-Oq-JBK"/>
-                            <constraint firstItem="xh4-sC-xlw" firstAttribute="centerX" secondItem="48Y-HU-ibi" secondAttribute="centerX" id="h5R-n9-F0s"/>
-                            <constraint firstItem="UB8-bO-lsd" firstAttribute="height" secondItem="48Y-HU-ibi" secondAttribute="height" multiplier="0.5" id="mzq-9H-45r"/>
-                            <constraint firstItem="kTZ-RB-JVO" firstAttribute="top" secondItem="glQ-z5-Wc2" secondAttribute="bottom" constant="32" id="ojd-WD-bjV"/>
-                            <constraint firstItem="glQ-z5-Wc2" firstAttribute="centerX" secondItem="48Y-HU-ibi" secondAttribute="centerX" id="txJ-fN-X8w"/>
+                            <constraint firstItem="b5B-6w-8p9" firstAttribute="leading" secondItem="j0N-IV-Ns1" secondAttribute="leading" id="6yt-4Z-TUn"/>
+                            <constraint firstItem="lh7-Kx-vxV" firstAttribute="trailing" secondItem="BTW-RZ-51A" secondAttribute="trailing" id="8WT-6V-b46"/>
+                            <constraint firstItem="b5B-6w-8p9" firstAttribute="bottom" secondItem="j0N-IV-Ns1" secondAttribute="bottom" id="Q9g-Vt-gAo"/>
+                            <constraint firstItem="WvL-IU-jSd" firstAttribute="top" secondItem="j0N-IV-Ns1" secondAttribute="top" id="cn6-hP-2ND"/>
+                            <constraint firstItem="b5B-6w-8p9" firstAttribute="top" secondItem="lh7-Kx-vxV" secondAttribute="bottom" id="cqd-Iu-mFx"/>
+                            <constraint firstItem="lh7-Kx-vxV" firstAttribute="leading" secondItem="BTW-RZ-51A" secondAttribute="leading" id="e6H-pc-b3W"/>
+                            <constraint firstItem="b5B-6w-8p9" firstAttribute="trailing" secondItem="j0N-IV-Ns1" secondAttribute="trailing" id="fis-1H-7ML"/>
+                            <constraint firstItem="gsg-tY-T6R" firstAttribute="centerX" secondItem="j0N-IV-Ns1" secondAttribute="centerX" id="lgW-PH-AZh"/>
+                            <constraint firstItem="gsg-tY-T6R" firstAttribute="centerY" secondItem="j0N-IV-Ns1" secondAttribute="centerY" id="rTz-Ov-l53"/>
+                            <constraint firstItem="lh7-Kx-vxV" firstAttribute="top" secondItem="BTW-RZ-51A" secondAttribute="top" id="vBf-ZZ-ZVD"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="0AT-F3-amg"/>
-                        <variation key="default">
-                            <mask key="constraints">
-                                <exclude reference="Vq8-e6-IWJ"/>
-                            </mask>
-                        </variation>
+                        <viewLayoutGuide key="safeArea" id="j0N-IV-Ns1"/>
                     </view>
-                    <navigationItem key="navigationItem" id="NGf-Q1-fKc"/>
+                    <navigationItem key="navigationItem" id="4fb-q4-X5C"/>
                     <connections>
-                        <outlet property="gridSizeLabel" destination="kTZ-RB-JVO" id="den-k3-irJ"/>
-                        <outlet property="minesCountLabel" destination="BSz-Ig-rKY" id="Hlv-PF-AAL"/>
+                        <outlet property="actionModeButton" destination="Rdf-kh-KOT" id="R17-wz-3nQ"/>
+                        <outlet property="controlsContainer" destination="lh7-Kx-vxV" id="4uv-E2-ddc"/>
+                        <outlet property="loadingSpinner" destination="gsg-tY-T6R" id="Aez-o6-jMJ"/>
+                        <outlet property="mineCountLabel" destination="otB-5h-P9O" id="QLe-LB-HRW"/>
+                        <outlet property="minefieldView" destination="b5B-6w-8p9" id="CWH-as-apu"/>
+                        <outlet property="newGameButton" destination="8c0-Ri-wWo" id="nFZ-sv-FTX"/>
+                        <outlet property="timerLabel" destination="B1e-lm-PzS" id="dJ3-ba-K8f"/>
                     </connections>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="r55-tF-H3o" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="fnB-NC-xa2" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="135.19999999999999" y="38.23088455772114"/>
+            <point key="canvasLocation" x="265" y="38"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="d2W-rY-uli">
@@ -112,7 +152,7 @@
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="rWA-5D-JqD" kind="relationship" relationship="rootViewController" id="KME-Xe-icm"/>
+                        <segue destination="cKM-BE-w3S" kind="relationship" relationship="rootViewController" id="78S-pr-aZJ"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="62V-QJ-DTt" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -121,6 +161,8 @@
         </scene>
     </scenes>
     <resources>
-        <image name="cherry-bomb-1024" width="1024" height="1024"/>
+        <image name="cherry-bomb-cell" width="60" height="60"/>
+        <image name="gear-icon" width="60" height="60"/>
+        <image name="shovel-icon" width="60" height="60"/>
     </resources>
 </document>

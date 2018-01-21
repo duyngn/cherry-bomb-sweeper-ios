@@ -1,6 +1,6 @@
 //
 //  CellModel.swift
-//  C4Sweeper
+//  CherryBombSweeper
 //
 //  Created by Duy Nguyen on 1/10/18.
 //  Copyright © 2018 Duy.Ninja. All rights reserved.

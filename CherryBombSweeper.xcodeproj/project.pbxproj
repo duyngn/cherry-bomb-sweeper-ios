@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0408124220068F12009B0BD4 /* HomeMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0408124020068F12009B0BD4 /* HomeMenuViewController.swift */; };
 		042168C72008368C0065854F /* MineField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042168C62008368C0065854F /* MineField.swift */; };
 		0423F03C200D653000DE76CF /* FieldGridCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0423F03B200D653000DE76CF /* FieldGridCollectionView.swift */; };
 		04A50C71200F3CB80075A9BE /* GameProcessingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A50C70200F3CB80075A9BE /* GameProcessingService.swift */; };
@@ -18,7 +17,6 @@
 		04E22D8D2006CF8F00DEC328 /* OptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E22D8B2006CF8F00DEC328 /* OptionsViewController.swift */; };
 		04E22D8E2006CF8F00DEC328 /* OptionsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 04E22D8C2006CF8F00DEC328 /* OptionsViewController.xib */; };
 		04E22D912006CFEB00DEC328 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E22D8F2006CFEB00DEC328 /* GameViewController.swift */; };
-		04E22D922006CFEB00DEC328 /* GameViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 04E22D902006CFEB00DEC328 /* GameViewController.xib */; };
 		04E22D952006D29500DEC328 /* GameGeneratorService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E22D942006D29500DEC328 /* GameGeneratorService.swift */; };
 		04E22D972006D2F100DEC328 /* GameOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E22D962006D2F100DEC328 /* GameOptions.swift */; };
 		04FB4E15200B1E080007A329 /* FieldGridCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04FB4E13200B1E080007A329 /* FieldGridCell.swift */; };
@@ -31,7 +29,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		0408124020068F12009B0BD4 /* HomeMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeMenuViewController.swift; sourceTree = "<group>"; };
 		042168C62008368C0065854F /* MineField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MineField.swift; sourceTree = "<group>"; };
 		0423F03B200D653000DE76CF /* FieldGridCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldGridCollectionView.swift; sourceTree = "<group>"; };
 		04A50C70200F3CB80075A9BE /* GameProcessingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameProcessingService.swift; sourceTree = "<group>"; };
@@ -42,7 +39,6 @@
 		04E22D8B2006CF8F00DEC328 /* OptionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsViewController.swift; sourceTree = "<group>"; };
 		04E22D8C2006CF8F00DEC328 /* OptionsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OptionsViewController.xib; sourceTree = "<group>"; };
 		04E22D8F2006CFEB00DEC328 /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
-		04E22D902006CFEB00DEC328 /* GameViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GameViewController.xib; sourceTree = "<group>"; };
 		04E22D942006D29500DEC328 /* GameGeneratorService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameGeneratorService.swift; sourceTree = "<group>"; };
 		04E22D962006D2F100DEC328 /* GameOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameOptions.swift; sourceTree = "<group>"; };
 		04FB4E13200B1E080007A329 /* FieldGridCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldGridCell.swift; sourceTree = "<group>"; };
@@ -80,11 +76,9 @@
 		0408124420068F17009B0BD4 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				0408124020068F12009B0BD4 /* HomeMenuViewController.swift */,
 				04E22D8B2006CF8F00DEC328 /* OptionsViewController.swift */,
 				04E22D8C2006CF8F00DEC328 /* OptionsViewController.xib */,
 				04E22D8F2006CFEB00DEC328 /* GameViewController.swift */,
-				04E22D902006CFEB00DEC328 /* GameViewController.xib */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -203,7 +197,6 @@
 			files = (
 				270E607F90B97BD0BE53CF41 /* Info.plist in Resources */,
 				04E22D8E2006CF8F00DEC328 /* OptionsViewController.xib in Resources */,
-				04E22D922006CFEB00DEC328 /* GameViewController.xib in Resources */,
 				270E6E9FDA5BE83CB42173AF /* Assets.xcassets in Resources */,
 				270E65B9713F1DDC9FF2001D /* LaunchScreen.storyboard in Resources */,
 				270E6E264E09B3A5FA6766E0 /* Main.storyboard in Resources */,
@@ -223,7 +216,6 @@
 				04E22D8A2006CC8500DEC328 /* Game.swift in Sources */,
 				04E22D972006D2F100DEC328 /* GameOptions.swift in Sources */,
 				04E22D952006D29500DEC328 /* GameGeneratorService.swift in Sources */,
-				0408124220068F12009B0BD4 /* HomeMenuViewController.swift in Sources */,
 				04B44FCC2012952000CF63EB /* FieldGridScrollView.swift in Sources */,
 				04A50C71200F3CB80075A9BE /* GameProcessingService.swift in Sources */,
 				042168C72008368C0065854F /* MineField.swift in Sources */,

@@ -1,12 +1,14 @@
 //
 //  OptionsViewController.swift
-//  C4Sweeper
+//  CherryBombSweeper
 //
 //  Created by Duy Nguyen on 1/10/18.
 //  Copyright © 2018 Duy.Ninja. All rights reserved.
 //
 
 import UIKit
+
+typealias ExitOptionsHandler = (_ newGame: Bool) -> Void
 
 class OptionsViewController: UIViewController {
     enum Constant {
@@ -30,6 +32,8 @@ class OptionsViewController: UIViewController {
     fileprivate var selectedRowIndex: Int = 0
     fileprivate var selectedColumnIndex: Int = 0
     fileprivate var selectedMinesIndex: Int = 0
+    
+    var exitHandler: ExitOptionsHandler?
     
     fileprivate lazy var initialize: Void = {
         self.updateSelectedPickerIndices()
@@ -109,6 +113,11 @@ class OptionsViewController: UIViewController {
         self.updateSelectedPickerIndices()
     }
     
+    @IBAction func onCancelButtonPressed(_ sender: UIButton) {
+        self.exitHandler?(false)
+        self.dismiss(animated: true)
+    }
+    
     @IBAction func onSaveButtonPressed(_ sender: UIButton) {
         let rowCount = Constant.dimensionRange[selectedRowIndex]
         let columnCount = Constant.dimensionRange[selectedColumnIndex]
@@ -118,7 +127,8 @@ class OptionsViewController: UIViewController {
             self.showToast(message: errorMessage)
         } else {
             self.saveConfig(row: rowCount, col: columnCount, mines: minesCount)
-            self.navigationController?.popViewController(animated: true)
+            self.exitHandler?(true)
+            self.dismiss(animated: true)
         }
     }
     

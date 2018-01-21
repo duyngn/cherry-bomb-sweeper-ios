@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -87,13 +88,23 @@
                     </constraints>
                 </pickerView>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rqE-pe-704">
-                    <rect key="frame" x="163" y="410.5" width="49" height="36"/>
+                    <rect key="frame" x="203.5" y="410.5" width="49" height="36"/>
                     <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="20"/>
                     <state key="normal" title="Save">
                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </state>
                     <connections>
                         <action selector="onSaveButtonPressed:" destination="-1" eventType="touchUpInside" id="1ng-Ll-SFu"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cCi-dX-aY8" userLabel="Cancel">
+                    <rect key="frame" x="102.5" y="410.5" width="69" height="36"/>
+                    <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="20"/>
+                    <state key="normal" title="Cancel">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </state>
+                    <connections>
+                        <action selector="onCancelButtonPressed:" destination="-1" eventType="touchUpInside" id="Zb3-58-Lur"/>
                     </connections>
                 </button>
             </subviews>
@@ -103,10 +114,13 @@
                 <constraint firstItem="J2S-mX-a0Z" firstAttribute="centerY" secondItem="FDq-Vs-bAG" secondAttribute="centerY" id="1LL-yD-zZL"/>
                 <constraint firstItem="PMc-T9-3fY" firstAttribute="leading" secondItem="BMP-Lx-6jw" secondAttribute="trailing" constant="16" id="2dl-4A-NDx"/>
                 <constraint firstItem="rqE-pe-704" firstAttribute="top" secondItem="FDq-Vs-bAG" secondAttribute="bottom" constant="32" id="6CI-j0-oaT"/>
+                <constraint firstItem="cCi-dX-aY8" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="centerX" constant="-16" id="6r9-Jo-wgw"/>
                 <constraint firstItem="pXQ-P7-eth" firstAttribute="centerY" secondItem="klV-PH-wnV" secondAttribute="centerY" id="8cS-EK-R8O"/>
+                <constraint firstItem="cCi-dX-aY8" firstAttribute="top" secondItem="FDq-Vs-bAG" secondAttribute="bottom" constant="32" id="GZT-Nz-Sjp"/>
                 <constraint firstItem="lrm-S1-l2a" firstAttribute="leading" secondItem="klV-PH-wnV" secondAttribute="trailing" constant="8" id="JnK-W7-XXr"/>
                 <constraint firstItem="lrm-S1-l2a" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" constant="-16" id="KUv-cd-gJs"/>
                 <constraint firstItem="PMc-T9-3fY" firstAttribute="centerY" secondItem="FDq-Vs-bAG" secondAttribute="centerY" id="M7G-j6-WMc"/>
+                <constraint firstItem="rqE-pe-704" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="centerX" constant="16" id="Mgl-KI-7zD"/>
                 <constraint firstItem="hcq-gm-aPp" firstAttribute="centerY" secondItem="FDq-Vs-bAG" secondAttribute="centerY" id="ORm-Sz-eAy"/>
                 <constraint firstItem="FDq-Vs-bAG" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="bfC-bi-ZOa"/>
                 <constraint firstItem="klV-PH-wnV" firstAttribute="leading" secondItem="pXQ-P7-eth" secondAttribute="trailing" constant="8" id="ge3-uX-w86"/>
@@ -118,7 +132,6 @@
                 <constraint firstItem="hcq-gm-aPp" firstAttribute="trailing" secondItem="FDq-Vs-bAG" secondAttribute="leading" constant="-16" id="t8o-rb-flg"/>
                 <constraint firstItem="BMP-Lx-6jw" firstAttribute="leading" secondItem="FDq-Vs-bAG" secondAttribute="trailing" constant="16" id="wIS-yl-2HK"/>
                 <constraint firstItem="BMP-Lx-6jw" firstAttribute="centerY" secondItem="FDq-Vs-bAG" secondAttribute="centerY" id="wgI-dR-bHY"/>
-                <constraint firstItem="rqE-pe-704" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="y4w-Vf-JRt"/>
                 <constraint firstItem="lrm-S1-l2a" firstAttribute="centerY" secondItem="klV-PH-wnV" secondAttribute="centerY" id="y6b-Mw-Wh3"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
