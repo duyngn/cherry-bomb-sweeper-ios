@@ -20,7 +20,9 @@ class GameOptions {
     
     var musicState: ToggleState = .on
     
-    init(rowCount: Int = 9, columnCount: Int = 9, minesCount: Int = 10) {
+    init(rowCount: Int = GameGeneralService.Constant.defaultRows,
+         columnCount: Int = GameGeneralService.Constant.defaultRows,
+         minesCount: Int = GameGeneralService.Constant.defaultMines) {
         self.rowCount = rowCount
         self.columnCount = columnCount
         self.minesCount = minesCount

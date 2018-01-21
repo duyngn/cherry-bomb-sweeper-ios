@@ -16,15 +16,15 @@ protocol FieldGridLayoutDelegate: class {
 
 extension FieldGridLayoutDelegate {
     func collectionView(columnCountForFieldGrid collectionView: UICollectionView) -> Int {
-        return FieldGridCollectionViewLayout.Constant.defaultColumns
+        return GameGeneralService.Constant.defaultColumns
     }
     
     func collectionView(cellDimensionForFieldGrid collectionView: UICollectionView) -> CGFloat {
-        return FieldGridCollectionViewLayout.Constant.defaultCellDimension
+        return GameGeneralService.Constant.defaultCellDimension
     }
     
     func collectionView(cellSpacingForFieldGrid collectionView: UICollectionView) -> CGFloat {
-        return 1
+        return GameGeneralService.Constant.cellSpacing
     }
     
     func collectionView(viewWindowForFieldGrid collectionView: UICollectionView) -> CGRect? {
@@ -32,25 +32,19 @@ extension FieldGridLayoutDelegate {
     }
 }
 
-class FieldGridCollectionViewLayout: UICollectionViewLayout, FieldGridLayoutDelegate {
-
-    enum Constant {
-        static let defaultColumns: Int = 9
-        static let defaultCellDimension = CGFloat(41)
-    }
-    
+class FieldGridCollectionViewLayout: UICollectionViewLayout, FieldGridLayoutDelegate {    
     weak var delegate: FieldGridLayoutDelegate?
     
-    fileprivate var numberOfColumns = Constant.defaultColumns
-    fileprivate var cellDimension: CGFloat = 0
-    fileprivate var cellSpacing: CGFloat = 0
+    private var numberOfColumns = GameGeneralService.Constant.defaultColumns
+    private var cellDimension: CGFloat = 0
+    private var cellSpacing: CGFloat = 0
     
-    fileprivate var itemAttributesCache = [UICollectionViewLayoutAttributes]()
+    private var itemAttributesCache = [UICollectionViewLayoutAttributes]()
     
-    fileprivate var contentHeight: CGFloat = 0
-    fileprivate var containerRect: CGRect?
+//    private var containerRect: CGRect?
     
-    fileprivate var contentWidth: CGFloat {
+    private var contentHeight: CGFloat = 0
+    private var contentWidth: CGFloat {
         return (CGFloat(self.numberOfColumns) * (self.cellDimension + self.cellSpacing)) - self.cellSpacing
     }
     

@@ -9,22 +9,13 @@
 import UIKit
 
 class FieldGridScrollView: UIScrollView {
-    
-    enum Constant {
-        static let maxScaleFactor: CGFloat = 3
-        static let borderWidth: CGFloat = 2
-    }
-    
     fileprivate var fieldGridCollection: FieldGridCollectionView?
-    
-    /// Pinch
-    fileprivate var enableZooming: Bool = true
-    fileprivate var isZoomed: Bool = false
-    fileprivate var minScaleFactor: CGFloat = 1
+
+    private var minScaleFactor: CGFloat = GameGeneralService.Constant.defaultMinScaleFactor
     
 //    private var maxContentOffset: CGFloat = 0
     
-    fileprivate var cellTapHandler: CellTapHandler?
+    private var cellTapHandler: CellTapHandler?
     
     private var rowCount: Int = 0
     private var columnCount: Int = 0
@@ -40,7 +31,7 @@ class FieldGridScrollView: UIScrollView {
         self.showsHorizontalScrollIndicator = false
         
         let fieldGrid = FieldGridCollectionView(frame: self.frame, collectionViewLayout: FieldGridCollectionViewLayout())
-        fieldGrid.layer.borderWidth = Constant.borderWidth
+        fieldGrid.layer.borderWidth = GameGeneralService.Constant.fieldBorderWidth
         fieldGrid.layer.borderColor = UIColor.black.cgColor
         self.fieldGridCollection = fieldGrid
         
@@ -109,7 +100,7 @@ class FieldGridScrollView: UIScrollView {
             }
             
             self.minimumZoomScale = self.minScaleFactor
-            self.maximumZoomScale = Constant.maxScaleFactor
+            self.maximumZoomScale = GameGeneralService.Constant.defaultMaxScaleFactor
             self.contentSize = CGSize(width: fieldWidth, height: fieldHeight)
 
             // Show and reload

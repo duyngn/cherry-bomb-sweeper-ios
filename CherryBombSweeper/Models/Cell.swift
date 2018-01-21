@@ -20,10 +20,7 @@ enum CellState {
 
 class Cell {
     var state: CellState = .untouched
-    
-    private(set) var index: Int
-    private(set) var fieldCoord: FieldCoord = FieldCoord(row: 0, column: 0)
-    
+
     var adjacentCellIndices: Set<Int> = []
     var connectedEmptyCluster: Set<Int> = []
     
@@ -32,6 +29,9 @@ class Cell {
     var isEmpty: Bool {
         return self.adjacentBombs == 0
     }
+    
+    private(set) var index: Int
+    private(set) var fieldCoord: FieldCoord = FieldCoord(row: 0, column: 0)
     
     init(index: Int = 0, row: Int = 0, column: Int = 0) {
         self.index = index

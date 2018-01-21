@@ -30,10 +30,10 @@
                         <color key="textColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="cherry-bomb-cell" translatesAutoresizingMaskIntoConstraints="NO" id="DaC-3p-p9v">
+                    <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="cherry-bomb-icon" translatesAutoresizingMaskIntoConstraints="NO" id="DaC-3p-p9v">
                         <rect key="frame" x="5" y="5" width="40" height="40"/>
                     </imageView>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="grass-light-cell" translatesAutoresizingMaskIntoConstraints="NO" id="ANo-ov-uh5" userLabel="Cell Cover">
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="grass-light-icon" translatesAutoresizingMaskIntoConstraints="NO" id="ANo-ov-uh5" userLabel="Cell Cover">
                         <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
                     </imageView>
                     <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="flag-icon" translatesAutoresizingMaskIntoConstraints="NO" id="3r1-wR-t42" userLabel="Flag Icon">
@@ -74,8 +74,8 @@
         </collectionViewCell>
     </objects>
     <resources>
-        <image name="cherry-bomb-cell" width="60" height="60"/>
+        <image name="cherry-bomb-icon" width="60" height="60"/>
         <image name="flag-icon" width="60" height="81"/>
-        <image name="grass-light-cell" width="60" height="60"/>
+        <image name="grass-light-icon" width="60" height="60"/>
     </resources>
 </document>

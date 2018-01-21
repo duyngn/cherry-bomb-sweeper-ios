@@ -12,28 +12,23 @@ typealias ExitOptionsHandler = (_ newGame: Bool) -> Void
 
 class OptionsViewController: UIViewController {
     enum Constant {
-        static let minDimension: Int = 9
-        static let maxDimension: Int = 30
-        static let minMines: Int = 10
-        static let maxMines: Int = 200
-        
-        static let bkgPatternName = "grass-dark-cell"
-        
-        static let dimensionRange: [Int] = Array(Constant.minDimension...Constant.maxDimension)
-        static let mineRange: [Int] = Array(Constant.minMines...Constant.maxMines)
+        static let dimensionRange: [Int] =
+            Array(GameGeneralService.Constant.minimumFieldDimension...GameGeneralService.Constant.maximumFieldDimension)
+        static let mineRange: [Int] =
+            Array(GameGeneralService.Constant.minimumMines...GameGeneralService.Constant.maximumMines)
     }
     
     @IBOutlet private weak var rowCountPicker: UIPickerView!
     @IBOutlet private weak var columnCountPicker: UIPickerView!
     @IBOutlet private weak var mineCountPicker: UIPickerView!
     
-    private var gameOptions: GameOptions = GameGeneratorService.shared.gameOptions
-
+    var exitHandler: ExitOptionsHandler?
+    
     fileprivate var selectedRowIndex: Int = 0
     fileprivate var selectedColumnIndex: Int = 0
     fileprivate var selectedMinesIndex: Int = 0
     
-    var exitHandler: ExitOptionsHandler?
+    private var gameOptions: GameOptions = GameGeneratorService.shared.gameOptions
     
     fileprivate lazy var initialize: Void = {
         self.updateSelectedPickerIndices()
@@ -42,8 +37,8 @@ class OptionsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        if let dirtImage = UIImage(named: Constant.bkgPatternName) {
-            self.view.backgroundColor = UIColor.init(patternImage: dirtImage)
+        if let bkgPattern = GameGeneralService.shared.darkGrassImage {
+            self.view.backgroundColor = UIColor.init(patternImage: bkgPattern)
         }
         
         rowCountPicker.delegate = self
@@ -73,9 +68,9 @@ class OptionsViewController: UIViewController {
     }
     
     private func updateSelectedPickerIndices() {
-        let currentRow = self.gameOptions.rowCount - Constant.minDimension
-        let currentCol = self.gameOptions.columnCount - Constant.minDimension
-        let currentMines = self.gameOptions.minesCount - Constant.minMines
+        let currentRow = self.gameOptions.rowCount - GameGeneralService.Constant.minimumFieldDimension
+        let currentCol = self.gameOptions.columnCount - GameGeneralService.Constant.minimumFieldDimension
+        let currentMines = self.gameOptions.minesCount - GameGeneralService.Constant.minimumMines
         
         self.selectedRowIndex = (currentRow >= 0) ? currentRow : 0
         self.selectedColumnIndex = (currentCol >= 0) ? currentCol : 0

@@ -28,6 +28,8 @@ class GameProcessingService: NSObject {
     
     private let processingQueue: DispatchQueue = DispatchQueue(label: "gameProcessingQueue", qos: .userInitiated)
     
+    fileprivate override init() {}
+    
     func registerListener(_ listener: GameStatusListener) {
         self.gameListener = listener
     }

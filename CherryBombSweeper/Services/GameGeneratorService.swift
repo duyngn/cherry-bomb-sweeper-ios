@@ -8,16 +8,16 @@
 
 import Foundation
 
+typealias GenerateNewGameCompletionHandler = (_ newGame: Game) -> Void
+typealias GenerateMineFieldCompletionHandler = (_ mineField: MineField) -> Void
+
 class GameGeneratorService: NSObject {
-    typealias GenerateNewGameCompletionHandler = (_ newGame: Game) -> Void
-    typealias GenerateMineFieldCompletionHandler = (_ mineField: MineField) -> Void
-    
     static let shared = GameGeneratorService()
-    
-    private let generatorQueue: DispatchQueue = DispatchQueue(label: "gameGeneratorQueue", qos: .userInitiated)
     
     var gameOptions: GameOptions
     var preloadedGame: Game?
+    
+    private let generatorQueue: DispatchQueue = DispatchQueue(label: "gameGeneratorQueue", qos: .userInitiated)
     
     fileprivate override init() {
         self.gameOptions = GameOptions()

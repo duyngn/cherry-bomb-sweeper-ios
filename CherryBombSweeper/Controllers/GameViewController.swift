@@ -17,15 +17,6 @@ typealias CellTapHandler = (_ cellIndex: Int) -> Void
 
 class GameViewController: UIViewController {
     
-    enum Constant {
-        static let bkgPatternName = "grass-dark-cell"
-        static let flagIconName = "flag-icon"
-        static let shovelIconName = "shovel-icon"
-        static let boomIconName = "boom-icon"
-        static let bombIconName = "cherry-bomb-cell"
-//        static let loadingScale: CGFloat = 1.5
-    }
-
     // Controls
     @IBOutlet private weak var controlsContainer: UIView!
     
@@ -42,10 +33,6 @@ class GameViewController: UIViewController {
 
     fileprivate var gameOptions: GameOptions = GameGeneratorService.shared.gameOptions
     fileprivate var game: Game?
-    fileprivate var flagImage: UIImage?
-    fileprivate var shovelImage: UIImage?
-    fileprivate var boomImage: UIImage?
-    fileprivate var bombImage: UIImage?
     fileprivate var isFieldInit: Bool = true
     
     private var currentUserAction: UserAction = .tap
@@ -53,14 +40,9 @@ class GameViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if let dirtImage = UIImage(named: Constant.bkgPatternName) {
-            self.view.backgroundColor = UIColor.init(patternImage: dirtImage)
+        if let bkgPattern = GameGeneralService.shared.darkGrassImage {
+            self.view.backgroundColor = UIColor.init(patternImage: bkgPattern)
         }
-        
-        self.flagImage = UIImage(named: Constant.flagIconName)
-        self.shovelImage = UIImage(named: Constant.shovelIconName)
-        self.boomImage = UIImage(named: Constant.boomIconName)
-        self.bombImage = UIImage(named: Constant.bombIconName)
         
 //        self.loadingSpinner.transform = CGAffineTransform(scaleX: Constant.loadingScale, y: Constant.loadingScale)
     }
@@ -127,7 +109,7 @@ class GameViewController: UIViewController {
     private func resetControlStates() {
         self.updateActionModeButton(to: .tap)
         
-        if let bombImage = self.bombImage {
+        if let bombImage = GameGeneralService.shared.bombImage {
             self.newGameButton.setImage(bombImage, for: UIControlState.normal)
         }
         
@@ -144,7 +126,7 @@ class GameViewController: UIViewController {
         DispatchQueue.main.async {
             self.game?.state = .lost
             
-            if let boomImage = self.boomImage {
+            if let boomImage = GameGeneralService.shared.boomImage {
                 self.newGameButton.setImage(boomImage, for: UIControlState.normal)
                 self.newGameButton.transform = CGAffineTransform(scaleX: 2, y: 2)
             }
@@ -218,11 +200,11 @@ class GameViewController: UIViewController {
             
             switch self.currentUserAction {
             case .flag:
-                if let flagImage = self.flagImage {
+                if let flagImage = GameGeneralService.shared.flagImage {
                     self.actionModeButton.setImage(flagImage, for: UIControlState.normal)
                 }
             case .tap:
-                if let shovelImage = self.shovelImage {
+                if let shovelImage = GameGeneralService.shared.shovelImage {
                     self.actionModeButton.setImage(shovelImage, for: UIControlState.normal)
                 }
             }
@@ -247,7 +229,7 @@ extension GameViewController: UICollectionViewDataSource {
         if let cellView = collectionView.dequeueReusableCell(withReuseIdentifier: FieldGridCollectionView.Constant.gridCellIdentifier, for: indexPath) as? FieldGridCell {
             
             if self.isFieldInit {
-                cellView.reinitCell(at: indexPath.row, fieldRows: self.gameOptions.rowCount, fieldColumns: self.gameOptions.columnCount)
+                cellView.reinitCell(at: indexPath.row, fieldRows: self.gameOptions.rowCount)
             } else if let game = self.game, let cell = game.mineField.getCell(at: indexPath.row) {
                 cellView.setupCellView(with: cell)
             }
@@ -256,7 +238,7 @@ extension GameViewController: UICollectionViewDataSource {
         }
         
         let cellView = FieldGridCell()
-        cellView.reinitCell(at: indexPath.row, fieldRows: self.gameOptions.rowCount, fieldColumns: self.gameOptions.columnCount)
+        cellView.reinitCell(at: indexPath.row, fieldRows: self.gameOptions.rowCount)
         return cellView
     }
 }

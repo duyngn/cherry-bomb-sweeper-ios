@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		04046BB32015293C00426A47 /* GameGeneralService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04046BB22015293C00426A47 /* GameGeneralService.swift */; };
 		042168C72008368C0065854F /* MineField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042168C62008368C0065854F /* MineField.swift */; };
 		0423F03C200D653000DE76CF /* FieldGridCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0423F03B200D653000DE76CF /* FieldGridCollectionView.swift */; };
 		04A50C71200F3CB80075A9BE /* GameProcessingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A50C70200F3CB80075A9BE /* GameProcessingService.swift */; };
@@ -29,6 +30,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		04046BB22015293C00426A47 /* GameGeneralService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameGeneralService.swift; sourceTree = "<group>"; };
 		042168C62008368C0065854F /* MineField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MineField.swift; sourceTree = "<group>"; };
 		0423F03B200D653000DE76CF /* FieldGridCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldGridCollectionView.swift; sourceTree = "<group>"; };
 		04A50C70200F3CB80075A9BE /* GameProcessingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameProcessingService.swift; sourceTree = "<group>"; };
@@ -88,6 +90,7 @@
 			children = (
 				04E22D942006D29500DEC328 /* GameGeneratorService.swift */,
 				04A50C70200F3CB80075A9BE /* GameProcessingService.swift */,
+				04046BB22015293C00426A47 /* GameGeneralService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -213,6 +216,7 @@
 			files = (
 				0423F03C200D653000DE76CF /* FieldGridCollectionView.swift in Sources */,
 				270E61E349D485A4C4A83B5B /* AppDelegate.swift in Sources */,
+				04046BB32015293C00426A47 /* GameGeneralService.swift in Sources */,
 				04E22D8A2006CC8500DEC328 /* Game.swift in Sources */,
 				04E22D972006D2F100DEC328 /* GameOptions.swift in Sources */,
 				04E22D952006D29500DEC328 /* GameGeneratorService.swift in Sources */,

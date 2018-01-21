@@ -13,17 +13,14 @@ typealias FieldSetupCompletionHandler = (_ fieldWidth: CGFloat, _ fieldHeight: C
 class FieldGridCollectionView: UICollectionView {
     
     enum Constant {
-        static let cellDimension = CGFloat(41)
-        static let cellInset = CGFloat(1)
         static let gridCellIdentifier = "FieldGridCell"
     }
     
+    var cellTapHandler: CellTapHandler?
+    
     fileprivate var rowCount: Int = 0
     fileprivate var columnCount: Int = 0
-    
-    fileprivate var cellDimension: CGFloat = Constant.cellDimension
-    
-    var cellTapHandler: CellTapHandler?
+    fileprivate var cellDimension: CGFloat = GameGeneralService.Constant.defaultCellDimension
     
     private var dimensionConstraints: [NSLayoutConstraint] = []
     
@@ -53,8 +50,10 @@ class FieldGridCollectionView: UICollectionView {
         self.rowCount = rows
         self.columnCount = columns
         
-        let fieldWidth = (CGFloat(self.columnCount) * (self.cellDimension + Constant.cellInset)) - Constant.cellInset
-        let fieldHeight = (CGFloat(self.rowCount) * (self.cellDimension + Constant.cellInset)) - Constant.cellInset
+        let fieldWidth = (CGFloat(self.columnCount) *
+            (self.cellDimension + GameGeneralService.Constant.cellSpacing)) - GameGeneralService.Constant.cellSpacing
+        let fieldHeight = (CGFloat(self.rowCount) *
+            (self.cellDimension + GameGeneralService.Constant.cellSpacing)) - GameGeneralService.Constant.cellSpacing
         
         self.isScrollEnabled = false
         
@@ -100,7 +99,7 @@ extension FieldGridCollectionView: FieldGridLayoutDelegate {
     }
     
     func collectionView(cellSpacingForFieldGrid collectionView: UICollectionView) -> CGFloat {
-        return Constant.cellInset
+        return GameGeneralService.Constant.cellSpacing
     }
     
     func collectionView(viewWindowForFieldGrid collectionView: UICollectionView) -> CGRect? {
@@ -117,13 +116,13 @@ extension FieldGridCollectionView: UICollectionViewDelegateFlowLayout {
         return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return Constant.cellInset
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return Constant.cellInset
-    }
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+//        return GameGeneralService.Constant.cellInset
+//    }
+//
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+//        return GameGeneralService.Constant.cellInset
+//    }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: self.cellDimension, height: self.cellDimension);
