@@ -124,8 +124,9 @@ class FieldGridScrollView: UIScrollView {
         guard let fieldGridCollection = self.fieldGridCollection else { return }
         // keep track of which cell has been affected
         self.modifiedIndexPaths = self.modifiedIndexPaths.union(indexPaths)
-        
-        fieldGridCollection.reloadItems(at: indexPaths)
+        DispatchQueue.main.async {
+            fieldGridCollection.reloadItems(at: indexPaths)
+        }
     }
 }
 

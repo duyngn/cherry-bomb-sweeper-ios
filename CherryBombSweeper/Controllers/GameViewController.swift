@@ -246,21 +246,16 @@ extension GameViewController: UICollectionViewDataSource {
 extension GameViewController: GameStatusListener {
     func onCellReveal(_ revealedCells: Set<Int>) {
         let revealedIndexPaths = revealedCells.map { return IndexPath(row: $0, section: 0) }
-
-        DispatchQueue.main.async {
-            self.minefieldView.updateCells(at: revealedIndexPaths)
-        }
+        self.minefieldView.updateCells(at: revealedIndexPaths)
     }
     
     func onCellHighlight(_ highlightedCells: Set<Int>) {
         let highlightIndexPaths = highlightedCells.map { return IndexPath(row: $0, section: 0) }
         
-        DispatchQueue.main.async {
-            self.minefieldView.updateCells(at: highlightIndexPaths)
-        }
+        self.minefieldView.updateCells(at: highlightIndexPaths)
         
         // Now reset them to untouched
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+        DispatchQueue.main.async {
             for cellId in highlightedCells {
                 if let cell = self.game?.mineField.getCell(at: cellId), cell.state == .highlight {
                     cell.state = .untouched
@@ -273,36 +268,26 @@ extension GameViewController: GameStatusListener {
     }
     
     func onCellFlagged(_ flaggedCell: Int) {
-        DispatchQueue.main.async {
-            self.minefieldView.updateCells(at: [IndexPath(row: flaggedCell, section: 0)])
-            
-            self.game?.minesRemaining -= 1
-            
-            self.updateRemainingMinesCountLabel()
-        }
+        self.minefieldView.updateCells(at: [IndexPath(row: flaggedCell, section: 0)])
+        self.game?.minesRemaining -= 1
+        self.updateRemainingMinesCountLabel()
     }
     
     func onCellUnflagged(_ unflaggedCell: Int) {
-        DispatchQueue.main.async {
-            self.minefieldView.updateCells(at: [IndexPath(row: unflaggedCell, section: 0)])
-            
-            self.game?.minesRemaining += 1
-            
-            self.updateRemainingMinesCountLabel()
-        }
+        self.minefieldView.updateCells(at: [IndexPath(row: unflaggedCell, section: 0)])
+        
+        self.game?.minesRemaining += 1
+        
+        self.updateRemainingMinesCountLabel()
     }
     
     func onCellExploded(_ explodedCell: Int) {
-        DispatchQueue.main.async {
-            self.minefieldView.updateCells(at: [IndexPath(row: explodedCell, section: 0)])
-            
-            self.gameOver()
-        }
+        self.minefieldView.updateCells(at: [IndexPath(row: explodedCell, section: 0)])
+        
+        self.gameOver()
     }
     
     func onGameCompleted() {
-        DispatchQueue.main.async {
-            self.gameCompleted()
-        }
+        self.gameCompleted()
     }
 }
