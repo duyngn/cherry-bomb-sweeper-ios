@@ -18,11 +18,12 @@ class FieldGridCollectionView: UICollectionView {
         static let gridCellIdentifier = "FieldGridCell"
     }
     
-    fileprivate var mineField: MineField?
+    fileprivate var rowCount: Int = 0
+    fileprivate var columnCount: Int = 0
     
     fileprivate var cellDimension: CGFloat = Constant.cellDimension
     
-    fileprivate var cellTapHandler: CellTapHandler?
+    var cellTapHandler: CellTapHandler?
     
     private var dimensionConstraints: [NSLayoutConstraint] = []
     
@@ -42,19 +43,18 @@ class FieldGridCollectionView: UICollectionView {
         super.init(coder: aDecoder)
     }
     
-    func setupFieldGrid(with mineField: MineField,
+    func setupFieldGrid(rows: Int, columns: Int,
                         dataSource: UICollectionViewDataSource,
                         cellTapHandler: @escaping CellTapHandler,
                         completionHandler: FieldSetupCompletionHandler?) {
         self.dataSource = dataSource
-        self.mineField = mineField
         self.cellTapHandler = cellTapHandler
         
-        let rows = CGFloat(mineField.rows)
-        let columns = CGFloat(mineField.columns)
+        self.rowCount = rows
+        self.columnCount = columns
         
-        let fieldWidth = (columns * (self.cellDimension + Constant.cellInset)) - Constant.cellInset
-        let fieldHeight = (rows * (self.cellDimension + Constant.cellInset)) - Constant.cellInset
+        let fieldWidth = (CGFloat(self.columnCount) * (self.cellDimension + Constant.cellInset)) - Constant.cellInset
+        let fieldHeight = (CGFloat(self.rowCount) * (self.cellDimension + Constant.cellInset)) - Constant.cellInset
         
         self.isScrollEnabled = false
         
@@ -88,11 +88,11 @@ class FieldGridCollectionView: UICollectionView {
 
 extension FieldGridCollectionView: FieldGridLayoutDelegate {    
     func collectionView(rowCountForFieldGrid collectionView: UICollectionView) -> Int {
-        return self.mineField?.rows ?? 0
+        return self.rowCount
     }
     
     func collectionView(columnCountForFieldGrid collectionView: UICollectionView) -> Int {
-        return self.mineField?.columns ?? 0
+        return self.columnCount
     }
     
     func collectionView(cellDimensionForFieldGrid collectionView: UICollectionView) -> CGFloat {

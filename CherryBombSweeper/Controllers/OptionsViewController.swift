@@ -15,7 +15,7 @@ class OptionsViewController: UIViewController {
         static let minDimension: Int = 9
         static let maxDimension: Int = 30
         static let minMines: Int = 10
-        static let maxMines: Int = 300
+        static let maxMines: Int = 200
         
         static let bkgPatternName = "grass-dark-cell"
         

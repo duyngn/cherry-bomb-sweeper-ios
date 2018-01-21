@@ -26,6 +26,12 @@ class FieldGridScrollView: UIScrollView {
     
     fileprivate var cellTapHandler: CellTapHandler?
     
+    private var rowCount: Int = 0
+    private var columnCount: Int = 0
+    private var fieldWidth: CGFloat = 0
+    private var fieldHeight: CGFloat = 0
+    private var modifiedIndexPaths: Set<IndexPath> = []
+    
     lazy private var setUpOnce: Void = {
         self.delegate = self
         
@@ -37,6 +43,7 @@ class FieldGridScrollView: UIScrollView {
         fieldGrid.layer.borderWidth = Constant.borderWidth
         fieldGrid.layer.borderColor = UIColor.black.cgColor
         self.fieldGridCollection = fieldGrid
+        
         fieldGrid.isHidden = true
         
         self.addSubview(fieldGrid)
@@ -48,14 +55,41 @@ class FieldGridScrollView: UIScrollView {
         let _ = setUpOnce
     }
     
-    func setupFieldGrid(with mineField: MineField,
+    func setupFieldGrid(rows: Int, columns: Int,
                         dataSource: UICollectionViewDataSource,
                         cellTapHandler: @escaping CellTapHandler,
                         completionHandler: FieldSetupCompletionHandler?) {
+        
         guard let fieldGridCollection = self.fieldGridCollection else { return }
         
-        fieldGridCollection.setupFieldGrid(with: mineField, dataSource: dataSource, cellTapHandler: cellTapHandler) { [weak self] (fieldWidth, fieldHeight) in
+        if rows == self.rowCount, columns == self.columnCount {
+            // Dimension didn't change, so just reset it
+            fieldGridCollection.dataSource = dataSource
+            fieldGridCollection.cellTapHandler = cellTapHandler
+            
+            // Show and reload only what's been affected
+            fieldGridCollection.isHidden = false
+            fieldGridCollection.reloadItems(at: Array(self.modifiedIndexPaths))
+            self.modifiedIndexPaths.removeAll()
+            
+            completionHandler?(self.fieldWidth, self.fieldHeight)
+            
+            DispatchQueue.main.async {
+                self.setZoomScale(1.0, animated: true)
+                self.setContentOffset(CGPoint(x: 0, y: 0), animated: false)
+            }
+            return
+        }
+        
+        self.rowCount = rows
+        self.columnCount = columns
+        self.modifiedIndexPaths.removeAll()
+        
+        fieldGridCollection.setupFieldGrid(rows: rows, columns: columns, dataSource: dataSource, cellTapHandler: cellTapHandler) { [weak self] (fieldWidth, fieldHeight) in
             guard let `self` = self else { return }
+            
+            self.fieldWidth = fieldWidth
+            self.fieldHeight = fieldHeight
             
             let windowWidth = self.frame.width
             let windowHeight = self.frame.height
@@ -72,11 +106,6 @@ class FieldGridScrollView: UIScrollView {
             } else {
                 // height is taller
                 self.minScaleFactor = windowHeight / fieldHeight
-            }
-            
-            // Check if zooming and panning should be enabled
-            if fieldWidth > windowWidth || fieldHeight > windowHeight {
-                self.enableZooming = true
             }
             
             self.minimumZoomScale = self.minScaleFactor
@@ -98,6 +127,8 @@ class FieldGridScrollView: UIScrollView {
     
     func updateCells(at indexPaths: [IndexPath]) {
         guard let fieldGridCollection = self.fieldGridCollection else { return }
+        // keep track of which cell has been affected
+        self.modifiedIndexPaths = self.modifiedIndexPaths.union(indexPaths)
         
         fieldGridCollection.reloadItems(at: indexPaths)
     }

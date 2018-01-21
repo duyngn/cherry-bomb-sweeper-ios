@@ -14,7 +14,7 @@ class GameGeneratorService: NSObject {
     
     static let shared = GameGeneratorService()
     
-    private let generatorQueue: DispatchQueue = DispatchQueue(label: "gameGeneratorQueue")
+    private let generatorQueue: DispatchQueue = DispatchQueue(label: "gameGeneratorQueue", qos: .userInitiated)
     
     var gameOptions: GameOptions
     var preloadedGame: Game?
@@ -24,7 +24,7 @@ class GameGeneratorService: NSObject {
     }
     
     func preloadGame(forced: Bool = false) {
-        self.generatorQueue.async {
+        DispatchQueue.global(qos: .utility).async {
             if forced || self.preloadedGame == nil {
                 self.generateGame { (newGame) in
                     self.preloadedGame = newGame
@@ -35,16 +35,19 @@ class GameGeneratorService: NSObject {
     
     func generateNewGame(completionHandler: @escaping GenerateNewGameCompletionHandler) {
         self.generatorQueue.async {
-            if let preloadedGame = self.preloadedGame {
+            if let preloadedGame = self.preloadedGame,
+                preloadedGame.mineField.rows == self.gameOptions.rowCount,
+                preloadedGame.mineField.columns == self.gameOptions.columnCount,
+                preloadedGame.mineField.mines == self.gameOptions.minesCount {
                 // return preloaded
                 completionHandler(preloadedGame)
-                
-                self.preloadedGame = nil
             } else {
                 self.generateGame { (newGame) in
                     completionHandler(newGame)
                 }
             }
+            
+            self.preloadedGame = nil
         }
     }
     

@@ -23,7 +23,7 @@ class GameViewController: UIViewController {
         static let shovelIconName = "shovel-icon"
         static let boomIconName = "boom-icon"
         static let bombIconName = "cherry-bomb-cell"
-        static let loadingScale: CGFloat = 1.5
+//        static let loadingScale: CGFloat = 1.5
     }
 
     // Controls
@@ -35,7 +35,7 @@ class GameViewController: UIViewController {
     @IBOutlet weak var newGameButton: UIButton!
     @IBOutlet private weak var actionModeButton: UIButton!
     
-    @IBOutlet private weak var loadingSpinner: UIActivityIndicatorView!
+//    @IBOutlet private weak var loadingSpinner: UIActivityIndicatorView!
     
     // Grid
     @IBOutlet fileprivate weak var minefieldView: FieldGridScrollView!
@@ -46,6 +46,7 @@ class GameViewController: UIViewController {
     fileprivate var shovelImage: UIImage?
     fileprivate var boomImage: UIImage?
     fileprivate var bombImage: UIImage?
+    fileprivate var isFieldInit: Bool = true
     
     private var currentUserAction: UserAction = .tap
     
@@ -61,7 +62,7 @@ class GameViewController: UIViewController {
         self.boomImage = UIImage(named: Constant.boomIconName)
         self.bombImage = UIImage(named: Constant.bombIconName)
         
-        self.loadingSpinner.transform = CGAffineTransform(scaleX: Constant.loadingScale, y: Constant.loadingScale)
+//        self.loadingSpinner.transform = CGAffineTransform(scaleX: Constant.loadingScale, y: Constant.loadingScale)
     }
     
     lazy private var initGame: Void = {
@@ -81,15 +82,16 @@ class GameViewController: UIViewController {
     }
     
     private func setupFieldGridView() {
-        guard let game = self.game else { return }
-        
         DispatchQueue.main.async {
-            
             let actionableState: Set<GameState> = Set([.loaded, .new, .inProgress])
             
-            self.minefieldView.setupFieldGrid(with: game.mineField, dataSource: self, cellTapHandler: { [weak self] (cellIndex) in
-                guard let `self` = self else { return }
-                
+            self.minefieldView.setupFieldGrid(rows: self.gameOptions.rowCount,
+                                              columns: self.gameOptions.columnCount,
+                                              dataSource: self,
+                                              cellTapHandler: { [weak self] (cellIndex) in
+                                                
+                guard let `self` = self, let game = self.game else { return }
+                                                
                 if actionableState.contains(game.state) {
                     self.gameStarted()
                     
@@ -99,16 +101,17 @@ class GameViewController: UIViewController {
                 // no-op
             }
         }
-        
-        DispatchQueue.main.async {
-            self.finishLoading()
-        }
     }
     
     private func startNewGame() {
-        self.startLoading()
+        self.gameOptions = GameGeneratorService.shared.gameOptions
+        
+        self.isFieldInit = true
+        self.game = nil
+        self.setupFieldGridView()
         
         self.resetControlStates()
+        self.mineCountLabel.text = String(describing: self.gameOptions.minesCount)
         
         GameGeneratorService.shared.generateNewGame { [weak self] (newGame) in
             guard let `self` = self else { return }
@@ -117,8 +120,7 @@ class GameViewController: UIViewController {
             
             self.game = newGame
             
-            self.updateRemainingMinesCountLabel()
-            self.setupFieldGridView()
+            self.finishLoading()
         }
     }
     
@@ -163,28 +165,30 @@ class GameViewController: UIViewController {
         }
     }
     
-    private func startLoading() {
-        self.loadingSpinner.startAnimating()
-        self.loadingSpinner.isHidden = false
-        
-        self.minefieldView.isHidden = true
-    }
+//    private func startLoading() {
+//        self.loadingSpinner.startAnimating()
+//        self.loadingSpinner.isHidden = false
+//
+//        self.minefieldView.isHidden = true
+//    }
     
     private func finishLoading() {
-        DispatchQueue.main.async {
-            self.minefieldView.alpha = 0
-            self.minefieldView.isHidden = false
-            
-            self.loadingSpinner.alpha = 1
-            
-            UIView.animate(withDuration: 0.4, animations: {
-                self.minefieldView.alpha = 1
-                self.loadingSpinner.alpha = 0
-            }) { (_) in
-                self.loadingSpinner.isHidden = true
-                self.loadingSpinner.stopAnimating()
-            }
-        }
+        self.isFieldInit = false
+        
+//        DispatchQueue.main.async {
+//            self.minefieldView.alpha = 0
+//            self.minefieldView.isHidden = false
+//
+//            self.loadingSpinner.alpha = 1
+//
+//            UIView.animate(withDuration: 0.3, animations: {
+//                self.minefieldView.alpha = 1
+//                self.loadingSpinner.alpha = 0
+//            }) { (_) in
+//                self.loadingSpinner.isHidden = true
+//                self.loadingSpinner.stopAnimating()
+//            }
+//        }
     }
     
     @IBAction func onOptionsPressed(_ sender: UIButton) {
@@ -236,25 +240,31 @@ class GameViewController: UIViewController {
 
 extension GameViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.game?.mineField.cellIndexToCoordMap.count ?? 0
+        return self.game?.mineField.cellIndexToCoordMap.count ?? self.gameOptions.rowCount * self.gameOptions.columnCount
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if let cellView = collectionView.dequeueReusableCell(withReuseIdentifier: FieldGridCollectionView.Constant.gridCellIdentifier, for: indexPath) as? FieldGridCell, let game = self.game, let cell = game.mineField.getCell(at: indexPath.row) {
-     
-            cellView.setupCellView(with: cell)
+        if let cellView = collectionView.dequeueReusableCell(withReuseIdentifier: FieldGridCollectionView.Constant.gridCellIdentifier, for: indexPath) as? FieldGridCell {
+            
+            if self.isFieldInit {
+                cellView.reinitCell(at: indexPath.row, fieldRows: self.gameOptions.rowCount, fieldColumns: self.gameOptions.columnCount)
+            } else if let game = self.game, let cell = game.mineField.getCell(at: indexPath.row) {
+                cellView.setupCellView(with: cell)
+            }
             
             return cellView
         }
         
-        return FieldGridCell()
+        let cellView = FieldGridCell()
+        cellView.reinitCell(at: indexPath.row, fieldRows: self.gameOptions.rowCount, fieldColumns: self.gameOptions.columnCount)
+        return cellView
     }
 }
 
 extension GameViewController: GameStatusListener {
     func onCellReveal(_ revealedCells: Set<Int>) {
         let revealedIndexPaths = revealedCells.map { return IndexPath(row: $0, section: 0) }
-        
+
         DispatchQueue.main.async {
             self.minefieldView.updateCells(at: revealedIndexPaths)
         }

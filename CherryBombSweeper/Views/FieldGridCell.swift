@@ -37,17 +37,19 @@ class FieldGridCell: UICollectionViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
-        self.cellFlagIcon.isHidden = true
-        self.cellCover.isHidden = false
-        self.cellIcon.isHidden = true
-        self.adjacentBombsLabel.isHidden = true
+    }
+    
+    func reinitCell(at index: Int, fieldRows: Int, fieldColumns: Int) {
+        if let image = self.getCellCoverDarkGrass(row: index / fieldRows, column: index / fieldColumns) {
+            self.cellCover.image = image
+        }
     }
     
     func setupCellView(with cell: Cell) {
     
         switch cell.state {
         case .untouched:
-            if let image = self.getCellCoverGrass(for: cell) {
+            if let image = self.getCellCoverGrass(at: cell.fieldCoord) {
                 self.cellCover.image = image
             }
         case .revealed:
@@ -59,7 +61,7 @@ class FieldGridCell: UICollectionViewCell {
         case .flagged:
             self.cellFlagIcon.isHidden = false
             
-            if let image = self.getCellCoverGrass(for: cell) {
+            if let image = self.getCellCoverGrass(at: cell.fieldCoord) {
                 self.cellCover.image = image
             }
         case .exploded:
@@ -74,9 +76,21 @@ class FieldGridCell: UICollectionViewCell {
         }
     }
     
-    private func getCellCoverGrass(for cell: Cell) -> UIImage? {
-        let row = cell.fieldCoord.row
-        let column = cell.fieldCoord.column
+    private func getCellCoverDarkGrass(row: Int, column: Int) -> UIImage? {
+        if row % 2 == 0 { // row starts with light color
+            if column % 2 != 0, let image = UIImage(named: Constant.grassDarkIconId) {
+                return image
+            }
+        } else if column % 2 == 0, let image = UIImage(named: Constant.grassDarkIconId) {
+            return image
+        }
+        
+        return nil
+    }
+    
+    private func getCellCoverGrass(at fieldCoord: FieldCoord) -> UIImage? {
+        let row = fieldCoord.row
+        let column = fieldCoord.column
         
         if row % 2 == 0 { // row starts with light color
             if column % 2 == 0, let image = UIImage(named: Constant.grassLightIconId) {

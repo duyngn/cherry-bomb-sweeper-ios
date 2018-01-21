@@ -102,7 +102,7 @@
                                     <constraint firstItem="WvL-IU-jSd" firstAttribute="leading" secondItem="lh7-Kx-vxV" secondAttribute="leading" id="zb7-Jt-2pT"/>
                                 </constraints>
                             </view>
-                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="gsg-tY-T6R">
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="gsg-tY-T6R">
                                 <rect key="frame" x="162" y="341" width="50" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="50" id="V05-YZ-Oxw"/>
@@ -130,7 +130,6 @@
                     <connections>
                         <outlet property="actionModeButton" destination="Rdf-kh-KOT" id="R17-wz-3nQ"/>
                         <outlet property="controlsContainer" destination="lh7-Kx-vxV" id="4uv-E2-ddc"/>
-                        <outlet property="loadingSpinner" destination="gsg-tY-T6R" id="Aez-o6-jMJ"/>
                         <outlet property="mineCountLabel" destination="otB-5h-P9O" id="QLe-LB-HRW"/>
                         <outlet property="minefieldView" destination="b5B-6w-8p9" id="CWH-as-apu"/>
                         <outlet property="newGameButton" destination="8c0-Ri-wWo" id="nFZ-sv-FTX"/>
