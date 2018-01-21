@@ -138,6 +138,13 @@ class GameProcessingService: NSObject {
             }
         } else {
             // flash the cells
+            for cellId in untouchedCellIDs {
+                if let cell = mineField.getCell(at: cellId) {
+                    cell.state = .highlight
+                    self.currentGame?.mineField.updateCell(cell)
+                }
+            }
+            
             self.gameListener?.onCellHighlight(Set(untouchedCellIDs))
         }
     }

@@ -47,6 +47,7 @@ class FieldGridCell: UICollectionViewCell {
             if let grassImage = self.getCellCoverGrass(at: cell.fieldCoord) {
                 self.cellCover.image = grassImage
             }
+            self.cellCover.isHidden = false
         case .revealed:
             if cell.adjacentBombs > 0 {
                 self.setAdjacentBombsCount(cell.adjacentBombs)
@@ -65,6 +66,7 @@ class FieldGridCell: UICollectionViewCell {
                 self.cellCover.transform = CGAffineTransform(scaleX: 2, y: 2)
             }
         case .highlight:
+            self.cellCover.isHidden = true
             break
         case .showBomb:
             break

@@ -258,6 +258,18 @@ extension GameViewController: GameStatusListener {
         DispatchQueue.main.async {
             self.minefieldView.updateCells(at: highlightIndexPaths)
         }
+        
+        // Now reset them to untouched
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            for cellId in highlightedCells {
+                if let cell = self.game?.mineField.getCell(at: cellId), cell.state == .highlight {
+                    cell.state = .untouched
+                    self.game?.mineField.updateCell(cell)
+                }
+            }
+            
+            self.minefieldView.updateCells(at: highlightIndexPaths)
+        }
     }
     
     func onCellFlagged(_ flaggedCell: Int) {

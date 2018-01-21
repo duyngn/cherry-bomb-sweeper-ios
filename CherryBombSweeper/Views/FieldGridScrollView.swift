@@ -116,6 +116,10 @@ class FieldGridScrollView: UIScrollView {
         }
     }
     
+    func flashCells(at indexPaths: [IndexPath]) {
+        
+    }
+    
     func updateCells(at indexPaths: [IndexPath]) {
         guard let fieldGridCollection = self.fieldGridCollection else { return }
         // keep track of which cell has been affected
