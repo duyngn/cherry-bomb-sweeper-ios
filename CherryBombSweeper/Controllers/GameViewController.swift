@@ -1,6 +1,6 @@
 //
 //  GameViewController.swift
-//  C4Sweeper
+//  CherryBombSweeper
 //
 //  Created by Duy Nguyen on 1/10/18.
 //  Copyright © 2018 Duy.Ninja. All rights reserved.
@@ -19,21 +19,33 @@ class GameViewController: UIViewController {
     
     enum Constant {
         static let bkgPatternName = "grass-dark-cell"
+        static let flagIconName = "flag-icon"
+        static let shovelIconName = "shovel-icon"
+        static let boomIconName = "boom-icon"
+        static let bombIconName = "cherry-bomb-cell"
         static let loadingScale: CGFloat = 1.5
     }
 
     // Controls
     @IBOutlet private weak var controlsContainer: UIView!
-    @IBOutlet private weak var minesRemainingLabel: UIButton!
-    @IBOutlet private weak var flagButton: UIButton!
+    
+    @IBOutlet weak var timerLabel: UILabel!
+    @IBOutlet weak var mineCountLabel: UILabel!
+    
+    @IBOutlet weak var newGameButton: UIButton!
+    @IBOutlet private weak var actionModeButton: UIButton!
     
     @IBOutlet private weak var loadingSpinner: UIActivityIndicatorView!
     
     // Grid
     @IBOutlet fileprivate weak var minefieldView: FieldGridScrollView!
-    
+
     fileprivate var gameOptions: GameOptions = GameGeneratorService.shared.gameOptions
     fileprivate var game: Game?
+    fileprivate var flagImage: UIImage?
+    fileprivate var shovelImage: UIImage?
+    fileprivate var boomImage: UIImage?
+    fileprivate var bombImage: UIImage?
     
     private var currentUserAction: UserAction = .tap
     
@@ -43,6 +55,11 @@ class GameViewController: UIViewController {
         if let dirtImage = UIImage(named: Constant.bkgPatternName) {
             self.view.backgroundColor = UIColor.init(patternImage: dirtImage)
         }
+        
+        self.flagImage = UIImage(named: Constant.flagIconName)
+        self.shovelImage = UIImage(named: Constant.shovelIconName)
+        self.boomImage = UIImage(named: Constant.boomIconName)
+        self.bombImage = UIImage(named: Constant.bombIconName)
         
         self.loadingSpinner.transform = CGAffineTransform(scaleX: Constant.loadingScale, y: Constant.loadingScale)
     }
@@ -68,8 +85,6 @@ class GameViewController: UIViewController {
         
         DispatchQueue.main.async {
             
-            self.loadingSpinner.startAnimating()
-            
             let actionableState: Set<GameState> = Set([.loaded, .new, .inProgress])
             
             self.minefieldView.setupFieldGrid(with: game.mineField, dataSource: self, cellTapHandler: { [weak self] (cellIndex) in
@@ -80,13 +95,21 @@ class GameViewController: UIViewController {
                     
                     GameProcessingService.shared.resolveUserAction(at: cellIndex, in: game, with: self.currentUserAction)
                 }
-            }) { [weak self] (_, _) in
-                self?.loadingSpinner.stopAnimating()
+            }) { (_, _) in
+                // no-op
             }
+        }
+        
+        DispatchQueue.main.async {
+            self.finishLoading()
         }
     }
     
     private func startNewGame() {
+        self.startLoading()
+        
+        self.resetControlStates()
+        
         GameGeneratorService.shared.generateNewGame { [weak self] (newGame) in
             guard let `self` = self else { return }
             
@@ -99,6 +122,16 @@ class GameViewController: UIViewController {
         }
     }
     
+    private func resetControlStates() {
+        self.updateActionModeButton(to: .tap)
+        
+        if let bombImage = self.bombImage {
+            self.newGameButton.setImage(bombImage, for: UIControlState.normal)
+        }
+        
+        self.newGameButton.transform = CGAffineTransform.identity
+    }
+    
     private func gameStarted() {
         guard let game = self.game, game.state != .inProgress else { return }
         
@@ -109,7 +142,13 @@ class GameViewController: UIViewController {
         DispatchQueue.main.async {
             self.game?.state = .lost
             
-            self.minesRemainingLabel.setTitle("GAME OVER", for: UIControlState.normal)
+            if let boomImage = self.boomImage {
+                self.newGameButton.setImage(boomImage, for: UIControlState.normal)
+                self.newGameButton.transform = CGAffineTransform(scaleX: 2, y: 2)
+            }
+            
+            // Preload the next game
+            GameGeneratorService.shared.preloadGame()
         }
     }
     
@@ -117,12 +156,48 @@ class GameViewController: UIViewController {
         DispatchQueue.main.async {
             self.game?.state = .win
             
-            self.minesRemainingLabel.setTitle("WINNER", for: UIControlState.normal)
+//            self.mineCountLabel.setTitle("WINNER", for: UIControlState.normal)
+            
+            // Preload the next game
+            GameGeneratorService.shared.preloadGame()
         }
     }
     
-    @IBAction func onBackPressed(_ sender: UIButton) {
-        self.navigationController?.popViewController(animated: true)
+    private func startLoading() {
+        self.loadingSpinner.startAnimating()
+        self.loadingSpinner.isHidden = false
+        
+        self.minefieldView.isHidden = true
+    }
+    
+    private func finishLoading() {
+        DispatchQueue.main.async {
+            self.minefieldView.alpha = 0
+            self.minefieldView.isHidden = false
+            
+            self.loadingSpinner.alpha = 1
+            
+            UIView.animate(withDuration: 0.4, animations: {
+                self.minefieldView.alpha = 1
+                self.loadingSpinner.alpha = 0
+            }) { (_) in
+                self.loadingSpinner.isHidden = true
+                self.loadingSpinner.stopAnimating()
+            }
+        }
+    }
+    
+    @IBAction func onOptionsPressed(_ sender: UIButton) {
+        let optionsController = OptionsViewController(nibName: "OptionsViewController", bundle: nil)
+        optionsController.exitHandler = { [weak self] (newGame) in
+            guard let `self` = self else { return }
+            
+            if newGame {
+                self.startNewGame()
+            }
+        }
+        
+        self.present(optionsController, animated: true)
     }
     
     @IBAction func onActionModePressed(_ sender: UIButton) {
@@ -131,7 +206,6 @@ class GameViewController: UIViewController {
     
     @IBAction func onNewGamePressed(_ sender: UIButton) {
         self.startNewGame()
-        self.updateActionModeButton(to: .tap)
     }
     
     private func updateActionModeButton(to action: UserAction) {
@@ -140,9 +214,13 @@ class GameViewController: UIViewController {
             
             switch self.currentUserAction {
             case .flag:
-                self.flagButton.setTitle("Flag", for: UIControlState.normal)
+                if let flagImage = self.flagImage {
+                    self.actionModeButton.setImage(flagImage, for: UIControlState.normal)
+                }
             case .tap:
-                self.flagButton.setTitle("Tap", for: UIControlState.normal)
+                if let shovelImage = self.shovelImage {
+                    self.actionModeButton.setImage(shovelImage, for: UIControlState.normal)
+                }
             }
         }
     }
@@ -150,7 +228,7 @@ class GameViewController: UIViewController {
     fileprivate func updateRemainingMinesCountLabel() {
         if let minesCount = self.game?.minesRemaining {
             DispatchQueue.main.async {
-                self.minesRemainingLabel.setTitle(String(describing: minesCount), for: UIControlState.normal)
+                self.mineCountLabel.text = String(describing: minesCount)
             }
         }
     }

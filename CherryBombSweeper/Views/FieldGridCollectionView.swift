@@ -24,6 +24,8 @@ class FieldGridCollectionView: UICollectionView {
     
     fileprivate var cellTapHandler: CellTapHandler?
     
+    private var dimensionConstraints: [NSLayoutConstraint] = []
+    
     override init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout) {
         super.init(frame: frame, collectionViewLayout: layout)
         
@@ -56,10 +58,29 @@ class FieldGridCollectionView: UICollectionView {
         
         self.isScrollEnabled = false
         
-//        // Setting field width and height via auto layout
         self.translatesAutoresizingMaskIntoConstraints = false
-        self.widthAnchor.constraint(equalToConstant: fieldWidth).isActive = true
-        self.heightAnchor.constraint(equalToConstant: fieldHeight).isActive = true
+        if !self.dimensionConstraints.isEmpty {
+            self.removeConstraints(dimensionConstraints)
+            self.dimensionConstraints.removeAll()
+        }
+        
+        let widthConstraint = self.widthAnchor.constraint(equalToConstant: fieldWidth)
+        let heightConstraint = self.heightAnchor.constraint(equalToConstant: fieldHeight)
+        
+        widthConstraint.isActive = true
+        heightConstraint.isActive = true
+        
+        self.dimensionConstraints = [widthConstraint, heightConstraint]
+        
+        if let superView = self.superview {
+            let leadingConstraint = self.leadingAnchor.constraint(equalTo: superView.leadingAnchor)
+            let topConstraint = self.topAnchor.constraint(equalTo: superView.topAnchor)
+            
+            leadingConstraint.isActive = true
+            topConstraint.isActive = true
+            
+            self.dimensionConstraints.append(contentsOf: [leadingConstraint, topConstraint])
+        }
         
         completionHandler?(fieldWidth, fieldHeight)
     }

@@ -21,11 +21,18 @@ class FieldGridScrollView: UIScrollView {
     fileprivate var enableZooming: Bool = true
     fileprivate var isZoomed: Bool = false
     fileprivate var minScaleFactor: CGFloat = 1
-    fileprivate var fieldOrigin: CGPoint?
+    
+//    private var maxContentOffset: CGFloat = 0
     
     fileprivate var cellTapHandler: CellTapHandler?
     
-    lazy private var setupGridCollectionView: Void = {
+    lazy private var setUpOnce: Void = {
+        self.delegate = self
+        
+        self.isScrollEnabled = true
+        self.showsVerticalScrollIndicator = false
+        self.showsHorizontalScrollIndicator = false
+        
         let fieldGrid = FieldGridCollectionView(frame: self.frame, collectionViewLayout: FieldGridCollectionViewLayout())
         fieldGrid.layer.borderWidth = Constant.borderWidth
         fieldGrid.layer.borderColor = UIColor.black.cgColor
@@ -35,26 +42,10 @@ class FieldGridScrollView: UIScrollView {
         self.addSubview(fieldGrid)
     }()
     
-    lazy private var setupFieldConstraint: Void = {
-        guard let fieldGridCollection = self.fieldGridCollection else { return }
-        
-        fieldGridCollection.translatesAutoresizingMaskIntoConstraints = false
-        fieldGridCollection.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
-        fieldGridCollection.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
-    }()
-    
-    lazy private var captureFieldOrigin: Void = {
-        self.fieldOrigin = self.fieldGridCollection?.frame.origin
-    }()
-    
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        let _ = setupGridCollectionView
-        
-        self.delegate = self
-        
-        self.isScrollEnabled = true
+        let _ = setUpOnce
     }
     
     func setupFieldGrid(with mineField: MineField,
@@ -73,10 +64,15 @@ class FieldGridScrollView: UIScrollView {
             // to fit the entire field into the container
             let screenAspect = windowWidth / windowHeight
             let fieldAspect = fieldWidth / fieldHeight
-            // fieldAspect > screenAspect = field width is wider
-            self.minScaleFactor = (fieldAspect > screenAspect)
-                ? windowWidth / fieldWidth
-                : windowHeight / fieldHeight
+            
+            if fieldAspect > screenAspect {
+                // width is wider
+                self.minScaleFactor = windowWidth / fieldWidth
+//                self.maxContentOffset = windowHeight - (self.minScaleFactor * fieldHeight)
+            } else {
+                // height is taller
+                self.minScaleFactor = windowHeight / fieldHeight
+            }
             
             // Check if zooming and panning should be enabled
             if fieldWidth > windowWidth || fieldHeight > windowHeight {
@@ -86,13 +82,7 @@ class FieldGridScrollView: UIScrollView {
             self.minimumZoomScale = self.minScaleFactor
             self.maximumZoomScale = Constant.maxScaleFactor
             self.contentSize = CGSize(width: fieldWidth, height: fieldHeight)
-            
-            let _ = self.setupFieldConstraint
-            
-            if let fieldOrigin = self.fieldOrigin {
-                self.setContentOffset(fieldOrigin, animated: true)
-            }
-            
+
             // Show and reload
             fieldGridCollection.isHidden = false
             fieldGridCollection.reloadData()
@@ -100,7 +90,8 @@ class FieldGridScrollView: UIScrollView {
             completionHandler?(fieldWidth, fieldHeight)
             
             DispatchQueue.main.async {
-                let _ = self.captureFieldOrigin
+                self.setZoomScale(1.0, animated: true)
+                self.setContentOffset(CGPoint(x: 0, y: 0), animated: false)
             }
         }
     }
