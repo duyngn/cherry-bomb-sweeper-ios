@@ -19,6 +19,7 @@ class GameGeneralService: NSObject {
         static let boomIconName = "boom-icon"
         static let bombIconName = "cherry-bomb-icon"
         static let gearIconName = "gear-icon"
+        static let xIconName = "x-icon"
         
         static let defaultMines: Int = 10
         static let minimumMines: Int = 10
@@ -46,6 +47,7 @@ class GameGeneralService: NSObject {
     var boomImage: UIImage?
     var bombImage: UIImage?
     var gearImage: UIImage?
+    var xImage: UIImage?
     
     fileprivate override init() {
         self.darkGrassImage = UIImage(named: Constant.darkGrassIconName)
@@ -55,5 +57,6 @@ class GameGeneralService: NSObject {
         self.boomImage = UIImage(named: Constant.boomIconName)
         self.bombImage = UIImage(named: Constant.bombIconName)
         self.gearImage = UIImage(named: Constant.gearIconName)
+        self.xImage = UIImage(named: Constant.xIconName)
     }
 }

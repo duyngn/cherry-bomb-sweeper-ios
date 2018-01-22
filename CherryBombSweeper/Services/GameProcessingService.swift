@@ -13,7 +13,7 @@ protocol GameStatusListener {
     func onCellHighlight(_ highlightedCells: Set<Int>) -> Void
     func onCellFlagged(_ flaggedCell: Int) -> Void
     func onCellUnflagged(_ unflaggedCell: Int) -> Void
-    func onCellExploded(_ explodedCell: Int) -> Void
+    func onCellExploded(_ explodedCell: Int, otherBombCells: Set<Int>, wrongFlaggedCells: Set<Int>) -> Void
     func onGameCompleted() -> Void
 }
 
@@ -91,7 +91,7 @@ class GameProcessingService: NSObject {
     }
     
     private func processRevealCell(at cellIndex: Int) {
-        if let cell = self.currentGame?.mineField.getCell(at: cellIndex) {
+        if let currentGame = self.currentGame, let cell = currentGame.mineField.getCell(at: cellIndex) {
             guard cell.state == .untouched else { return }
             
             if cell.hasBomb {
@@ -99,11 +99,11 @@ class GameProcessingService: NSObject {
             } else {
                 cell.state = .revealed
                 
-                self.currentGame?.mineField.updateCell(cell)
-                self.currentGame?.mineField.safeCellsCount -= 1
+                currentGame.mineField.updateCell(cell)
+                currentGame.mineField.safeCellsCount -= 1
                 
-                if self.currentGame?.mineField.safeCellsCount == 0 {
-                    self.gameListener?.onGameCompleted()
+                if currentGame.mineField.safeCellsCount == 0 {
+                    gameListener?.onGameCompleted()
                 }
             }
         }
@@ -114,9 +114,32 @@ class GameProcessingService: NSObject {
         
         cell.state = .exploded
         
-        self.currentGame?.mineField.updateCell(cell)
+        var otherBombCellIds: Set<Int> = []
+        var wrongFlaggedIds: Set<Int> = []
         
-        self.gameListener?.onCellExploded(cell.index)
+        if let game = self.currentGame {
+            game.mineField.updateCell(cell)
+            
+            otherBombCellIds = game.mineField.bombCellIndices
+            otherBombCellIds.remove(cell.index)
+            
+            for cellId in otherBombCellIds {
+                if let cell = game.mineField.getCell(at: cellId), cell.state == .untouched, cell.hasBomb {
+                    cell.state = .showBomb
+                    game.mineField.updateCell(cell)
+                }
+            }
+            
+            for flaggedCellId in game.flaggedCellIndices {
+                if let cell = game.mineField.getCell(at: flaggedCellId), cell.state == .flagged, !cell.hasBomb {
+                    cell.state = .wrongBomb
+                    game.mineField.updateCell(cell)
+                    wrongFlaggedIds.insert(flaggedCellId)
+                }
+            }
+        }
+        
+        self.gameListener?.onCellExploded(cell.index, otherBombCells: otherBombCellIds, wrongFlaggedCells: wrongFlaggedIds)
     }
     
     private func probe(at cell: Cell) {
@@ -157,12 +180,20 @@ class GameProcessingService: NSObject {
             }
         case .untouched:
             cell.state = .flagged
-            self.currentGame?.mineField.updateCell(cell)
+            if let currentGame = self.currentGame {
+                currentGame.mineField.updateCell(cell)
+                currentGame.minesRemaining -= 1
+                currentGame.flaggedCellIndices.insert(cell.index)
+            }
             
             self.gameListener?.onCellFlagged(cell.index)
         case .flagged:
             cell.state = .untouched
-            self.currentGame?.mineField.updateCell(cell)
+            if let currentGame = self.currentGame {
+                currentGame.mineField.updateCell(cell)
+                currentGame.minesRemaining += 1
+                currentGame.flaggedCellIndices.remove(cell.index)
+            }
             
             self.gameListener?.onCellUnflagged(cell.index)
         default:

@@ -23,6 +23,8 @@ class Game {
     var state: GameState = .new
     var minesRemaining: Int
     
+    var flaggedCellIndices: Set<Int> = []
+    
     init(mineField: MineField = MineField(), gameOptions: GameOptions = GameGeneratorService.shared.gameOptions) {
         self.mineField = mineField
         self.gameOptions = gameOptions

@@ -67,9 +67,18 @@ class FieldGridCell: UICollectionViewCell {
             }
         case .highlight:
             self.cellCover.isHidden = true
-            break
         case .showBomb:
-            break
+            self.cellCover.isHidden = true
+            self.cellIcon.isHidden = false
+        case .wrongBomb:
+            if let xImage = GameGeneralService.shared.xImage {
+                self.cellCover.image = xImage
+                self.cellCover.isHidden = false
+            } else {
+                self.cellCover.isHidden = true
+            }
+            
+            self.cellIcon.isHidden = false
         }
     }
     
@@ -120,9 +129,8 @@ class FieldGridCell: UICollectionViewCell {
         self.adjacentBombsLabel.text = String(describing: count)
         self.adjacentBombsLabel.isHidden = false
     }
-
-    override func prepareForReuse() {
-        super.prepareForReuse()
+    
+    private func resetCell() {
         self.cellCover.isHidden = false
         self.cellCover.transform = CGAffineTransform.identity
         if let lightGrassImage = GameGeneralService.shared.lightGrassImage {
@@ -133,6 +141,11 @@ class FieldGridCell: UICollectionViewCell {
         self.cellIcon.isHidden = true
         self.adjacentBombsLabel.isHidden = true
         self.adjacentBombsLabel.text = nil
+    }
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        self.resetCell()
     }
 }
 

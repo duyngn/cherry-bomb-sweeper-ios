@@ -16,6 +16,7 @@ enum CellState {
     
     case highlight
     case showBomb
+    case wrongBomb
 }
 
 class Cell {

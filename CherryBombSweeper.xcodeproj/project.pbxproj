@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		04046BB32015293C00426A47 /* GameGeneralService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04046BB22015293C00426A47 /* GameGeneralService.swift */; };
+		041CA0442015608C006A37BA /* GameTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 041CA0432015608C006A37BA /* GameTimer.swift */; };
 		042168C72008368C0065854F /* MineField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042168C62008368C0065854F /* MineField.swift */; };
 		0423F03C200D653000DE76CF /* FieldGridCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0423F03B200D653000DE76CF /* FieldGridCollectionView.swift */; };
 		04A50C71200F3CB80075A9BE /* GameProcessingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A50C70200F3CB80075A9BE /* GameProcessingService.swift */; };
@@ -31,6 +32,7 @@
 
 /* Begin PBXFileReference section */
 		04046BB22015293C00426A47 /* GameGeneralService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameGeneralService.swift; sourceTree = "<group>"; };
+		041CA0432015608C006A37BA /* GameTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameTimer.swift; sourceTree = "<group>"; };
 		042168C62008368C0065854F /* MineField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MineField.swift; sourceTree = "<group>"; };
 		0423F03B200D653000DE76CF /* FieldGridCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldGridCollectionView.swift; sourceTree = "<group>"; };
 		04A50C70200F3CB80075A9BE /* GameProcessingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameProcessingService.swift; sourceTree = "<group>"; };
@@ -71,6 +73,7 @@
 				04E22D892006CC8500DEC328 /* Game.swift */,
 				04E22D962006D2F100DEC328 /* GameOptions.swift */,
 				042168C62008368C0065854F /* MineField.swift */,
+				041CA0432015608C006A37BA /* GameTimer.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -216,6 +219,7 @@
 			files = (
 				0423F03C200D653000DE76CF /* FieldGridCollectionView.swift in Sources */,
 				270E61E349D485A4C4A83B5B /* AppDelegate.swift in Sources */,
+				041CA0442015608C006A37BA /* GameTimer.swift in Sources */,
 				04046BB32015293C00426A47 /* GameGeneralService.swift in Sources */,
 				04E22D8A2006CC8500DEC328 /* Game.swift in Sources */,
 				04E22D972006D2F100DEC328 /* GameOptions.swift in Sources */,

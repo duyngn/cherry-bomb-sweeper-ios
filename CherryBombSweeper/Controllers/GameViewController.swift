@@ -36,6 +36,7 @@ class GameViewController: UIViewController {
     fileprivate var isFieldInit: Bool = true
     
     private var currentUserAction: UserAction = .tap
+    private var gameTimer: GameTimer?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,6 +44,10 @@ class GameViewController: UIViewController {
         if let bkgPattern = GameGeneralService.shared.darkGrassImage {
             self.view.backgroundColor = UIColor.init(patternImage: bkgPattern)
         }
+        
+        self.gameTimer = GameTimer(self)
+        
+//        self.gameTimer = Timer.scheduledTimerWithTimeInterval(1, target:self, selector: Selector("FUNCTION"), userInfo: nil, repeats: BOOL)
         
 //        self.loadingSpinner.transform = CGAffineTransform(scaleX: Constant.loadingScale, y: Constant.loadingScale)
     }
@@ -93,6 +98,7 @@ class GameViewController: UIViewController {
         self.setupFieldGridView()
         
         self.resetControlStates()
+        self.resetGameTimer()
         self.mineCountLabel.text = String(describing: self.gameOptions.minesCount)
         
         GameGeneratorService.shared.generateNewGame { [weak self] (newGame) in
@@ -104,6 +110,12 @@ class GameViewController: UIViewController {
             
             self.finishLoading()
         }
+    }
+    
+    private func resetGameTimer() {
+        self.timerLabel.text = "00:00"
+        
+        self.gameTimer?.resetTimer()
     }
     
     private func resetControlStates() {
@@ -120,9 +132,14 @@ class GameViewController: UIViewController {
         guard let game = self.game, game.state != .inProgress else { return }
         
         self.game?.state = .inProgress
+        if let gameTimer = self.gameTimer {
+            gameTimer.restartTimer()
+        }
     }
     
     fileprivate func gameOver() {
+        self.gameTimer?.pauseTimer()
+        
         DispatchQueue.main.async {
             self.game?.state = .lost
             
@@ -131,12 +148,16 @@ class GameViewController: UIViewController {
                 self.newGameButton.transform = CGAffineTransform(scaleX: 2, y: 2)
             }
             
+            self.minefieldView.showEntireField()
+            
             // Preload the next game
             GameGeneratorService.shared.preloadGame()
         }
     }
     
     fileprivate func gameCompleted() {
+        self.gameTimer?.pauseTimer()
+        
         DispatchQueue.main.async {
             self.game?.state = .win
             
@@ -146,13 +167,6 @@ class GameViewController: UIViewController {
             GameGeneratorService.shared.preloadGame()
         }
     }
-    
-//    private func startLoading() {
-//        self.loadingSpinner.startAnimating()
-//        self.loadingSpinner.isHidden = false
-//
-//        self.minefieldView.isHidden = true
-//    }
     
     private func finishLoading() {
         self.isFieldInit = false
@@ -174,12 +188,16 @@ class GameViewController: UIViewController {
     }
     
     @IBAction func onOptionsPressed(_ sender: UIButton) {
+        self.gameTimer?.pauseTimer()
+        
         let optionsController = OptionsViewController(nibName: "OptionsViewController", bundle: nil)
         optionsController.exitHandler = { [weak self] (newGame) in
             guard let `self` = self else { return }
             
             if newGame {
                 self.startNewGame()
+            } else {
+                self.gameTimer?.resumeTimer()
             }
         }
         
@@ -243,6 +261,12 @@ extension GameViewController: UICollectionViewDataSource {
     }
 }
 
+extension GameViewController: GameTimerDelegate {
+    func onTimerUpdate(seconds: Int, timeString: String) {
+        self.timerLabel.text = timeString
+    }
+}
+
 extension GameViewController: GameStatusListener {
     func onCellReveal(_ revealedCells: Set<Int>) {
         let revealedIndexPaths = revealedCells.map { return IndexPath(row: $0, section: 0) }
@@ -269,20 +293,26 @@ extension GameViewController: GameStatusListener {
     
     func onCellFlagged(_ flaggedCell: Int) {
         self.minefieldView.updateCells(at: [IndexPath(row: flaggedCell, section: 0)])
-        self.game?.minesRemaining -= 1
+
         self.updateRemainingMinesCountLabel()
     }
     
     func onCellUnflagged(_ unflaggedCell: Int) {
         self.minefieldView.updateCells(at: [IndexPath(row: unflaggedCell, section: 0)])
         
-        self.game?.minesRemaining += 1
-        
         self.updateRemainingMinesCountLabel()
     }
     
-    func onCellExploded(_ explodedCell: Int) {
-        self.minefieldView.updateCells(at: [IndexPath(row: explodedCell, section: 0)])
+    func onCellExploded(_ explodedCell: Int, otherBombCells: Set<Int>, wrongFlaggedCells: Set<Int>) {
+        var cellsToUpdate = otherBombCells.map { return IndexPath(row: $0, section: 0) }
+        cellsToUpdate.append(contentsOf: wrongFlaggedCells.map { return IndexPath(row: $0, section: 0) })
+        
+        self.minefieldView.updateCells(at: cellsToUpdate)
+        
+        // Ensure this gets rendered last
+        DispatchQueue.main.async {
+            self.minefieldView.updateCells(at: [IndexPath(row: explodedCell, section: 0)])
+        }
         
         self.gameOver()
     }

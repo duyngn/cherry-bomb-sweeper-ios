@@ -116,8 +116,8 @@ class FieldGridScrollView: UIScrollView {
         }
     }
     
-    func flashCells(at indexPaths: [IndexPath]) {
-        
+    func showEntireField() {
+        self.setZoomScale(self.minScaleFactor, animated: true)
     }
     
     func updateCells(at indexPaths: [IndexPath]) {
