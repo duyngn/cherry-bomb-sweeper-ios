@@ -67,7 +67,9 @@ class FieldGridScrollView: UIScrollView {
             
             DispatchQueue.main.async {
                 self.setZoomScale(1.0, animated: true)
-                self.setContentOffset(CGPoint(x: 0, y: 0), animated: false)
+                if !self.recenterFieldGrid() {
+                    self.setContentOffset(CGPoint(x: 0, y: 0), animated: false)
+                }
             }
             return
         }
@@ -90,14 +92,7 @@ class FieldGridScrollView: UIScrollView {
             let screenAspect = windowWidth / windowHeight
             let fieldAspect = fieldWidth / fieldHeight
             
-            if fieldAspect > screenAspect {
-                // width is wider
-                self.minScaleFactor = windowWidth / fieldWidth
-//                self.maxContentOffset = windowHeight - (self.minScaleFactor * fieldHeight)
-            } else {
-                // height is taller
-                self.minScaleFactor = windowHeight / fieldHeight
-            }
+            self.minScaleFactor = (fieldAspect > screenAspect) ? windowWidth / fieldWidth : windowHeight / fieldHeight
             
             self.minimumZoomScale = self.minScaleFactor
             self.maximumZoomScale = GameGeneralService.Constant.defaultMaxScaleFactor
@@ -107,11 +102,12 @@ class FieldGridScrollView: UIScrollView {
             fieldGridCollection.isHidden = false
             fieldGridCollection.reloadData()
             
-            completionHandler?(fieldWidth, fieldHeight)
-            
             DispatchQueue.main.async {
                 self.setZoomScale(1.0, animated: true)
-                self.setContentOffset(CGPoint(x: 0, y: 0), animated: false)
+                if !self.recenterFieldGrid() {
+                    self.setContentOffset(CGPoint(x: 0, y: 0), animated: false)
+                }
+                completionHandler?(fieldWidth, fieldHeight)
             }
         }
     }
@@ -128,11 +124,50 @@ class FieldGridScrollView: UIScrollView {
             fieldGridCollection.reloadItems(at: indexPaths)
         }
     }
+    
+    func recenterFieldGrid() -> Bool {
+        let fieldWidth = self.contentSize.width
+        let fieldHeight = self.contentSize.height
+        
+        let windowWidth = self.frame.width
+        let windowHeight = self.frame.height
+        
+        if fieldWidth > windowWidth, fieldHeight > windowHeight { return false }
+        
+        var xOffset: CGFloat = self.contentOffset.x
+        var yOffset: CGFloat = self.contentOffset.y
+        
+        if fieldWidth < windowWidth {
+            xOffset = (fieldWidth - windowWidth) / 2
+        }
+        
+        if fieldHeight < windowHeight {
+            yOffset = (fieldHeight - windowHeight) / 2
+        }
+        
+        self.setContentOffset(CGPoint(x: xOffset, y: yOffset), animated: true)
+        
+        return true
+    }
 }
 
 extension FieldGridScrollView: UIScrollViewDelegate {
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         return self.fieldGridCollection
+    }
+    
+    func scrollViewDidEndZooming(_ scrollView: UIScrollView, with view: UIView?, atScale scale: CGFloat) {
+        let _ = self.recenterFieldGrid()
+    }
+    
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        guard !decelerate else { return }
+        
+        let _ = self.recenterFieldGrid()
+    }
+    
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        let _ = self.recenterFieldGrid()
     }
 }
 

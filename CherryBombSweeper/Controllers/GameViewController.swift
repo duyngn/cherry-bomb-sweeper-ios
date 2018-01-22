@@ -19,17 +19,16 @@ class GameViewController: UIViewController {
     
     // Controls
     @IBOutlet private weak var controlsContainer: UIView!
+    @IBOutlet private weak var statsContainer: UIView!
     
-    @IBOutlet weak var timerLabel: UILabel!
-    @IBOutlet weak var mineCountLabel: UILabel!
+    @IBOutlet fileprivate weak var timerLabel: UILabel!
+    @IBOutlet private weak var mineCountLabel: UILabel!
     
     @IBOutlet weak var newGameButton: UIButton!
     @IBOutlet private weak var actionModeButton: UIButton!
     
-//    @IBOutlet private weak var loadingSpinner: UIActivityIndicatorView!
-    
     // Grid
-    @IBOutlet fileprivate weak var minefieldView: FieldGridScrollView!
+    @IBOutlet fileprivate weak var mineFieldView: FieldGridScrollView!
 
     fileprivate var gameOptions: GameOptions = GameGeneratorService.shared.gameOptions
     fileprivate var game: Game?
@@ -47,9 +46,16 @@ class GameViewController: UIViewController {
         
         self.gameTimer = GameTimer(self)
         
-//        self.gameTimer = Timer.scheduledTimerWithTimeInterval(1, target:self, selector: Selector("FUNCTION"), userInfo: nil, repeats: BOOL)
-        
-//        self.loadingSpinner.transform = CGAffineTransform(scaleX: Constant.loadingScale, y: Constant.loadingScale)
+        if !UIAccessibilityIsReduceTransparencyEnabled() {
+            self.statsContainer.backgroundColor = .clear
+            
+            let blurEffect = UIBlurEffect(style: .regular)
+            let blurEffectView = UIVisualEffectView(effect: blurEffect)
+            blurEffectView.frame = self.statsContainer.bounds
+            blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+            
+            self.statsContainer.insertSubview(blurEffectView, at: 0)
+        }
     }
     
     lazy private var initGame: Void = {
@@ -72,7 +78,7 @@ class GameViewController: UIViewController {
         DispatchQueue.main.async {
             let actionableState: Set<GameState> = Set([.loaded, .new, .inProgress])
             
-            self.minefieldView.setupFieldGrid(rows: self.gameOptions.rowCount,
+            self.mineFieldView.setupFieldGrid(rows: self.gameOptions.rowCount,
                                               columns: self.gameOptions.columnCount,
                                               dataSource: self,
                                               cellTapHandler: { [weak self] (cellIndex) in
@@ -85,7 +91,7 @@ class GameViewController: UIViewController {
                     GameProcessingService.shared.resolveUserAction(at: cellIndex, in: game, with: self.currentUserAction)
                 }
             }) { (_, _) in
-                // no-op
+//                let _ = self.mineFieldView.recenterFieldGrid()
             }
         }
     }
@@ -148,7 +154,7 @@ class GameViewController: UIViewController {
                 self.newGameButton.transform = CGAffineTransform(scaleX: 2, y: 2)
             }
             
-            self.minefieldView.showEntireField()
+            self.mineFieldView.showEntireField()
             
             // Preload the next game
             GameGeneratorService.shared.preloadGame()
@@ -161,7 +167,7 @@ class GameViewController: UIViewController {
         DispatchQueue.main.async {
             self.game?.state = .win
             
-//            self.mineCountLabel.setTitle("WINNER", for: UIControlState.normal)
+            self.mineFieldView.showEntireField()
             
             // Preload the next game
             GameGeneratorService.shared.preloadGame()
@@ -196,10 +202,12 @@ class GameViewController: UIViewController {
             
             if newGame {
                 self.startNewGame()
-            } else {
+            } else if self.game?.state == .inProgress {
                 self.gameTimer?.resumeTimer()
             }
         }
+        
+        optionsController.modalPresentationStyle = .overFullScreen
         
         self.present(optionsController, animated: true)
     }
@@ -270,13 +278,13 @@ extension GameViewController: GameTimerDelegate {
 extension GameViewController: GameStatusListener {
     func onCellReveal(_ revealedCells: Set<Int>) {
         let revealedIndexPaths = revealedCells.map { return IndexPath(row: $0, section: 0) }
-        self.minefieldView.updateCells(at: revealedIndexPaths)
+        self.mineFieldView.updateCells(at: revealedIndexPaths)
     }
     
     func onCellHighlight(_ highlightedCells: Set<Int>) {
         let highlightIndexPaths = highlightedCells.map { return IndexPath(row: $0, section: 0) }
         
-        self.minefieldView.updateCells(at: highlightIndexPaths)
+        self.mineFieldView.updateCells(at: highlightIndexPaths)
         
         // Now reset them to untouched
         DispatchQueue.main.async {
@@ -287,18 +295,18 @@ extension GameViewController: GameStatusListener {
                 }
             }
             
-            self.minefieldView.updateCells(at: highlightIndexPaths)
+            self.mineFieldView.updateCells(at: highlightIndexPaths)
         }
     }
     
     func onCellFlagged(_ flaggedCell: Int) {
-        self.minefieldView.updateCells(at: [IndexPath(row: flaggedCell, section: 0)])
+        self.mineFieldView.updateCells(at: [IndexPath(row: flaggedCell, section: 0)])
 
         self.updateRemainingMinesCountLabel()
     }
     
     func onCellUnflagged(_ unflaggedCell: Int) {
-        self.minefieldView.updateCells(at: [IndexPath(row: unflaggedCell, section: 0)])
+        self.mineFieldView.updateCells(at: [IndexPath(row: unflaggedCell, section: 0)])
         
         self.updateRemainingMinesCountLabel()
     }
@@ -307,11 +315,11 @@ extension GameViewController: GameStatusListener {
         var cellsToUpdate = otherBombCells.map { return IndexPath(row: $0, section: 0) }
         cellsToUpdate.append(contentsOf: wrongFlaggedCells.map { return IndexPath(row: $0, section: 0) })
         
-        self.minefieldView.updateCells(at: cellsToUpdate)
+        self.mineFieldView.updateCells(at: cellsToUpdate)
         
         // Ensure this gets rendered last
         DispatchQueue.main.async {
-            self.minefieldView.updateCells(at: [IndexPath(row: explodedCell, section: 0)])
+            self.mineFieldView.updateCells(at: [IndexPath(row: explodedCell, section: 0)])
         }
         
         self.gameOver()

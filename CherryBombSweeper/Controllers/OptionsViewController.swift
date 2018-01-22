@@ -36,10 +36,6 @@ class OptionsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        if let bkgPattern = GameGeneralService.shared.darkGrassImage {
-            self.view.backgroundColor = UIColor.init(patternImage: bkgPattern)
-        }
         
         rowCountPicker.delegate = self
         rowCountPicker.dataSource = self
@@ -49,6 +45,17 @@ class OptionsViewController: UIViewController {
         
         mineCountPicker.delegate = self
         mineCountPicker.dataSource = self
+        
+        if !UIAccessibilityIsReduceTransparencyEnabled() {
+            self.view.backgroundColor = .clear
+            
+            let blurEffect = UIBlurEffect(style: .dark)
+            let blurEffectView = UIVisualEffectView(effect: blurEffect)
+            blurEffectView.frame = self.view.bounds
+            blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+            
+            self.view.insertSubview(blurEffectView, at: 0)
+        }
     }
     
     override func viewDidLayoutSubviews() {

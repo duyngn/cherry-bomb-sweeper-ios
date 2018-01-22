@@ -27,7 +27,7 @@ class FieldGridCell: UICollectionViewCell {
     @IBOutlet private weak var cellFlagIcon: UIImageView!
     @IBOutlet private weak var cellCover: UIImageView!
     @IBOutlet private weak var adjacentBombsLabel: UILabel!
-    @IBOutlet private weak var cellIcon: UIImageView!
+    @IBOutlet private weak var bombIcon: UIImageView!
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -57,8 +57,8 @@ class FieldGridCell: UICollectionViewCell {
         case .flagged:
             self.cellFlagIcon.isHidden = false
             
-            if let flagImage = self.getCellCoverGrass(at: cell.fieldCoord) {
-                self.cellCover.image = flagImage
+            if let grassImage = self.getCellCoverGrass(at: cell.fieldCoord) {
+                self.cellCover.image = grassImage
             }
         case .exploded:
             if let boomImage = GameGeneralService.shared.boomImage {
@@ -68,17 +68,21 @@ class FieldGridCell: UICollectionViewCell {
         case .highlight:
             self.cellCover.isHidden = true
         case .showBomb:
-            self.cellCover.isHidden = true
-            self.cellIcon.isHidden = false
+            self.bombIcon.isHidden = false
+            
+            if let grassImage = self.getCellCoverGrass(at: cell.fieldCoord) {
+                self.cellCover.image = grassImage
+            }
         case .wrongBomb:
             if let xImage = GameGeneralService.shared.xImage {
-                self.cellCover.image = xImage
-                self.cellCover.isHidden = false
+                self.bombIcon.image = xImage
+                self.bombIcon.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
+                self.bombIcon.isHidden = false
             } else {
                 self.cellCover.isHidden = true
             }
             
-            self.cellIcon.isHidden = false
+            self.cellFlagIcon.isHidden = false
         }
     }
     
@@ -138,7 +142,8 @@ class FieldGridCell: UICollectionViewCell {
         }
         
         self.cellFlagIcon.isHidden = true
-        self.cellIcon.isHidden = true
+        self.bombIcon.isHidden = true
+        self.bombIcon.transform = CGAffineTransform.identity
         self.adjacentBombsLabel.isHidden = true
         self.adjacentBombsLabel.text = nil
     }
