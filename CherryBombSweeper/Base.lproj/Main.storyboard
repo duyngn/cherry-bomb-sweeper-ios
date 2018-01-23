@@ -19,7 +19,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="b5B-6w-8p9" customClass="FieldGridScrollView" customModule="CherryBombSweeper" customModuleProvider="target">
+                            <scrollView multipleTouchEnabled="YES" contentMode="scaleToFill" delaysContentTouches="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b5B-6w-8p9" customClass="FieldGridScrollView" customModule="CherryBombSweeper" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="112" width="375" height="555"/>
                             </scrollView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lh7-Kx-vxV" userLabel="Controls Container">

@@ -38,6 +38,7 @@ class FieldGridScrollView: UIScrollView {
         let fieldGrid = FieldGridCollectionView(frame: self.frame, collectionViewLayout: FieldGridCollectionViewLayout())
         fieldGrid.layer.borderWidth = GameGeneralService.Constant.fieldBorderWidth
         fieldGrid.layer.borderColor = UIColor.black.cgColor
+        fieldGrid.isScrollEnabled = false
         self.fieldGridCollection = fieldGrid
         
         fieldGrid.isHidden = true
@@ -196,6 +197,12 @@ class FieldGridScrollView: UIScrollView {
         
         self.topConstraint?.isActive = true
         self.leadingConstraint?.isActive = true
+        
+        DispatchQueue.main.async {
+            UIView.animate(withDuration: 0.3) {
+                self.layoutIfNeeded()
+            }
+        }
     }
     
     private func resetConstraintsToOrigin() {
