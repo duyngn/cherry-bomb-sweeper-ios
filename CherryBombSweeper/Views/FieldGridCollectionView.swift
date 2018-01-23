@@ -71,16 +71,6 @@ class FieldGridCollectionView: UICollectionView {
         
         self.dimensionConstraints = [widthConstraint, heightConstraint]
         
-        if let superView = self.superview {
-            let leadingConstraint = self.leadingAnchor.constraint(equalTo: superView.leadingAnchor)
-            let topConstraint = self.topAnchor.constraint(equalTo: superView.topAnchor)
-            
-            leadingConstraint.isActive = true
-            topConstraint.isActive = true
-            
-            self.dimensionConstraints.append(contentsOf: [leadingConstraint, topConstraint])
-        }
-        
         completionHandler?(fieldWidth, fieldHeight)
     }
 }

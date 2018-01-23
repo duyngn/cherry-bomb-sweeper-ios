@@ -23,6 +23,11 @@ class FieldGridScrollView: UIScrollView {
     private var fieldHeight: CGFloat = 0
     private var modifiedIndexPaths: Set<IndexPath> = []
     
+    fileprivate var lastZoomedWidth: CGFloat = 0
+    
+    fileprivate var topConstraint: NSLayoutConstraint?
+    fileprivate var leadingConstraint: NSLayoutConstraint?
+    
     lazy private var setUpOnce: Void = {
         self.delegate = self
         
@@ -61,16 +66,22 @@ class FieldGridScrollView: UIScrollView {
             // Show and reload only what's been affected
             fieldGridCollection.isHidden = false
             fieldGridCollection.reloadItems(at: Array(self.modifiedIndexPaths))
-            self.modifiedIndexPaths.removeAll()
             
-            completionHandler?(self.fieldWidth, self.fieldHeight)
+            self.modifiedIndexPaths.removeAll()
+            self.contentSize = CGSize(width: self.fieldWidth, height: self.fieldHeight)
+            
+            self.recenterFieldGrid()
             
             DispatchQueue.main.async {
-                self.setZoomScale(1.0, animated: true)
-                if !self.recenterFieldGrid() {
-                    self.setContentOffset(CGPoint(x: 0, y: 0), animated: false)
+                UIView.animate(withDuration: 0.3) {
+                    self.zoomScale = 1.0
+                    self.contentOffset.x = 0
+                    self.contentOffset.y = 0
                 }
+                
+                completionHandler?(self.fieldWidth, self.fieldHeight)
             }
+            
             return
         }
         
@@ -80,40 +91,55 @@ class FieldGridScrollView: UIScrollView {
         
         fieldGridCollection.setupFieldGrid(rows: rows, columns: columns, dataSource: dataSource, cellTapHandler: cellTapHandler) { [weak self] (fieldWidth, fieldHeight) in
             guard let `self` = self else { return }
-            
             self.fieldWidth = fieldWidth
             self.fieldHeight = fieldHeight
             
-            let windowWidth = self.frame.width
-            let windowHeight = self.frame.height
-    
-            // Figure out which dimension is wider than screen when normalized, that dimension would determine the mininum scale factor
-            // to fit the entire field into the container
-            let screenAspect = windowWidth / windowHeight
-            let fieldAspect = fieldWidth / fieldHeight
-            
-            self.minScaleFactor = (fieldAspect > screenAspect) ? windowWidth / fieldWidth : windowHeight / fieldHeight
-            
-            self.minimumZoomScale = self.minScaleFactor
-            self.maximumZoomScale = GameGeneralService.Constant.defaultMaxScaleFactor
             self.contentSize = CGSize(width: fieldWidth, height: fieldHeight)
-
+            
+            self.calculateGridLayoutParams()
+            
             // Show and reload
             fieldGridCollection.isHidden = false
             fieldGridCollection.reloadData()
             
             DispatchQueue.main.async {
-                self.setZoomScale(1.0, animated: true)
-                if !self.recenterFieldGrid() {
-                    self.setContentOffset(CGPoint(x: 0, y: 0), animated: false)
+                UIView.animate(withDuration: 0.3) {
+                    self.zoomScale = 1.0
+                    self.contentOffset.x = 0
+                    self.contentOffset.y = 0
                 }
+                
                 completionHandler?(fieldWidth, fieldHeight)
             }
         }
     }
     
+    private func calculateScaleFactors() {
+        let windowWidth = self.frame.width
+        let windowHeight = self.frame.height
+        
+        // Figure out which dimension is wider than screen when normalized, that dimension would determine the mininum scale factor
+        // to fit the entire field into the container
+        let screenAspect = windowWidth / windowHeight
+        let fieldAspect = self.fieldWidth / self.fieldHeight
+        
+        let newMinScale = (fieldAspect > screenAspect) ? windowWidth / self.fieldWidth : windowHeight / self.fieldHeight
+        
+        if self.minScaleFactor < newMinScale {
+            self.zoomScale = newMinScale
+        }
+        
+        self.minScaleFactor = newMinScale
+        
+        self.minimumZoomScale = self.minScaleFactor
+        self.maximumZoomScale = GameGeneralService.Constant.defaultMaxScaleFactor
+    }
+    
     func showEntireField() {
-        self.setZoomScale(self.minScaleFactor, animated: true)
+        UIView.animate(withDuration: 0.3) {
+            self.zoomScale = self.minScaleFactor
+            self.recenterFieldGrid()
+        }
     }
     
     func updateCells(at indexPaths: [IndexPath]) {
@@ -125,29 +151,67 @@ class FieldGridScrollView: UIScrollView {
         }
     }
     
-    func recenterFieldGrid() -> Bool {
+    func calculateGridLayoutParams() {
+        self.calculateScaleFactors()
+        self.resetConstraintsToOrigin()
+        self.lastZoomedWidth = 0
+        self.recenterFieldGrid()
+    }
+    
+    fileprivate func recenterFieldGrid() {
+        guard self.lastZoomedWidth != self.contentSize.width,
+            let fieldGrid = self.fieldGridCollection else { return }
+        
         let fieldWidth = self.contentSize.width
         let fieldHeight = self.contentSize.height
-        
+
         let windowWidth = self.frame.width
         let windowHeight = self.frame.height
         
-        if fieldWidth > windowWidth, fieldHeight > windowHeight { return false }
-        
-        var xOffset: CGFloat = self.contentOffset.x
-        var yOffset: CGFloat = self.contentOffset.y
-        
-        if fieldWidth < windowWidth {
-            xOffset = (fieldWidth - windowWidth) / 2
+        self.lastZoomedWidth = fieldWidth
+
+        if fieldWidth > windowWidth, fieldHeight > windowHeight {
+            self.resetConstraintsToOrigin()
+        } else {
+            if fieldWidth < windowWidth {
+                // lockOffsetX
+                let xOffset = (windowWidth - fieldWidth) / 2
+                
+                self.leadingConstraint?.isActive = false
+                
+                let leadingConstraint = fieldGrid.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: xOffset)
+                self.leadingConstraint = leadingConstraint
+            }
+            
+            if fieldHeight < windowHeight {
+                // lockOffsetY
+                let yOffset = (windowHeight - fieldHeight) / 2
+            
+                self.topConstraint?.isActive = false
+                
+                let topConstraint = fieldGrid.topAnchor.constraint(equalTo: self.topAnchor, constant: yOffset)
+                self.topConstraint = topConstraint
+            }
         }
         
-        if fieldHeight < windowHeight {
-            yOffset = (fieldHeight - windowHeight) / 2
-        }
+        self.topConstraint?.isActive = true
+        self.leadingConstraint?.isActive = true
+    }
+    
+    private func resetConstraintsToOrigin() {
+        guard let fieldGrid = self.fieldGridCollection else { return }
         
-        self.setContentOffset(CGPoint(x: xOffset, y: yOffset), animated: true)
+        self.leadingConstraint?.isActive = false
+        self.topConstraint?.isActive = false
         
-        return true
+        let leadingConstraint = fieldGrid.leadingAnchor.constraint(equalTo: self.leadingAnchor)
+        self.leadingConstraint = leadingConstraint
+        
+        let topConstraint = fieldGrid.topAnchor.constraint(equalTo: self.topAnchor)
+        self.topConstraint = topConstraint
+        
+        self.topConstraint?.isActive = true
+        self.leadingConstraint?.isActive = true
     }
 }
 
@@ -157,17 +221,7 @@ extension FieldGridScrollView: UIScrollViewDelegate {
     }
     
     func scrollViewDidEndZooming(_ scrollView: UIScrollView, with view: UIView?, atScale scale: CGFloat) {
-        let _ = self.recenterFieldGrid()
-    }
-    
-    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        guard !decelerate else { return }
-        
-        let _ = self.recenterFieldGrid()
-    }
-    
-    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        let _ = self.recenterFieldGrid()
+        self.recenterFieldGrid()
     }
 }
 

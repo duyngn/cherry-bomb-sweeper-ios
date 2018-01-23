@@ -34,6 +34,7 @@ class GameViewController: UIViewController {
     fileprivate var game: Game?
     fileprivate var isFieldInit: Bool = true
     
+    private var currentOrientation: UIDeviceOrientation = .portrait
     private var currentUserAction: UserAction = .tap
     private var gameTimer: GameTimer?
     
@@ -43,6 +44,8 @@ class GameViewController: UIViewController {
         if let bkgPattern = GameGeneralService.shared.darkGrassImage {
             self.view.backgroundColor = UIColor.init(patternImage: bkgPattern)
         }
+        
+        self.setupOrientationHandler()
         
         self.gameTimer = GameTimer(self)
         
@@ -72,6 +75,26 @@ class GameViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationController?.setNavigationBarHidden(true, animated: animated)
+    }
+    
+    private func setupOrientationHandler() {
+        self.currentOrientation = UIDevice.current.orientation
+        
+        NotificationCenter.default.addObserver(forName: .UIDeviceOrientationDidChange, object: nil, queue: .main)
+        { [weak self] (notification) in
+            guard let `self` = self else { return }
+            
+            if self.currentOrientation != UIDevice.current.orientation {
+                switch UIDevice.current.orientation {
+                case .landscapeLeft, .landscapeRight,
+                     .portrait, .portraitUpsideDown:
+                    self.mineFieldView.calculateGridLayoutParams()
+                    self.currentOrientation = UIDevice.current.orientation
+                default:
+                    break
+                }
+            }
+        }
     }
     
     private func setupFieldGridView() {
