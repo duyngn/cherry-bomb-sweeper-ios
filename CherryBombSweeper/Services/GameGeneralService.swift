@@ -12,6 +12,7 @@ import UIKit
 class GameGeneralService {
     
     enum Constant {
+        static let brickTileIconName = "brick-tile-icon"
         static let darkGrassIconName = "grass-dark-icon"
         static let lightGrassIconName = "grass-light-icon"
         static let flagIconName = "flag-icon"
@@ -40,6 +41,7 @@ class GameGeneralService {
     
     static let shared = GameGeneralService()
     
+    var brickTileImage: UIImage?
     var darkGrassImage: UIImage?
     var lightGrassImage: UIImage?
     var flagImage: UIImage?
@@ -50,6 +52,7 @@ class GameGeneralService {
     var xImage: UIImage?
     
     fileprivate init() {
+        self.brickTileImage = UIImage(named: Constant.brickTileIconName)
         self.darkGrassImage = UIImage(named: Constant.darkGrassIconName)
         self.lightGrassImage = UIImage(named: Constant.lightGrassIconName)
         self.flagImage = UIImage(named: Constant.flagIconName)

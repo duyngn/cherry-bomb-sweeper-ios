@@ -43,7 +43,7 @@ class GameViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if let bkgPattern = GameGeneralService.shared.darkGrassImage {
+        if let bkgPattern = GameGeneralService.shared.brickTileImage {
             self.view.backgroundColor = UIColor.init(patternImage: bkgPattern)
         }
         
@@ -54,7 +54,7 @@ class GameViewController: UIViewController {
         if !UIAccessibilityIsReduceTransparencyEnabled() {
             self.statsContainer.backgroundColor = .clear
             
-            let blurEffect = UIBlurEffect(style: .regular)
+            let blurEffect = UIBlurEffect(style: .dark)
             let blurEffectView = UIVisualEffectView(effect: blurEffect)
             blurEffectView.frame = self.statsContainer.bounds
             blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]

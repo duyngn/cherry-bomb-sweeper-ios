@@ -161,8 +161,11 @@ class OptionsViewController: UIViewController {
     
     private func saveConfig(row: Int, col: Int, mines: Int) {
         // Write to UserDefaults
-        let gameOptions = GameOptions(rowCount: row, columnCount: col, minesCount: mines)
-        PersistableService.saveGameOptionsToUserDefaults(gameOptions)
+        self.gameOptions.rowCount = row
+        self.gameOptions.columnCount = col
+        self.gameOptions.minesCount = mines
+        
+        PersistableService.saveGameOptionsToUserDefaults(self.gameOptions)
     }
 }
 
