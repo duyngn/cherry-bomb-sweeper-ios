@@ -95,7 +95,7 @@ class FieldGridScrollView: UIScrollView {
             
             self.contentSize = CGSize(width: fieldWidth, height: fieldHeight)
             
-            self.calculateGridLayoutParams()
+            self.calculateGridLayoutParams(width: fieldWidth, height: fieldHeight)
             
             // Show and reload
             fieldGridCollection.isHidden = false
@@ -150,19 +150,18 @@ class FieldGridScrollView: UIScrollView {
         }
     }
     
-    func calculateGridLayoutParams() {
+    func calculateGridLayoutParams(width: CGFloat? = nil, height: CGFloat? = nil) {
         self.calculateScaleFactors()
-        self.resetConstraintsToOrigin()
         self.lastZoomedWidth = 0
-        self.recenterFieldGrid()
+        self.recenterFieldGrid(width: width, height: height)
     }
     
-    fileprivate func recenterFieldGrid() {
+    fileprivate func recenterFieldGrid(width: CGFloat? = nil, height: CGFloat? = nil) {
         guard self.lastZoomedWidth != self.contentSize.width,
             let fieldGrid = self.fieldGridCollection else { return }
         
-        let fieldWidth = self.contentSize.width
-        let fieldHeight = self.contentSize.height
+        let fieldWidth = width ?? self.contentSize.width
+        let fieldHeight = height ?? self.contentSize.height
 
         let windowWidth = self.frame.width
         let windowHeight = self.frame.height
@@ -172,33 +171,39 @@ class FieldGridScrollView: UIScrollView {
         if fieldWidth > windowWidth, fieldHeight > windowHeight {
             self.resetConstraintsToOrigin()
         } else {
+            self.leadingConstraint?.isActive = false
+            self.topConstraint?.isActive = false
+            
             if fieldWidth < windowWidth {
                 // lockOffsetX
                 let xOffset = (windowWidth - fieldWidth) / 2
                 
-                self.leadingConstraint?.isActive = false
-                
                 let leadingConstraint = fieldGrid.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: xOffset)
                 self.leadingConstraint = leadingConstraint
+            } else {
+                let leadingConstraint = fieldGrid.leadingAnchor.constraint(equalTo: self.leadingAnchor)
+                self.leadingConstraint = leadingConstraint
+                
             }
             
             if fieldHeight < windowHeight {
                 // lockOffsetY
                 let yOffset = (windowHeight - fieldHeight) / 2
-            
-                self.topConstraint?.isActive = false
                 
                 let topConstraint = fieldGrid.topAnchor.constraint(equalTo: self.topAnchor, constant: yOffset)
                 self.topConstraint = topConstraint
+            } else {
+                let topConstraint = fieldGrid.topAnchor.constraint(equalTo: self.topAnchor)
+                self.topConstraint = topConstraint
             }
-        }
-        
-        self.topConstraint?.isActive = true
-        self.leadingConstraint?.isActive = true
-        
-        DispatchQueue.main.async {
-            UIView.animate(withDuration: 0.3) {
-                self.layoutIfNeeded()
+            
+            self.topConstraint?.isActive = true
+            self.leadingConstraint?.isActive = true
+            
+            DispatchQueue.main.async {
+                UIView.animate(withDuration: 0.3) {
+                    self.layoutIfNeeded()
+                }
             }
         }
     }
@@ -217,6 +222,12 @@ class FieldGridScrollView: UIScrollView {
         
         self.topConstraint?.isActive = true
         self.leadingConstraint?.isActive = true
+        
+        DispatchQueue.main.async {
+            UIView.animate(withDuration: 0.3) {
+                self.layoutIfNeeded()
+            }
+        }
     }
 }
 

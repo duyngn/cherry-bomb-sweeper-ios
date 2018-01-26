@@ -138,6 +138,7 @@ class GameViewController: UIViewController {
         
         self.resetControlStates()
         self.resetGameTimer()
+        self.setupFieldGridView()
         
         gameGeneratorService.generateNewGame { [weak self] (newGame) in
             guard let `self` = self else { return }
@@ -147,7 +148,6 @@ class GameViewController: UIViewController {
             
             DispatchQueue.main.async {
                 self.mineCountLabel.text = String(describing: newGame.mineField.mines)
-                self.setupFieldGridView()
             }
             
             self.finishLoading()
