@@ -30,12 +30,14 @@ class GameViewController: UIViewController {
     // Grid
     @IBOutlet fileprivate weak var mineFieldView: FieldGridScrollView!
 
-    fileprivate var gameOptions: GameOptions = GameGeneratorService.shared.gameOptions
     fileprivate var game: Game?
     fileprivate var isFieldInit: Bool = true
     
     private var currentOrientation: UIDeviceOrientation = .portrait
     private var currentUserAction: UserAction = .tap
+    
+    fileprivate var gameGeneratorService: GameGeneratorService = GameGeneratorService()
+    private var gameProcessingService: GameProcessingService = GameProcessingService()
     private var gameTimer: GameTimer?
     
     override func viewDidLoad() {
@@ -62,7 +64,7 @@ class GameViewController: UIViewController {
     }
     
     lazy private var initGame: Void = {
-        GameProcessingService.shared.registerListener(self)
+        self.gameProcessingService.registerListener(self)
         self.startNewGame()
     }()
     
@@ -101,8 +103,19 @@ class GameViewController: UIViewController {
         DispatchQueue.main.async {
             let actionableState: Set<GameState> = Set([.loaded, .new, .inProgress])
             
-            self.mineFieldView.setupFieldGrid(rows: self.gameOptions.rowCount,
-                                              columns: self.gameOptions.columnCount,
+            var rowCount = 0
+            var colCount = 0
+            if let game = self.game {
+                rowCount = game.mineField.rows
+                colCount = game.mineField.columns
+            } else {
+                let gameOptions = PersistableService.getGameOptionsFromUserDefaults()
+                rowCount = gameOptions.rowCount
+                colCount = gameOptions.columnCount
+            }
+            
+            self.mineFieldView.setupFieldGrid(rows: rowCount,
+                                              columns: colCount,
                                               dataSource: self,
                                               cellTapHandler: { [weak self] (cellIndex) in
                                                 
@@ -111,7 +124,7 @@ class GameViewController: UIViewController {
                 if actionableState.contains(game.state) {
                     self.gameStarted()
                     
-                    GameProcessingService.shared.resolveUserAction(at: cellIndex, in: game, with: self.currentUserAction)
+                    self.gameProcessingService.resolveUserAction(at: cellIndex, in: game, with: self.currentUserAction)
                 }
             }) { (_, _) in
 //                let _ = self.mineFieldView.recenterFieldGrid()
@@ -120,22 +133,22 @@ class GameViewController: UIViewController {
     }
     
     private func startNewGame() {
-        self.gameOptions = GameGeneratorService.shared.gameOptions
-        
         self.isFieldInit = true
         self.game = nil
-        self.setupFieldGridView()
         
         self.resetControlStates()
         self.resetGameTimer()
-        self.mineCountLabel.text = String(describing: self.gameOptions.minesCount)
         
-        GameGeneratorService.shared.generateNewGame { [weak self] (newGame) in
+        gameGeneratorService.generateNewGame { [weak self] (newGame) in
             guard let `self` = self else { return }
             
             newGame.state = .loaded
-            
             self.game = newGame
+            
+            DispatchQueue.main.async {
+                self.mineCountLabel.text = String(describing: newGame.mineField.mines)
+                self.setupFieldGridView()
+            }
             
             self.finishLoading()
         }
@@ -180,7 +193,7 @@ class GameViewController: UIViewController {
             self.mineFieldView.showEntireField()
             
             // Preload the next game
-            GameGeneratorService.shared.preloadGame()
+            self.gameGeneratorService.preloadGame()
         }
     }
     
@@ -193,27 +206,12 @@ class GameViewController: UIViewController {
             self.mineFieldView.showEntireField()
             
             // Preload the next game
-            GameGeneratorService.shared.preloadGame()
+            self.gameGeneratorService.preloadGame()
         }
     }
     
     private func finishLoading() {
         self.isFieldInit = false
-        
-//        DispatchQueue.main.async {
-//            self.minefieldView.alpha = 0
-//            self.minefieldView.isHidden = false
-//
-//            self.loadingSpinner.alpha = 1
-//
-//            UIView.animate(withDuration: 0.3, animations: {
-//                self.minefieldView.alpha = 1
-//                self.loadingSpinner.alpha = 0
-//            }) { (_) in
-//                self.loadingSpinner.isHidden = true
-//                self.loadingSpinner.stopAnimating()
-//            }
-//        }
     }
     
     @IBAction func onOptionsPressed(_ sender: UIButton) {
@@ -271,14 +269,14 @@ class GameViewController: UIViewController {
 
 extension GameViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.game?.mineField.cellIndexToCoordMap.count ?? self.gameOptions.rowCount * self.gameOptions.columnCount
+        return self.game?.mineField.cellIndexToCoordMap.count ?? self.gameGeneratorService.gameOptions.rowCount * self.gameGeneratorService.gameOptions.columnCount
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if let cellView = collectionView.dequeueReusableCell(withReuseIdentifier: FieldGridCollectionView.Constant.gridCellIdentifier, for: indexPath) as? FieldGridCell {
             
             if self.isFieldInit {
-                cellView.reinitCell(at: indexPath.row, fieldRows: self.gameOptions.rowCount)
+                cellView.reinitCell(at: indexPath.row, fieldRows: self.gameGeneratorService.gameOptions.rowCount)
             } else if let game = self.game, let cell = game.mineField.getCell(at: indexPath.row) {
                 cellView.setupCellView(with: cell)
             }
@@ -287,7 +285,7 @@ extension GameViewController: UICollectionViewDataSource {
         }
         
         let cellView = FieldGridCell()
-        cellView.reinitCell(at: indexPath.row, fieldRows: self.gameOptions.rowCount)
+        cellView.reinitCell(at: indexPath.row, fieldRows: self.gameGeneratorService.gameOptions.rowCount)
         return cellView
     }
 }

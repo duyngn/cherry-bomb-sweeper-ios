@@ -13,8 +13,6 @@ class FieldGridScrollView: UIScrollView {
 
     private var minScaleFactor: CGFloat = GameGeneralService.Constant.defaultMinScaleFactor
     
-//    private var maxContentOffset: CGFloat = 0
-    
     private var cellTapHandler: CellTapHandler?
     
     private var rowCount: Int = 0

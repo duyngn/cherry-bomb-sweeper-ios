@@ -17,18 +17,14 @@ protocol GameStatusListener {
     func onGameCompleted() -> Void
 }
 
-typealias CellRevealHandler = (_ revealedCells: Set<Int>) -> Void
-
-class GameProcessingService: NSObject {
+class GameProcessingService {
     
-    static let shared = GameProcessingService()
+    private typealias CellRevealHandler = (_ revealedCells: Set<Int>) -> Void
     
     private var gameListener: GameStatusListener?
     private var currentGame: Game?
     
     private let processingQueue: DispatchQueue = DispatchQueue(label: "gameProcessingQueue", qos: .userInitiated)
-    
-    fileprivate override init() {}
     
     func registerListener(_ listener: GameStatusListener) {
         self.gameListener = listener

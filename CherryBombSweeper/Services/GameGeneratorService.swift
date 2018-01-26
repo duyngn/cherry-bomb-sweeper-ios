@@ -11,16 +11,13 @@ import Foundation
 typealias GenerateNewGameCompletionHandler = (_ newGame: Game) -> Void
 typealias GenerateMineFieldCompletionHandler = (_ mineField: MineField) -> Void
 
-class GameGeneratorService: NSObject {
-    static let shared = GameGeneratorService()
+class GameGeneratorService {
     
-    var gameOptions: GameOptions
-    var preloadedGame: Game?
+    var gameOptions: GameOptions = PersistableService.getGameOptionsFromUserDefaults()
+    private var preloadedGame: Game?
     
-    private let generatorQueue: DispatchQueue = DispatchQueue(label: "gameGeneratorQueue", qos: .userInitiated)
-    
-    fileprivate override init() {
-        self.gameOptions = GameOptions()
+    init() {
+        self.preloadGame()
     }
     
     func preloadGame(forced: Bool = false) {
@@ -34,7 +31,9 @@ class GameGeneratorService: NSObject {
     }
     
     func generateNewGame(completionHandler: @escaping GenerateNewGameCompletionHandler) {
-        self.generatorQueue.async {
+        DispatchQueue.global(qos: .userInitiated).async {
+            // Make sure the preloaded game matches what the current user configs are
+            self.gameOptions = PersistableService.getGameOptionsFromUserDefaults()
             if let preloadedGame = self.preloadedGame,
                 preloadedGame.mineField.rows == self.gameOptions.rowCount,
                 preloadedGame.mineField.columns == self.gameOptions.columnCount,
@@ -52,21 +51,21 @@ class GameGeneratorService: NSObject {
     }
     
     private func generateGame(completionHandler: @escaping GenerateNewGameCompletionHandler) {
-        self.generateMineField { [weak self, completionHandler] (mineField) in
-            guard let `self` = self else { return }
+        self.generateMineField { [completionHandler] (mineField) in
             
-            let newGame = Game(mineField: mineField, gameOptions: self.gameOptions)
+            let newGame = Game(mineField: mineField)
             
             completionHandler(newGame)
         }
     }
     
     private func generateMineField(completionHandler: @escaping GenerateMineFieldCompletionHandler) {
-        let rows = self.gameOptions.rowCount
-        let columns = self.gameOptions.columnCount
-        let mines = self.gameOptions.minesCount
+        self.gameOptions = PersistableService.getGameOptionsFromUserDefaults()
         
-        let mineField = MineField.constructAndPopulateMineField(rows: rows, columns: columns, mines: mines)
+        let mineField = MineField.constructAndPopulateMineField(
+            rows: gameOptions.rowCount,
+            columns: gameOptions.columnCount,
+            mines: gameOptions.minesCount)
         
         completionHandler(mineField)
     }

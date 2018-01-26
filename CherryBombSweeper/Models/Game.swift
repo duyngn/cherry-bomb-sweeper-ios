@@ -18,16 +18,14 @@ enum GameState {
 }
 
 class Game {
-    var gameOptions: GameOptions = GameGeneratorService.shared.gameOptions
     var mineField: MineField
     var state: GameState = .new
     var minesRemaining: Int
     
     var flaggedCellIndices: Set<Int> = []
     
-    init(mineField: MineField = MineField(), gameOptions: GameOptions = GameGeneratorService.shared.gameOptions) {
+    init(mineField: MineField = MineField()) {
         self.mineField = mineField
-        self.gameOptions = gameOptions
         self.minesRemaining = mineField.bombCellIndices.count
     }
 }

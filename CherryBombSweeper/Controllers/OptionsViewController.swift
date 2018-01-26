@@ -28,7 +28,7 @@ class OptionsViewController: UIViewController {
     fileprivate var selectedColumnIndex: Int = 0
     fileprivate var selectedMinesIndex: Int = 0
     
-    private var gameOptions: GameOptions = GameGeneratorService.shared.gameOptions
+    private var gameOptions: GameOptions = PersistableService.getGameOptionsFromUserDefaults()
     
     fileprivate lazy var initialize: Void = {
         self.updateSelectedPickerIndices()
@@ -93,13 +93,11 @@ class OptionsViewController: UIViewController {
         self.gameOptions.rowCount = 9
         self.gameOptions.columnCount = 9
         self.gameOptions.minesCount = 10
-//        self.saveConfig(row: 9, col: 9, mines: 10)
         self.updateSelectedPickerIndices()
     }
     
     @IBAction func onIntermediateButtonPressed(_ sender: UIButton) {
         // 16x16, 40 mines
-//        self.saveConfig(row: 16, col: 16, mines: 40)
         self.gameOptions.rowCount = 16
         self.gameOptions.columnCount = 16
         self.gameOptions.minesCount = 40
@@ -108,7 +106,6 @@ class OptionsViewController: UIViewController {
     
     @IBAction func onExpertButtonPressed(_ sender: UIButton) {
         // 24x24, 99 mines
-//        self.saveConfig(row: 24, col: 24, mines: 99)
         self.gameOptions.rowCount = 24
         self.gameOptions.columnCount = 24
         self.gameOptions.minesCount = 99
@@ -163,11 +160,9 @@ class OptionsViewController: UIViewController {
     }
     
     private func saveConfig(row: Int, col: Int, mines: Int) {
-        GameGeneratorService.shared.gameOptions.rowCount = row
-        GameGeneratorService.shared.gameOptions.columnCount = col
-        GameGeneratorService.shared.gameOptions.minesCount = mines
-        
-        GameGeneratorService.shared.preloadGame(forced: true)
+        // Write to UserDefaults
+        let gameOptions = GameOptions(rowCount: row, columnCount: col, minesCount: mines)
+        PersistableService.saveGameOptionsToUserDefaults(gameOptions)
     }
 }
 

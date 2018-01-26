@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-class GameGeneralService: NSObject {
+class GameGeneralService {
     
     enum Constant {
         static let darkGrassIconName = "grass-dark-icon"
@@ -49,7 +49,7 @@ class GameGeneralService: NSObject {
     var gearImage: UIImage?
     var xImage: UIImage?
     
-    fileprivate override init() {
+    fileprivate init() {
         self.darkGrassImage = UIImage(named: Constant.darkGrassIconName)
         self.lightGrassImage = UIImage(named: Constant.lightGrassIconName)
         self.flagImage = UIImage(named: Constant.flagIconName)
