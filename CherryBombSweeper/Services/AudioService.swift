@@ -24,8 +24,12 @@ class AudioService {
     private var selectSfxPlayer: AVAudioPlayer = AVAudioPlayer()
     private var saveConfigSfxPlayer: AVAudioPlayer = AVAudioPlayer()
     
+    private let audioQueue: DispatchQueue = DispatchQueue(label: "gameAudioQueue", qos: .userInitiated)
+    
     private init() {
-        self.setupMusicPlayers()
+        self.audioQueue.async {
+            self.setupMusicPlayers()
+        }
     }
     
     private func setupMusicPlayers() {
@@ -164,70 +168,94 @@ class AudioService {
     }
     
     func playTapSound() {
-        self.tapSfxPlayer.pause()
-        self.tapSfxPlayer.currentTime = 0
-        self.tapSfxPlayer.play()
+        self.audioQueue.async {
+            self.tapSfxPlayer.pause()
+            self.tapSfxPlayer.currentTime = 0
+            self.tapSfxPlayer.play()
+        }
     }
     
     func playProbeSound() {
-        self.probeSfxPlayer.pause()
-        self.probeSfxPlayer.currentTime = 0
-        self.probeSfxPlayer.play()
+        self.audioQueue.async {
+            self.probeSfxPlayer.pause()
+            self.probeSfxPlayer.currentTime = 0
+            self.probeSfxPlayer.play()
+        }
     }
     
     func playFlagSound() {
-        self.flagSfxPlayer.pause()
-        self.flagSfxPlayer.currentTime = 0
-        self.flagSfxPlayer.play()
+        self.audioQueue.async {
+            self.flagSfxPlayer.pause()
+            self.flagSfxPlayer.currentTime = 0
+            self.flagSfxPlayer.play()
+        }
     }
     
     func playRevealSound() {
-        self.revealSfxPlayer.pause()
-        self.revealSfxPlayer.currentTime = 0
-        self.revealSfxPlayer.play()
+        self.audioQueue.async {
+            self.revealSfxPlayer.pause()
+            self.revealSfxPlayer.currentTime = 0
+            self.revealSfxPlayer.play()
+        }
     }
     
     func playExplodeSound() {
-        self.explodeSfxPlayer.pause()
-        self.explodeSfxPlayer.currentTime = 0
-        self.explodeSfxPlayer.play()
+        self.audioQueue.async {
+            self.explodeSfxPlayer.pause()
+            self.explodeSfxPlayer.currentTime = 0
+            self.explodeSfxPlayer.play()
+        }
     }
     
     func playWinningMusic() {
-        self.winningSfxPlayer.play()
+        self.audioQueue.async {
+            self.winningSfxPlayer.play()
+        }
     }
     
     func playBeepBeepSound() {
-        self.beepBeepSfxPlayer.stop()
-        self.beepBeepSfxPlayer.currentTime = 0
-        self.beepBeepSfxPlayer.play()
+        self.audioQueue.async {
+            self.beepBeepSfxPlayer.stop()
+            self.beepBeepSfxPlayer.currentTime = 0
+            self.beepBeepSfxPlayer.play()
+        }
     }
     
     func playPositiveSound() {
-        self.positiveSfxPlayer.stop()
-        self.positiveSfxPlayer.currentTime = 0
-        self.positiveSfxPlayer.play()
+        self.audioQueue.async {
+            self.positiveSfxPlayer.stop()
+            self.positiveSfxPlayer.currentTime = 0
+            self.positiveSfxPlayer.play()
+        }
     }
     
     func playSelectSound() {
-        self.selectSfxPlayer.stop()
-        self.selectSfxPlayer.currentTime = 0
-        self.selectSfxPlayer.play()
+        self.audioQueue.async {
+            self.selectSfxPlayer.stop()
+            self.selectSfxPlayer.currentTime = 0
+            self.selectSfxPlayer.play()
+        }
     }
     
     func playSaveConfigSound() {
-        self.saveConfigSfxPlayer.stop()
-        self.saveConfigSfxPlayer.currentTime = 0
-        self.saveConfigSfxPlayer.play()
+        self.audioQueue.async {
+            self.saveConfigSfxPlayer.stop()
+            self.saveConfigSfxPlayer.currentTime = 0
+            self.saveConfigSfxPlayer.play()
+        }
     }
     
     func startBackgroundMusic() {
-        self.bkgMusicPlayer.play()
-        self.bkgMusicPlayer.setVolume(0.15, fadeDuration: 3)
+        self.audioQueue.async {
+            self.bkgMusicPlayer.play()
+            self.bkgMusicPlayer.setVolume(0.15, fadeDuration: 3)
+        }
     }
     
     func stopBackgroundMusic() {
-        self.bkgMusicPlayer.setVolume(0, fadeDuration: 0.3)
-        self.bkgMusicPlayer.pause()
+        self.audioQueue.async {
+            self.bkgMusicPlayer.setVolume(0, fadeDuration: 0.3)
+            self.bkgMusicPlayer.pause()
+        }
     }
 }

@@ -189,7 +189,8 @@ class GameProcessingService {
             self.gameListener?.onCellFlagged(cell.index)
             
             self.processingQueue.async {
-                if self.currentGame?.mineField.unmarkedBombs == 0 {
+                if self.currentGame?.mineField.unmarkedBombs == 0,
+                   self.currentGame?.minesRemaining == 0 {
                     self.gameListener?.onGameCompleted()
                 }
             }

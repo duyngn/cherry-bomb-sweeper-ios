@@ -182,7 +182,6 @@ class FieldGridScrollView: UIScrollView {
             } else {
                 let leadingConstraint = fieldGrid.leadingAnchor.constraint(equalTo: self.leadingAnchor)
                 self.leadingConstraint = leadingConstraint
-                
             }
             
             if fieldHeight < windowHeight {

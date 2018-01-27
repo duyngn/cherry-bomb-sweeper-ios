@@ -209,41 +209,6 @@ class GameViewController: UIViewController {
         self.isFieldInit = false
     }
     
-    @IBAction func onOptionsPressed(_ sender: UIButton) {
-        self.gameTimer?.pauseTimer()
-        
-        self.audioService.stopBackgroundMusic()
-        self.audioService.playPositiveSound()
-        
-        let optionsController = OptionsViewController(nibName: "OptionsViewController", bundle: nil)
-        optionsController.exitHandler = { [weak self] (newGame) in
-            guard let `self` = self else { return }
-            
-            self.audioService.startBackgroundMusic()
-            
-            if newGame {
-                self.startNewGame()
-            } else if self.game?.state == .inProgress {
-                self.gameTimer?.resumeTimer()
-            }
-        }
-        
-        optionsController.modalPresentationStyle = .overFullScreen
-        
-        self.present(optionsController, animated: true)
-    }
-    
-    @IBAction func onActionModePressed(_ sender: UIButton) {
-        self.audioService.playPositiveSound()
-        self.updateActionModeButton(to: (self.currentUserAction == .tap) ? .flag : .tap)
-    }
-    
-    @IBAction func onNewGamePressed(_ sender: UIButton) {
-        self.audioService.playSaveConfigSound()
-        
-        self.startNewGame()
-    }
-    
     private func updateActionModeButton(to action: UserAction) {
         DispatchQueue.main.async {
             self.currentUserAction = action
@@ -267,6 +232,40 @@ class GameViewController: UIViewController {
                 self.mineCountLabel.text = String(describing: minesCount)
             }
         }
+    }
+    
+    @IBAction func onActionModePressed(_ sender: UIButton) {
+        self.audioService.playPositiveSound()
+        self.updateActionModeButton(to: (self.currentUserAction == .tap) ? .flag : .tap)
+    }
+    
+    @IBAction func onNewGamePressed(_ sender: UIButton) {
+        self.audioService.playSaveConfigSound()
+        
+        self.startNewGame()
+    }
+    
+    @IBAction func onOptionsPressed(_ sender: UIButton) {
+        self.gameTimer?.pauseTimer()
+        
+        self.audioService.stopBackgroundMusic()
+        self.audioService.playPositiveSound()
+        
+        let optionsController = OptionsViewController(nibName: "OptionsViewController", bundle: nil)
+        optionsController.exitHandler = { [weak self] (newGame) in
+            guard let `self` = self else { return }
+            
+            if newGame {
+                self.startNewGame()
+            } else if self.game?.state == .inProgress {
+                self.audioService.startBackgroundMusic()
+                self.gameTimer?.resumeTimer()
+            }
+        }
+        
+        optionsController.modalPresentationStyle = .overFullScreen
+        
+        self.present(optionsController, animated: true)
     }
 }
 
@@ -329,15 +328,13 @@ extension GameViewController: GameTimerDelegate {
 
 extension GameViewController: GameStatusListener {
     func onCellReveal(_ revealedCells: Set<Int>) {
-        self.audioService.playRevealSound()
-        
         let revealedIndexPaths = revealedCells.map { return IndexPath(row: $0, section: 0) }
         self.mineFieldView.updateCells(at: revealedIndexPaths)
+        
+        self.audioService.playRevealSound()
     }
     
     func onCellHighlight(_ highlightedCells: Set<Int>) {
-        self.audioService.playProbeSound()
-        
         let highlightIndexPaths = highlightedCells.map { return IndexPath(row: $0, section: 0) }
         
         self.mineFieldView.updateCells(at: highlightIndexPaths)
@@ -353,22 +350,24 @@ extension GameViewController: GameStatusListener {
             
             self.mineFieldView.updateCells(at: highlightIndexPaths)
         }
+        
+        self.audioService.playProbeSound()
     }
     
     func onCellFlagged(_ flaggedCell: Int) {
-        self.audioService.playFlagSound()
-        
         self.mineFieldView.updateCells(at: [IndexPath(row: flaggedCell, section: 0)])
 
         self.updateRemainingMinesCountLabel()
+        
+        self.audioService.playFlagSound()
     }
     
     func onCellUnflagged(_ unflaggedCell: Int) {
-        self.audioService.playFlagSound()
-        
         self.mineFieldView.updateCells(at: [IndexPath(row: unflaggedCell, section: 0)])
         
         self.updateRemainingMinesCountLabel()
+        
+        self.audioService.playFlagSound()
     }
     
     func onCellExploded(_ explodedCell: Int, otherBombCells: Set<Int>, wrongFlaggedCells: Set<Int>) {
