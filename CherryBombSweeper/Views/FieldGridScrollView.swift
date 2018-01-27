@@ -13,8 +13,6 @@ class FieldGridScrollView: UIScrollView {
 
     private var minScaleFactor: CGFloat = GameGeneralService.Constant.defaultMinScaleFactor
     
-    private var cellTapHandler: CellTapHandler?
-    
     private var rowCount: Int = 0
     private var columnCount: Int = 0
     private var fieldWidth: CGFloat = 0
@@ -53,7 +51,7 @@ class FieldGridScrollView: UIScrollView {
     
     func setupFieldGrid(rows: Int, columns: Int,
                         dataSource: UICollectionViewDataSource,
-                        cellTapHandler: @escaping CellTapHandler,
+                        cellActionHandler: FieldGridCellActionListener,
                         completionHandler: FieldSetupCompletionHandler?) {
         
         guard let fieldGridCollection = self.fieldGridCollection else { return }
@@ -61,7 +59,7 @@ class FieldGridScrollView: UIScrollView {
         if rows == self.rowCount, columns == self.columnCount {
             // Dimension didn't change, so just reset it
             fieldGridCollection.dataSource = dataSource
-            fieldGridCollection.cellTapHandler = cellTapHandler
+            fieldGridCollection.cellActionHandler = cellActionHandler
             
             // Show and reload only what's been affected
             fieldGridCollection.isHidden = false
@@ -89,7 +87,7 @@ class FieldGridScrollView: UIScrollView {
         self.columnCount = columns
         self.modifiedIndexPaths.removeAll()
         
-        fieldGridCollection.setupFieldGrid(rows: rows, columns: columns, dataSource: dataSource, cellTapHandler: cellTapHandler) { [weak self] (fieldWidth, fieldHeight) in
+        fieldGridCollection.setupFieldGrid(rows: rows, columns: columns, dataSource: dataSource, cellActionHandler: cellActionHandler) { [weak self] (fieldWidth, fieldHeight) in
             guard let `self` = self else { return }
             self.fieldWidth = fieldWidth
             self.fieldHeight = fieldHeight

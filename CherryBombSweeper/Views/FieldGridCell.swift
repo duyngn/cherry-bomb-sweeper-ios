@@ -69,9 +69,19 @@ class FieldGridCell: UICollectionViewCell {
             self.cellCover.isHidden = true
         case .flagged:
             self.cellFlagIcon.isHidden = false
-            
+            var transform = self.cellFlagIcon.transform
+            transform = transform.translatedBy(x: 5, y: -70)
+            transform = transform.scaledBy(x: 2, y: 2)
+            self.cellFlagIcon.transform = transform
+
             if let grassImage = self.getCellCoverGrass(at: cell.fieldCoord) {
                 self.cellCover.image = grassImage
+            }
+            
+            DispatchQueue.main.async {
+                UIView.animate(withDuration: 0.15) {
+                    self.cellFlagIcon.transform = CGAffineTransform.identity
+                }
             }
         case .exploded:
             self.background.isHidden = false

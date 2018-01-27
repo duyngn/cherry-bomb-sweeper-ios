@@ -8,6 +8,12 @@
 
 import UIKit
 
+protocol FieldGridCellActionListener {
+    func onCellTap(_ cellIndex: Int) -> Void
+    func onCellLongPress(_ cellIndex: Int) -> Void
+    func onCellHardPress(_ cellIndex: Int) -> Void
+}
+
 typealias FieldSetupCompletionHandler = (_ fieldWidth: CGFloat, _ fieldHeight: CGFloat) -> Void
 
 class FieldGridCollectionView: UICollectionView {
@@ -16,11 +22,12 @@ class FieldGridCollectionView: UICollectionView {
         static let gridCellIdentifier = "FieldGridCell"
     }
     
-    var cellTapHandler: CellTapHandler?
+    var cellActionHandler: FieldGridCellActionListener?
     
     fileprivate var rowCount: Int = 0
     fileprivate var columnCount: Int = 0
     fileprivate var cellDimension: CGFloat = GameGeneralService.Constant.defaultCellDimension
+    fileprivate var longPressOnIndex: IndexPath?
     
     private var dimensionConstraints: [NSLayoutConstraint] = []
     
@@ -34,6 +41,11 @@ class FieldGridCollectionView: UICollectionView {
         self.delegate = self
         
         self.register(UINib(nibName: Constant.gridCellIdentifier, bundle: nil), forCellWithReuseIdentifier: Constant.gridCellIdentifier)
+        
+        let lpgr = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress(gesture:)))
+        lpgr.minimumPressDuration = 0.2
+        lpgr.delegate = self
+        self.addGestureRecognizer(lpgr)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -42,10 +54,10 @@ class FieldGridCollectionView: UICollectionView {
     
     func setupFieldGrid(rows: Int, columns: Int,
                         dataSource: UICollectionViewDataSource,
-                        cellTapHandler: @escaping CellTapHandler,
+                        cellActionHandler: FieldGridCellActionListener,
                         completionHandler: FieldSetupCompletionHandler?) {
         self.dataSource = dataSource
-        self.cellTapHandler = cellTapHandler
+        self.cellActionHandler = cellActionHandler
         
         self.rowCount = rows
         self.columnCount = columns
@@ -75,6 +87,22 @@ class FieldGridCollectionView: UICollectionView {
     }
 }
 
+extension FieldGridCollectionView: UIGestureRecognizerDelegate {
+    @objc fileprivate func handleLongPress(gesture : UILongPressGestureRecognizer!) {
+        if gesture.state == .began {
+            let p = gesture.location(in: self)
+            
+            if let indexPath = self.indexPathForItem(at: p) {
+                self.longPressOnIndex = indexPath
+                
+                self.cellActionHandler?.onCellLongPress(indexPath.row)
+            }
+        } else if gesture.state == .ended {
+            self.longPressOnIndex = nil
+        }
+    }
+}
+
 extension FieldGridCollectionView: FieldGridLayoutDelegate {    
     func collectionView(rowCountForFieldGrid collectionView: UICollectionView) -> Int {
         return self.rowCount
@@ -99,7 +127,9 @@ extension FieldGridCollectionView: FieldGridLayoutDelegate {
 
 extension FieldGridCollectionView: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt: IndexPath) {
-        self.cellTapHandler?(didSelectItemAt.row)
+        if let longPressed = self.longPressOnIndex, longPressed == didSelectItemAt { return }
+        
+        self.cellActionHandler?.onCellTap(didSelectItemAt.row)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {

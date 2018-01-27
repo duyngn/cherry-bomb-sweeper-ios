@@ -13,8 +13,6 @@ enum UserAction {
     case flag
 }
 
-typealias CellTapHandler = (_ cellIndex: Int) -> Void
-
 class GameViewController: UIViewController {
     
     // Controls
@@ -34,10 +32,11 @@ class GameViewController: UIViewController {
     fileprivate var isFieldInit: Bool = true
     
     private var currentOrientation: UIDeviceOrientation = .portrait
-    private var currentUserAction: UserAction = .tap
+    fileprivate var currentUserAction: UserAction = .tap
+    fileprivate let actionableState: Set<GameState> = Set([.loaded, .new, .inProgress])
     
     fileprivate var gameGeneratorService: GameGeneratorService = GameGeneratorService()
-    private var gameProcessingService: GameProcessingService = GameProcessingService()
+    fileprivate var gameProcessingService: GameProcessingService = GameProcessingService()
     private var gameTimer: GameTimer?
     
     override func viewDidLoad() {
@@ -101,7 +100,6 @@ class GameViewController: UIViewController {
     
     private func setupFieldGridView() {
         DispatchQueue.main.async {
-            let actionableState: Set<GameState> = Set([.loaded, .new, .inProgress])
             
             var rowCount = 0
             var colCount = 0
@@ -114,19 +112,7 @@ class GameViewController: UIViewController {
                 colCount = gameOptions.columnCount
             }
             
-            self.mineFieldView.setupFieldGrid(rows: rowCount,
-                                              columns: colCount,
-                                              dataSource: self,
-                                              cellTapHandler: { [weak self] (cellIndex) in
-                                                
-                guard let `self` = self, let game = self.game else { return }
-                                                
-                if actionableState.contains(game.state) {
-                    self.gameStarted()
-                    
-                    self.gameProcessingService.resolveUserAction(at: cellIndex, in: game, with: self.currentUserAction)
-                }
-            }) { (_, _) in
+            self.mineFieldView.setupFieldGrid(rows: rowCount, columns: colCount, dataSource: self, cellActionHandler: self) { (_, _) in
 //                let _ = self.mineFieldView.recenterFieldGrid()
             }
         }
@@ -170,7 +156,7 @@ class GameViewController: UIViewController {
         self.newGameButton.transform = CGAffineTransform.identity
     }
     
-    private func gameStarted() {
+    fileprivate func gameStarted() {
         guard let game = self.game, game.state != .inProgress else { return }
         
         self.game?.state = .inProgress
@@ -264,6 +250,32 @@ class GameViewController: UIViewController {
                 self.mineCountLabel.text = String(describing: minesCount)
             }
         }
+    }
+}
+
+extension GameViewController: FieldGridCellActionListener {
+    func onCellTap(_ cellIndex: Int) {
+        guard let game = self.game else { return }
+        
+        if actionableState.contains(game.state) {
+            self.gameStarted()
+            
+            self.gameProcessingService.resolveUserAction(at: cellIndex, in: game, with: self.currentUserAction)
+        }
+    }
+    
+    func onCellLongPress(_ cellIndex: Int) {
+        guard let game = self.game else { return }
+        
+        if actionableState.contains(game.state) {
+            self.gameStarted()
+            
+            self.gameProcessingService.resolveUserAction(at: cellIndex, in: game, with: .flag)
+        }
+    }
+    
+    func onCellHardPress(_ cellIndex: Int) {
+        
     }
 }
 
