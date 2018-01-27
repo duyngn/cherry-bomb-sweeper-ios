@@ -27,6 +27,7 @@ class MineField {
     var safeCellIndices: Set<Int> = []
     
     var safeCellsCount: Int = 0
+    var unmarkedBombs: Int = 0
     
     static func constructAndPopulateMineField(rows: Int, columns: Int, mines: Int) -> MineField {
         // Construct the empty field
@@ -116,6 +117,7 @@ class MineField {
         guard mines > 0, !emptyCoordsMap.isEmpty else {
             self.safeCellIndices = Set(emptyCoordsMap.flatMap { $0.key })
             self.safeCellsCount = self.safeCellIndices.count
+            self.unmarkedBombs = self.bombCellIndices.count
             return
         }
         

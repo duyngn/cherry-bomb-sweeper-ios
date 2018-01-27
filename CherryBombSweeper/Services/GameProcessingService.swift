@@ -177,15 +177,29 @@ class GameProcessingService {
         case .untouched:
             cell.state = .flagged
             if let currentGame = self.currentGame {
+                if cell.hasBomb {
+                    currentGame.mineField.unmarkedBombs -= 1
+                }
+                
                 currentGame.mineField.updateCell(cell)
                 currentGame.minesRemaining -= 1
                 currentGame.flaggedCellIndices.insert(cell.index)
             }
             
             self.gameListener?.onCellFlagged(cell.index)
+            
+            self.processingQueue.async {
+                if self.currentGame?.mineField.unmarkedBombs == 0 {
+                    self.gameListener?.onGameCompleted()
+                }
+            }
         case .flagged:
             cell.state = .untouched
             if let currentGame = self.currentGame {
+                if cell.hasBomb {
+                    currentGame.mineField.unmarkedBombs += 1
+                }
+                
                 currentGame.mineField.updateCell(cell)
                 currentGame.minesRemaining += 1
                 currentGame.flaggedCellIndices.remove(cell.index)
