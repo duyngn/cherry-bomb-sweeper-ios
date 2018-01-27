@@ -29,6 +29,7 @@ class OptionsViewController: UIViewController {
     fileprivate var selectedMinesIndex: Int = 0
     
     private var gameOptions: GameOptions = PersistableService.getGameOptionsFromUserDefaults()
+    private var audioService: AudioService = AudioService.shared
     
     fileprivate lazy var initialize: Void = {
         self.updateSelectedPickerIndices()
@@ -89,6 +90,7 @@ class OptionsViewController: UIViewController {
     }
     
     @IBAction func onEasyButtonPressed(_ sender: UIButton) {
+        self.audioService.playSelectSound()
         // 9x9, 10 mines
         self.gameOptions.rowCount = 9
         self.gameOptions.columnCount = 9
@@ -97,6 +99,7 @@ class OptionsViewController: UIViewController {
     }
     
     @IBAction func onIntermediateButtonPressed(_ sender: UIButton) {
+        self.audioService.playSelectSound()
         // 16x16, 40 mines
         self.gameOptions.rowCount = 16
         self.gameOptions.columnCount = 16
@@ -105,6 +108,7 @@ class OptionsViewController: UIViewController {
     }
     
     @IBAction func onExpertButtonPressed(_ sender: UIButton) {
+        self.audioService.playSelectSound()
         // 24x24, 99 mines
         self.gameOptions.rowCount = 24
         self.gameOptions.columnCount = 24
@@ -113,6 +117,7 @@ class OptionsViewController: UIViewController {
     }
     
     @IBAction func onCancelButtonPressed(_ sender: UIButton) {
+        self.audioService.playRevealSound()
         self.exitHandler?(false)
         self.dismiss(animated: true)
     }
@@ -123,8 +128,10 @@ class OptionsViewController: UIViewController {
         let minesCount = Constant.mineRange[selectedMinesIndex]
         
         if let errorMessage = validateConfig(rowCount: rowCount, columnCount: columnCount, minesCount: minesCount) {
+            self.audioService.playBeepBeepSound()
             self.showToast(message: errorMessage)
         } else {
+            self.audioService.playSaveConfigSound()
             self.saveConfig(row: rowCount, col: columnCount, mines: minesCount)
             self.exitHandler?(true)
             self.dismiss(animated: true)
