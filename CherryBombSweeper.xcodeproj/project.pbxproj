@@ -15,6 +15,8 @@
 		04A9232F201AD8E200BF1DF4 /* PersistableService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A9232E201AD8E200BF1DF4 /* PersistableService.swift */; };
 		04B44FCA201124B300CF63EB /* FieldGridCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B44FC9201124B300CF63EB /* FieldGridCollectionViewLayout.swift */; };
 		04B44FCC2012952000CF63EB /* FieldGridScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B44FCB2012952000CF63EB /* FieldGridScrollView.swift */; };
+		04D044CD201BF50600758DD1 /* font-digital-7.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 04D044CC201BF50600758DD1 /* font-digital-7.ttf */; };
+		04D044CF201BF63500758DD1 /* font-digital-7-mono.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 04D044CE201BF63500758DD1 /* font-digital-7-mono.ttf */; };
 		04E22D882006CC7800DEC328 /* Cell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E22D872006CC7800DEC328 /* Cell.swift */; };
 		04E22D8A2006CC8500DEC328 /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E22D892006CC8500DEC328 /* Game.swift */; };
 		04E22D8D2006CF8F00DEC328 /* OptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E22D8B2006CF8F00DEC328 /* OptionsViewController.swift */; };
@@ -40,6 +42,8 @@
 		04A9232E201AD8E200BF1DF4 /* PersistableService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistableService.swift; sourceTree = "<group>"; };
 		04B44FC9201124B300CF63EB /* FieldGridCollectionViewLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldGridCollectionViewLayout.swift; sourceTree = "<group>"; };
 		04B44FCB2012952000CF63EB /* FieldGridScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldGridScrollView.swift; sourceTree = "<group>"; };
+		04D044CC201BF50600758DD1 /* font-digital-7.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "font-digital-7.ttf"; sourceTree = "<group>"; };
+		04D044CE201BF63500758DD1 /* font-digital-7-mono.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "font-digital-7-mono.ttf"; sourceTree = "<group>"; };
 		04E22D872006CC7800DEC328 /* Cell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cell.swift; sourceTree = "<group>"; };
 		04E22D892006CC8500DEC328 /* Game.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
 		04E22D8B2006CF8F00DEC328 /* OptionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsViewController.swift; sourceTree = "<group>"; };
@@ -90,6 +94,23 @@
 			path = Controllers;
 			sourceTree = "<group>";
 		};
+		04D044CA201BF4E800758DD1 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				04D044CB201BF4F400758DD1 /* Fonts */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		04D044CB201BF4F400758DD1 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				04D044CE201BF63500758DD1 /* font-digital-7-mono.ttf */,
+				04D044CC201BF50600758DD1 /* font-digital-7.ttf */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
 		04E22D932006D27700DEC328 /* Services */ = {
 			isa = PBXGroup;
 			children = (
@@ -132,6 +153,7 @@
 		270E6FFD6082501567BCD667 /* CherryBombSweeper */ = {
 			isa = PBXGroup;
 			children = (
+				04D044CA201BF4E800758DD1 /* Resources */,
 				04FB4E0E200B1D240007A329 /* Views */,
 				04E22D932006D27700DEC328 /* Services */,
 				0408124420068F17009B0BD4 /* Controllers */,
@@ -204,12 +226,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				04D044CD201BF50600758DD1 /* font-digital-7.ttf in Resources */,
 				270E607F90B97BD0BE53CF41 /* Info.plist in Resources */,
 				04E22D8E2006CF8F00DEC328 /* OptionsViewController.xib in Resources */,
 				270E6E9FDA5BE83CB42173AF /* Assets.xcassets in Resources */,
 				270E65B9713F1DDC9FF2001D /* LaunchScreen.storyboard in Resources */,
 				270E6E264E09B3A5FA6766E0 /* Main.storyboard in Resources */,
 				04FB4E16200B1E080007A329 /* FieldGridCell.xib in Resources */,
+				04D044CF201BF63500758DD1 /* font-digital-7-mono.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

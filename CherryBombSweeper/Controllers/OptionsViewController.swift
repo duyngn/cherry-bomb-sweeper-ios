@@ -170,9 +170,9 @@ class OptionsViewController: UIViewController {
 }
 
 extension OptionsViewController: UIPickerViewDelegate {
-    func pickerView(_ pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
+    func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
         var valueStr = "-"
-        
+
         switch pickerView.tag {
         case 0, 1:
             valueStr = String(describing: Constant.dimensionRange[row])
@@ -182,7 +182,12 @@ extension OptionsViewController: UIPickerViewDelegate {
             break
         }
         
-        return NSAttributedString(string: valueStr, attributes: [NSForegroundColorAttributeName: UIColor.white])
+        let pickerLabel = UILabel()
+        pickerLabel.textColor = UIColor.white
+        pickerLabel.text = valueStr
+        pickerLabel.font = UIFont(name: "Digital-7 Mono", size: 25) // In this use your custom font
+        pickerLabel.textAlignment = NSTextAlignment.center
+        return pickerLabel
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {

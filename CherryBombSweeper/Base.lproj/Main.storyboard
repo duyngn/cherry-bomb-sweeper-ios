@@ -10,6 +10,11 @@
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="font-digital-7-mono.ttf">
+            <string>Digital-7Mono</string>
+        </array>
+    </customFonts>
     <scenes>
         <!--Game View Controller-->
         <scene sceneID="I5j-ff-uuZ">
@@ -42,9 +47,9 @@
                                                     <action selector="onOptionsPressed:" destination="cKM-BE-w3S" eventType="touchUpInside" id="HIB-G9-tor"/>
                                                 </connections>
                                             </button>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="B1e-lm-PzS" userLabel="Timer">
-                                                <rect key="frame" x="55" y="11" width="109.5" height="27.5"/>
-                                                <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="23"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00:00" textAlignment="center" lineBreakMode="tailTruncation" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="B1e-lm-PzS" userLabel="Timer">
+                                                <rect key="frame" x="55" y="13" width="109.5" height="23"/>
+                                                <fontDescription key="fontDescription" name="Digital-7Mono" family="Digital-7 Mono" pointSize="25"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
@@ -61,9 +66,9 @@
                                                     <action selector="onNewGamePressed:" destination="cKM-BE-w3S" eventType="touchUpInside" id="Kij-AV-So7"/>
                                                 </connections>
                                             </button>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="99" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="otB-5h-P9O" userLabel="Mine Count">
-                                                <rect key="frame" x="249.5" y="10.5" width="31.5" height="27.5"/>
-                                                <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="23"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="99" textAlignment="center" lineBreakMode="tailTruncation" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="otB-5h-P9O" userLabel="Mine Count">
+                                                <rect key="frame" x="254.5" y="12.5" width="23" height="23"/>
+                                                <fontDescription key="fontDescription" name="Digital-7Mono" family="Digital-7 Mono" pointSize="25"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
