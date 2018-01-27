@@ -31,7 +31,7 @@ class GameGeneralService {
         static let minimumFieldDimension: Int = 9
         static let maximumFieldDimension: Int = 30
 
-        static let cellSpacing = CGFloat(1)
+        static let cellSpacing = CGFloat(0)
         static let defaultCellDimension = CGFloat(41)
         
         static let defaultMinScaleFactor: CGFloat = 1

@@ -22,8 +22,13 @@ class FieldGridCell: UICollectionViewCell {
             UIColor.gray,                   // 7, gray
             UIColor.black                   // 8, black
         ]
+        
+        static let cellBorderColor: CGColor = UIColor.darkGray.cgColor
+        static let cellBorder: CGFloat = 0.5
+        static let lightCellBorder: CGFloat = 0.3
     }
     
+    @IBOutlet private weak var background: UIView!
     @IBOutlet private weak var cellFlagIcon: UIImageView!
     @IBOutlet private weak var cellCover: UIImageView!
     @IBOutlet private weak var adjacentBombsLabel: UILabel!
@@ -32,6 +37,12 @@ class FieldGridCell: UICollectionViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        
+        self.background.layer.borderWidth = Constant.cellBorder
+        self.background.layer.borderColor = Constant.cellBorderColor
+        
+        self.cellCover.layer.borderWidth = Constant.lightCellBorder
+        self.cellCover.layer.borderColor = Constant.cellBorderColor
     }
     
     func reinitCell(at index: Int, fieldRows: Int) {
@@ -49,6 +60,8 @@ class FieldGridCell: UICollectionViewCell {
             }
             self.cellCover.isHidden = false
         case .revealed:
+            self.background.isHidden = false
+            
             if cell.adjacentBombs > 0 {
                 self.setAdjacentBombsCount(cell.adjacentBombs)
             }
@@ -61,11 +74,15 @@ class FieldGridCell: UICollectionViewCell {
                 self.cellCover.image = grassImage
             }
         case .exploded:
+            self.background.isHidden = false
+            
             if let boomImage = GameGeneralService.shared.boomImage {
                 self.cellCover.image = boomImage
+                self.cellCover.layer.borderWidth = CGFloat(0)
                 self.cellCover.transform = CGAffineTransform(scaleX: 2, y: 2)
             }
         case .highlight:
+            self.background.isHidden = false
             self.cellCover.isHidden = true
         case .showBomb:
             self.bombIcon.isHidden = false
@@ -135,8 +152,11 @@ class FieldGridCell: UICollectionViewCell {
     }
     
     private func resetCell() {
+        self.background.isHidden = true
+        
         self.cellCover.isHidden = false
         self.cellCover.transform = CGAffineTransform.identity
+        self.cellCover.layer.borderWidth = Constant.lightCellBorder
         if let lightGrassImage = GameGeneralService.shared.lightGrassImage {
             self.cellCover.image = lightGrassImage
         }

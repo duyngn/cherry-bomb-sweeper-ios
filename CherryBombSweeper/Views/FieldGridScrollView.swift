@@ -34,6 +34,7 @@ class FieldGridScrollView: UIScrollView {
         self.showsHorizontalScrollIndicator = false
         
         let fieldGrid = FieldGridCollectionView(frame: self.frame, collectionViewLayout: FieldGridCollectionViewLayout())
+        fieldGrid.backgroundColor = UIColor.clear
         fieldGrid.layer.borderWidth = GameGeneralService.Constant.fieldBorderWidth
         fieldGrid.layer.borderColor = UIColor.black.cgColor
         fieldGrid.isScrollEnabled = false
