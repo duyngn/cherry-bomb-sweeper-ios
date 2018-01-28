@@ -190,7 +190,7 @@ class GameViewController: UIViewController {
         }
     }
     
-    fileprivate func gameCompleted() {
+    fileprivate func gameFinished() {
         self.gameTimer?.pauseTimer()
         self.audioService.stopBackgroundMusic()
         self.audioService.playWinningMusic()
@@ -269,31 +269,9 @@ class GameViewController: UIViewController {
     }
 }
 
-extension GameViewController: FieldGridCellActionListener {
-    func onCellTap(_ cellIndex: Int) {
-        guard let game = self.game else { return }
-        
-        if actionableState.contains(game.state) {
-            self.audioService.playTapSound()
-            
-            self.gameStarted()
-            
-            self.gameProcessingService.resolveUserAction(at: cellIndex, in: game, with: self.currentUserAction)
-        }
-    }
-    
-    func onCellLongPress(_ cellIndex: Int) {
-        guard let game = self.game else { return }
-        
-        if actionableState.contains(game.state) {
-            self.gameStarted()
-            
-            self.gameProcessingService.resolveUserAction(at: cellIndex, in: game, with: .flag)
-        }
-    }
-    
-    func onCellHardPress(_ cellIndex: Int) {
-        
+extension GameViewController: GameTimerDelegate {
+    func onTimerUpdate(seconds: Int, timeString: String) {
+        self.timerLabel.text = timeString
     }
 }
 
@@ -320,24 +298,64 @@ extension GameViewController: UICollectionViewDataSource {
     }
 }
 
-extension GameViewController: GameTimerDelegate {
-    func onTimerUpdate(seconds: Int, timeString: String) {
-        self.timerLabel.text = timeString
+extension GameViewController: FieldGridCellActionListener {
+    func onCellTap(_ cellIndex: Int) {
+        guard let game = self.game else { return }
+        
+        if actionableState.contains(game.state) {
+            self.audioService.playTapSound()
+            
+            self.gameStarted()
+            
+            self.gameProcessingService.resolveUserAction(at: cellIndex, in: game, with: self.currentUserAction)
+        }
+    }
+    
+    func onCellHighlight(_ cellIndex: Int) {
+        guard let game = self.game else { return }
+        
+        if actionableState.contains(game.state) {
+            self.gameProcessingService.resolveUserAction(at: cellIndex, in: game, with: self.currentUserAction)
+        }
+    }
+    
+    func onCellUnhighlight(_ cellIndex: Int) {
+        guard let game = self.game else { return }
+        
+        if actionableState.contains(game.state) {
+            self.gameProcessingService.resolveUserAction(at: cellIndex, in: game, with: self.currentUserAction)
+        }
+    }
+    
+    func onCellLongPress(_ cellIndex: Int) {
+        guard let game = self.game else { return }
+        
+        if actionableState.contains(game.state) {
+            self.gameStarted()
+            
+            self.gameProcessingService.resolveUserAction(at: cellIndex, in: game, with: .flag)
+        }
+    }
+    
+    func onCellHardPress(_ cellIndex: Int) {
+        
     }
 }
 
 extension GameViewController: GameStatusListener {
-    func onCellReveal(_ revealedCells: Set<Int>) {
+    func cellsRevealed(_ revealedCells: Set<Int>) {
         let revealedIndexPaths = revealedCells.map { return IndexPath(row: $0, section: 0) }
         self.mineFieldView.updateCells(at: revealedIndexPaths)
         
         self.audioService.playRevealSound()
     }
     
-    func onCellHighlight(_ highlightedCells: Set<Int>) {
+    func cellsHighlighted(_ highlightedCells: Set<Int>) {
         let highlightIndexPaths = highlightedCells.map { return IndexPath(row: $0, section: 0) }
         
         self.mineFieldView.updateCells(at: highlightIndexPaths)
+        
+        self.audioService.playProbeSound()
         
         // Now reset them to untouched
         DispatchQueue.main.async {
@@ -350,11 +368,15 @@ extension GameViewController: GameStatusListener {
             
             self.mineFieldView.updateCells(at: highlightIndexPaths)
         }
-        
-        self.audioService.playProbeSound()
     }
     
-    func onCellFlagged(_ flaggedCell: Int) {
+    func cellsUnhighlighted(_ unhighlightedCells: Set<Int>) {
+        let unhighlightIndexPaths = unhighlightedCells.map { return IndexPath(row: $0, section: 0) }
+        
+        self.mineFieldView.updateCells(at: unhighlightIndexPaths)
+    }
+    
+    func cellFlagged(_ flaggedCell: Int) {
         self.mineFieldView.updateCells(at: [IndexPath(row: flaggedCell, section: 0)])
 
         self.updateRemainingMinesCountLabel()
@@ -362,7 +384,7 @@ extension GameViewController: GameStatusListener {
         self.audioService.playFlagSound()
     }
     
-    func onCellUnflagged(_ unflaggedCell: Int) {
+    func cellUnflagged(_ unflaggedCell: Int) {
         self.mineFieldView.updateCells(at: [IndexPath(row: unflaggedCell, section: 0)])
         
         self.updateRemainingMinesCountLabel()
@@ -370,7 +392,7 @@ extension GameViewController: GameStatusListener {
         self.audioService.playFlagSound()
     }
     
-    func onCellExploded(_ explodedCell: Int, otherBombCells: Set<Int>, wrongFlaggedCells: Set<Int>) {
+    func cellExploded(_ explodedCell: Int, otherBombCells: Set<Int>, wrongFlaggedCells: Set<Int>) {
         var cellsToUpdate = otherBombCells.map { return IndexPath(row: $0, section: 0) }
         cellsToUpdate.append(contentsOf: wrongFlaggedCells.map { return IndexPath(row: $0, section: 0) })
         
@@ -384,7 +406,7 @@ extension GameViewController: GameStatusListener {
         self.gameOver()
     }
     
-    func onGameCompleted() {
-        self.gameCompleted()
+    func gameCompleted() {
+        self.gameFinished()
     }
 }

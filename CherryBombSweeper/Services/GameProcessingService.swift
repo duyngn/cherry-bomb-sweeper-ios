@@ -9,12 +9,13 @@
 import Foundation
 
 protocol GameStatusListener {
-    func onCellReveal(_ revealedCells: Set<Int>) -> Void
-    func onCellHighlight(_ highlightedCells: Set<Int>) -> Void
-    func onCellFlagged(_ flaggedCell: Int) -> Void
-    func onCellUnflagged(_ unflaggedCell: Int) -> Void
-    func onCellExploded(_ explodedCell: Int, otherBombCells: Set<Int>, wrongFlaggedCells: Set<Int>) -> Void
-    func onGameCompleted() -> Void
+    func cellsRevealed(_ revealedCells: Set<Int>) -> Void
+    func cellsHighlighted(_ highlightedCells: Set<Int>) -> Void
+    func cellsUnhighlighted(_ unhighlightedCells: Set<Int>) -> Void
+    func cellFlagged(_ flaggedCell: Int) -> Void
+    func cellUnflagged(_ unflaggedCell: Int) -> Void
+    func cellExploded(_ explodedCell: Int, otherBombCells: Set<Int>, wrongFlaggedCells: Set<Int>) -> Void
+    func gameCompleted() -> Void
 }
 
 class GameProcessingService {
@@ -35,26 +36,32 @@ class GameProcessingService {
             self.currentGame = game
             
             if let cell = game.mineField.getCell(at: cellIndex) {
-                switch userAction {
-                case .tap:
-                    self.tap(at: cell)
-                case .flag:
+                if cell.state == .flagged {
                     self.flag(at: cell)
+                } else if cell.state == .revealed {
+                    if !cell.isEmpty {
+                        self.probe(at: cell)
+                    }
+                } else {
+                    switch userAction {
+                    case .tap:
+                        self.tap(at: cell)
+                    case .flag:
+                        self.flag(at: cell)
+                    }
                 }
             }
         }
     }
     
     private func tap(at cell: Cell) {
-        if cell.state == .flagged {
-            self.flag(at: cell)
-        } else if cell.state == .revealed, !cell.isEmpty {
-            self.probe(at: cell)
-        } else if cell.hasBomb {
+        guard cell.state == .untouched else { return }
+        
+        if cell.hasBomb {
             self.explode(at: cell)
         } else {
             self.reveal(at: cell.index) { (revealedCells) in
-                self.gameListener?.onCellReveal(revealedCells)
+                self.gameListener?.cellsRevealed(revealedCells)
             }
         }
     }
@@ -99,7 +106,7 @@ class GameProcessingService {
                 currentGame.mineField.safeCellsCount -= 1
                 
                 if currentGame.mineField.safeCellsCount == 0 {
-                    gameListener?.onGameCompleted()
+                    gameListener?.gameCompleted()
                 }
             }
         }
@@ -135,7 +142,7 @@ class GameProcessingService {
             }
         }
         
-        self.gameListener?.onCellExploded(cell.index, otherBombCells: otherBombCellIds, wrongFlaggedCells: wrongFlaggedIds)
+        self.gameListener?.cellExploded(cell.index, otherBombCells: otherBombCellIds, wrongFlaggedCells: wrongFlaggedIds)
     }
     
     private func probe(at cell: Cell) {
@@ -152,7 +159,7 @@ class GameProcessingService {
         if flaggedCellIDs.count >= cell.adjacentBombs {
             for cellId in untouchedCellIDs {
                 self.reveal(at: cellId) { (revealedCells) in
-                    self.gameListener?.onCellReveal(revealedCells)
+                    self.gameListener?.cellsRevealed(revealedCells)
                 }
             }
         } else {
@@ -164,16 +171,12 @@ class GameProcessingService {
                 }
             }
             
-            self.gameListener?.onCellHighlight(Set(untouchedCellIDs))
+            self.gameListener?.cellsHighlighted(Set(untouchedCellIDs))
         }
     }
     
     private func flag(at cell: Cell) {
         switch cell.state {
-        case .revealed:
-            if !cell.isEmpty {
-                self.probe(at: cell)
-            }
         case .untouched:
             cell.state = .flagged
             if let currentGame = self.currentGame {
@@ -186,14 +189,9 @@ class GameProcessingService {
                 currentGame.flaggedCellIndices.insert(cell.index)
             }
             
-            self.gameListener?.onCellFlagged(cell.index)
+            self.gameListener?.cellFlagged(cell.index)
             
-            self.processingQueue.async {
-                if self.currentGame?.mineField.unmarkedBombs == 0,
-                   self.currentGame?.minesRemaining == 0 {
-                    self.gameListener?.onGameCompleted()
-                }
-            }
+            self.checkFlaggedWinningCondition()
         case .flagged:
             cell.state = .untouched
             if let currentGame = self.currentGame {
@@ -206,9 +204,24 @@ class GameProcessingService {
                 currentGame.flaggedCellIndices.remove(cell.index)
             }
             
-            self.gameListener?.onCellUnflagged(cell.index)
+            self.gameListener?.cellUnflagged(cell.index)
+            
+            self.checkFlaggedWinningCondition()
         default:
+            // don't care about any other state
             break
+        }
+    }
+    
+    private func checkFlaggedWinningCondition() {
+        self.processingQueue.async {
+            guard let currentGame = self.currentGame else { return }
+            
+            if currentGame.mineField.unmarkedBombs == 0,
+                currentGame.minesRemaining == 0 {
+                
+                self.gameListener?.gameCompleted()
+            }
         }
     }
 }

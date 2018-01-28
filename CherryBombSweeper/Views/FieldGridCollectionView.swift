@@ -10,6 +10,8 @@ import UIKit
 
 protocol FieldGridCellActionListener {
     func onCellTap(_ cellIndex: Int) -> Void
+    func onCellHighlight(_ cellIndex: Int) -> Void
+    func onCellUnhighlight(_ cellIndex: Int) -> Void
     func onCellLongPress(_ cellIndex: Int) -> Void
     func onCellHardPress(_ cellIndex: Int) -> Void
 }
@@ -126,10 +128,11 @@ extension FieldGridCollectionView: FieldGridLayoutDelegate {
 }
 
 extension FieldGridCollectionView: UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt: IndexPath) {
-        if let longPressed = self.longPressOnIndex, longPressed == didSelectItemAt { return }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if let longPressed = self.longPressOnIndex, longPressed == indexPath { return }
         
-        self.cellActionHandler?.onCellTap(didSelectItemAt.row)
+        self.cellActionHandler?.onCellTap(indexPath.row)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
