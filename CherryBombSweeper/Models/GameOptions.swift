@@ -8,17 +8,10 @@
 
 import Foundation
 
-enum ToggleState {
-    case on
-    case off
-}
-
 class GameOptions: NSObject, NSCoding {
     var rowCount: Int
     var columnCount: Int
     var minesCount: Int
-    
-//    var musicState: ToggleState = .on
     
     init(rowCount: Int = GameGeneralService.Constant.defaultRows,
          columnCount: Int = GameGeneralService.Constant.defaultRows,

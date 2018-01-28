@@ -18,6 +18,11 @@ class OptionsViewController: UIViewController {
             Array(GameGeneralService.Constant.minimumMines...GameGeneralService.Constant.maximumMines)
     }
     
+    @IBOutlet private weak var scrollView: UIScrollView!
+    @IBOutlet private weak var optionsContainer: UIView!
+    
+    @IBOutlet private weak var musicSwitch: UISwitch!
+    @IBOutlet private weak var soundEffectsSwitch: UISwitch!
     @IBOutlet private weak var rowCountPicker: UIPickerView!
     @IBOutlet private weak var columnCountPicker: UIPickerView!
     @IBOutlet private weak var mineCountPicker: UIPickerView!
@@ -28,15 +33,22 @@ class OptionsViewController: UIViewController {
     fileprivate var selectedColumnIndex: Int = 0
     fileprivate var selectedMinesIndex: Int = 0
     
-    private var gameOptions: GameOptions = PersistableService.getGameOptionsFromUserDefaults()
+    private var gameOptions: GameOptions = PersistableService.getGameOptions()
+    private var audioOptions: AudioOptions = PersistableService.getAudioOptions()
+    
     private var audioService: AudioService = AudioService.shared
+    
+    private var currentOrientation: UIDeviceOrientation = .portrait
     
     fileprivate lazy var initialize: Void = {
         self.updateSelectedPickerIndices()
+        self.updateSwitchStates()
     }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.setupOrientationHandler()
         
         rowCountPicker.delegate = self
         rowCountPicker.dataSource = self
@@ -75,6 +87,35 @@ class OptionsViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    private func setupOrientationHandler() {
+        self.currentOrientation = UIDevice.current.orientation
+        
+        NotificationCenter.default.addObserver(forName: .UIDeviceOrientationDidChange, object: nil, queue: .main)
+        { [weak self] (notification) in
+            guard let `self` = self else { return }
+            
+            if self.currentOrientation != UIDevice.current.orientation {
+                switch UIDevice.current.orientation {
+                case .landscapeLeft, .landscapeRight,
+                     .portrait, .portraitUpsideDown:
+                    self.currentOrientation = UIDevice.current.orientation
+                    self.updateScrollView()
+                default:
+                    break
+                }
+            }
+        }
+    }
+    
+    private func updateScrollView() {
+        self.scrollView.contentSize = CGSize(width: self.optionsContainer.frame.width, height: 400)
+    }
+    
+    private func updateSwitchStates() {
+        self.musicSwitch.isOn = self.audioOptions.isMusicEnabled
+        self.soundEffectsSwitch.isOn = self.audioOptions.isSoundEffectsEnabled
+    }
+    
     private func updateSelectedPickerIndices() {
         let currentRow = self.gameOptions.rowCount - GameGeneralService.Constant.minimumFieldDimension
         let currentCol = self.gameOptions.columnCount - GameGeneralService.Constant.minimumFieldDimension
@@ -87,6 +128,30 @@ class OptionsViewController: UIViewController {
         self.rowCountPicker.selectRow(self.selectedRowIndex, inComponent: 0, animated: false)
         self.columnCountPicker.selectRow(self.selectedColumnIndex, inComponent: 0, animated: false)
         self.mineCountPicker.selectRow(self.selectedMinesIndex, inComponent: 0, animated: false)
+    }
+    
+    @IBAction func onMusicToggle(_ sender: UISwitch) {
+        self.audioService.playSelectSound()
+        
+        self.audioOptions.isMusicEnabled = sender.isOn
+        PersistableService.saveAudioOptions(audioOptions: self.audioOptions)
+        
+        if !sender.isOn {
+            self.audioService.stopBackgroundMusic()
+        }
+        
+        self.audioService.updateSoundOptions()
+    }
+    
+    @IBAction func onSoundEffectsToggle(_ sender: UISwitch) {
+        self.audioService.playSelectSound(forced: true)
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            self.audioOptions.isSoundEffectsEnabled = sender.isOn
+            PersistableService.saveAudioOptions(audioOptions: self.audioOptions)
+            
+            self.audioService.updateSoundOptions()
+        }
     }
     
     @IBAction func onEasyButtonPressed(_ sender: UIButton) {
@@ -172,7 +237,7 @@ class OptionsViewController: UIViewController {
         self.gameOptions.columnCount = col
         self.gameOptions.minesCount = mines
         
-        PersistableService.saveGameOptionsToUserDefaults(self.gameOptions)
+        PersistableService.saveGameOptions(gameOptions: self.gameOptions)
     }
 }
 

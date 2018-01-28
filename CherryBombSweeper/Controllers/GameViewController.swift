@@ -110,7 +110,7 @@ class GameViewController: UIViewController {
                 rowCount = game.mineField.rows
                 colCount = game.mineField.columns
             } else {
-                let gameOptions = PersistableService.getGameOptionsFromUserDefaults()
+                let gameOptions = PersistableService.getGameOptions()
                 rowCount = gameOptions.rowCount
                 colCount = gameOptions.columnCount
             }
@@ -205,6 +205,32 @@ class GameViewController: UIViewController {
         }
     }
     
+    private func pauseGame() {
+        self.audioService.stopBackgroundMusic()
+        
+        guard let game = self.game, game.state == .inProgress else { return }
+        
+        self.gameTimer?.pauseTimer()
+        self.game?.state = .paused
+    }
+    
+    private func unpauseGame() {
+        guard let game = self.game else { return }
+        
+        switch game.state {
+        case .lost, .win:
+            return
+        case .paused:
+            game.state = .inProgress
+            
+            self.gameTimer?.resumeTimer()
+        default:
+            break
+        }
+        
+        self.audioService.startBackgroundMusic()
+    }
+    
     private func finishLoading() {
         self.isFieldInit = false
     }
@@ -246,20 +272,18 @@ class GameViewController: UIViewController {
     }
     
     @IBAction func onOptionsPressed(_ sender: UIButton) {
-        self.gameTimer?.pauseTimer()
-        
-        self.audioService.stopBackgroundMusic()
         self.audioService.playPositiveSound()
+        
+        self.pauseGame()
         
         let optionsController = OptionsViewController(nibName: "OptionsViewController", bundle: nil)
         optionsController.exitHandler = { [weak self] (newGame) in
             guard let `self` = self else { return }
-            
+
             if newGame {
                 self.startNewGame()
-            } else if self.game?.state == .inProgress {
-                self.audioService.startBackgroundMusic()
-                self.gameTimer?.resumeTimer()
+            } else {
+                self.unpauseGame()
             }
         }
         

@@ -11,9 +11,27 @@ import Foundation
 class PersistableService {
     enum Constants {
         static let gameOptionsKey = "gameOptions"
+        static let audioOptionsKey = "audioOptions"
+    }
+    
+    static func saveAudioOptions(to userDefaults: UserDefaults = UserDefaults.standard, audioOptions: AudioOptions) {
+        let encodedData: Data = NSKeyedArchiver.archivedData(withRootObject: audioOptions)
+        
+        userDefaults.set(encodedData, forKey: Constants.audioOptionsKey)
+        userDefaults.synchronize()
+    }
+    
+    static func getAudioOptions(from userDefaults: UserDefaults = UserDefaults.standard) -> AudioOptions {
+        if let decoded  = userDefaults.object(forKey: Constants.audioOptionsKey) as? Data,
+            let decodedAudioOptions = NSKeyedUnarchiver.unarchiveObject(with: decoded) as? AudioOptions {
+            
+            return decodedAudioOptions
+        }
+        
+        return AudioOptions()
     }
 
-    static func saveGameOptionsToUserDefaults(_ gameOptions: GameOptions) {
+    static func saveGameOptions(to userDefaults: UserDefaults = UserDefaults.standard, gameOptions: GameOptions) {
         let userDefaults = UserDefaults.standard
         let encodedData: Data = NSKeyedArchiver.archivedData(withRootObject: gameOptions)
         
@@ -21,7 +39,7 @@ class PersistableService {
         userDefaults.synchronize()
     }
     
-    static func getGameOptionsFromUserDefaults() -> GameOptions {
+    static func getGameOptions(from userDefaults: UserDefaults = UserDefaults.standard) -> GameOptions {
         let userDefaults = UserDefaults.standard
         if let decoded  = userDefaults.object(forKey: Constants.gameOptionsKey) as? Data,
             let decodedGameOptions = NSKeyedUnarchiver.unarchiveObject(with: decoded) as? GameOptions {

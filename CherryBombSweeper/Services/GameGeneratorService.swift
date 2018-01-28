@@ -13,7 +13,7 @@ typealias GenerateMineFieldCompletionHandler = (_ mineField: MineField) -> Void
 
 class GameGeneratorService {
     
-    var gameOptions: GameOptions = PersistableService.getGameOptionsFromUserDefaults()
+    var gameOptions: GameOptions = PersistableService.getGameOptions()
     private var preloadedGame: Game?
     
     init() {
@@ -33,7 +33,7 @@ class GameGeneratorService {
     func generateNewGame(completionHandler: @escaping GenerateNewGameCompletionHandler) {
         DispatchQueue.global(qos: .userInitiated).async {
             // Make sure the preloaded game matches what the current user configs are
-            self.gameOptions = PersistableService.getGameOptionsFromUserDefaults()
+            self.gameOptions = PersistableService.getGameOptions()
             if let preloadedGame = self.preloadedGame,
                 preloadedGame.mineField.rows == self.gameOptions.rowCount,
                 preloadedGame.mineField.columns == self.gameOptions.columnCount,
@@ -60,7 +60,7 @@ class GameGeneratorService {
     }
     
     private func generateMineField(completionHandler: @escaping GenerateMineFieldCompletionHandler) {
-        self.gameOptions = PersistableService.getGameOptionsFromUserDefaults()
+        self.gameOptions = PersistableService.getGameOptions()
         
         let mineField = MineField.constructAndPopulateMineField(
             rows: gameOptions.rowCount,

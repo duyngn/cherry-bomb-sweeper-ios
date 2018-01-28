@@ -24,6 +24,7 @@
 		041CA0442015608C006A37BA /* GameTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 041CA0432015608C006A37BA /* GameTimer.swift */; };
 		042168C72008368C0065854F /* MineField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042168C62008368C0065854F /* MineField.swift */; };
 		0423F03C200D653000DE76CF /* FieldGridCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0423F03B200D653000DE76CF /* FieldGridCollectionView.swift */; };
+		047F483C201DD0A1007E9768 /* AudioOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047F483B201DD0A1007E9768 /* AudioOptions.swift */; };
 		04A50C71200F3CB80075A9BE /* GameProcessingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A50C70200F3CB80075A9BE /* GameProcessingService.swift */; };
 		04A9232F201AD8E200BF1DF4 /* PersistableService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A9232E201AD8E200BF1DF4 /* PersistableService.swift */; };
 		04B44FCA201124B300CF63EB /* FieldGridCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B44FC9201124B300CF63EB /* FieldGridCollectionViewLayout.swift */; };
@@ -64,6 +65,7 @@
 		041CA0432015608C006A37BA /* GameTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameTimer.swift; sourceTree = "<group>"; };
 		042168C62008368C0065854F /* MineField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MineField.swift; sourceTree = "<group>"; };
 		0423F03B200D653000DE76CF /* FieldGridCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldGridCollectionView.swift; sourceTree = "<group>"; };
+		047F483B201DD0A1007E9768 /* AudioOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioOptions.swift; sourceTree = "<group>"; };
 		04A50C70200F3CB80075A9BE /* GameProcessingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameProcessingService.swift; sourceTree = "<group>"; };
 		04A9232E201AD8E200BF1DF4 /* PersistableService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistableService.swift; sourceTree = "<group>"; };
 		04B44FC9201124B300CF63EB /* FieldGridCollectionViewLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldGridCollectionViewLayout.swift; sourceTree = "<group>"; };
@@ -106,6 +108,7 @@
 				04E22D962006D2F100DEC328 /* GameOptions.swift */,
 				042168C62008368C0065854F /* MineField.swift */,
 				041CA0432015608C006A37BA /* GameTimer.swift */,
+				047F483B201DD0A1007E9768 /* AudioOptions.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -316,6 +319,7 @@
 				042168C72008368C0065854F /* MineField.swift in Sources */,
 				04FB4E15200B1E080007A329 /* FieldGridCell.swift in Sources */,
 				04E22D882006CC7800DEC328 /* Cell.swift in Sources */,
+				047F483C201DD0A1007E9768 /* AudioOptions.swift in Sources */,
 				04E22D912006CFEB00DEC328 /* GameViewController.swift in Sources */,
 				04E22D8D2006CF8F00DEC328 /* OptionsViewController.swift in Sources */,
 				040FF62F201C485500084720 /* AudioService.swift in Sources */,
