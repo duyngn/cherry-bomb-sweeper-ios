@@ -86,7 +86,7 @@ class FieldGridCell: UICollectionViewCell {
         case .exploded:
             self.background.isHidden = false
             
-            if let boomImage = GameGeneralService.shared.boomImage {
+            if let boomImage = GameIconsService.shared.boomImage {
                 self.cellCover.image = boomImage
                 self.cellCover.layer.borderWidth = CGFloat(0)
                 self.cellCover.transform = CGAffineTransform(scaleX: 2, y: 2)
@@ -101,7 +101,7 @@ class FieldGridCell: UICollectionViewCell {
                 self.cellCover.image = grassImage
             }
         case .wrongBomb:
-            if let xImage = GameGeneralService.shared.xImage {
+            if let xImage = GameIconsService.shared.xImage {
                 self.bombIcon.image = xImage
                 self.bombIcon.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
                 self.bombIcon.isHidden = false
@@ -114,7 +114,7 @@ class FieldGridCell: UICollectionViewCell {
     }
     
     private func getCellCoverDarkGrass(row: Int, column: Int) -> UIImage? {
-        guard let darkGrassImage = GameGeneralService.shared.darkGrassImage else { return nil }
+        guard let darkGrassImage = GameIconsService.shared.darkGrassImage else { return nil }
         
         if row % 2 == 0 { // row starts with light color
             if column % 2 != 0 {
@@ -128,8 +128,8 @@ class FieldGridCell: UICollectionViewCell {
     }
     
     private func getCellCoverGrass(at fieldCoord: FieldCoord) -> UIImage? {
-        guard let darkGrassImage = GameGeneralService.shared.darkGrassImage,
-              let lightGrassImage = GameGeneralService.shared.lightGrassImage else {
+        guard let darkGrassImage = GameIconsService.shared.darkGrassImage,
+              let lightGrassImage = GameIconsService.shared.lightGrassImage else {
             return nil
         }
         
@@ -167,7 +167,7 @@ class FieldGridCell: UICollectionViewCell {
         self.cellCover.isHidden = false
         self.cellCover.transform = CGAffineTransform.identity
         self.cellCover.layer.borderWidth = Constant.lightCellBorder
-        if let lightGrassImage = GameGeneralService.shared.lightGrassImage {
+        if let lightGrassImage = GameIconsService.shared.lightGrassImage {
             self.cellCover.image = lightGrassImage
         }
         

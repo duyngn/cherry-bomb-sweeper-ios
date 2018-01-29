@@ -13,9 +13,9 @@ class GameOptions: NSObject, NSCoding {
     var columnCount: Int
     var minesCount: Int
     
-    init(rowCount: Int = GameGeneralService.Constant.defaultRows,
-         columnCount: Int = GameGeneralService.Constant.defaultRows,
-         minesCount: Int = GameGeneralService.Constant.defaultMines) {
+    init(rowCount: Int = Constants.defaultRows,
+         columnCount: Int = Constants.defaultRows,
+         minesCount: Int = Constants.defaultMines) {
         self.rowCount = rowCount
         self.columnCount = columnCount
         self.minesCount = minesCount

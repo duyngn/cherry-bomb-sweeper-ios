@@ -16,15 +16,15 @@ protocol FieldGridLayoutDelegate: class {
 
 extension FieldGridLayoutDelegate {
     func collectionView(columnCountForFieldGrid collectionView: UICollectionView) -> Int {
-        return GameGeneralService.Constant.defaultColumns
+        return Constants.defaultColumns
     }
     
     func collectionView(cellDimensionForFieldGrid collectionView: UICollectionView) -> CGFloat {
-        return GameGeneralService.Constant.defaultCellDimension
+        return Constants.defaultCellDimension
     }
     
     func collectionView(cellSpacingForFieldGrid collectionView: UICollectionView) -> CGFloat {
-        return GameGeneralService.Constant.cellSpacing
+        return Constants.cellSpacing
     }
     
     func collectionView(viewWindowForFieldGrid collectionView: UICollectionView) -> CGRect? {
@@ -35,7 +35,7 @@ extension FieldGridLayoutDelegate {
 class FieldGridCollectionViewLayout: UICollectionViewLayout, FieldGridLayoutDelegate {    
     weak var delegate: FieldGridLayoutDelegate?
     
-    private var numberOfColumns = GameGeneralService.Constant.defaultColumns
+    private var numberOfColumns = Constants.defaultColumns
     private var cellDimension: CGFloat = 0
     private var cellSpacing: CGFloat = 0
     

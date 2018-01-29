@@ -13,13 +13,24 @@ typealias ExitOptionsHandler = (_ newGame: Bool) -> Void
 class OptionsViewController: UIViewController {
     enum Constant {
         static let dimensionRange: [Int] =
-            Array(GameGeneralService.Constant.minimumFieldDimension...GameGeneralService.Constant.maximumFieldDimension)
+            Array(Constants.minimumFieldDimension...Constants.maximumFieldDimension)
         static let mineRange: [Int] =
-            Array(GameGeneralService.Constant.minimumMines...GameGeneralService.Constant.maximumMines)
+            Array(Constants.minimumMines...Constants.maximumMines)
+        
+        static let easyDimension: Int = 9
+        static let easyMines: Int = 10
+        static let intermediateDimension: Int = 16
+        static let intermediateMines: Int = 40
+        static let expertDimension: Int = 24
+        static let expertMines: Int = 99
     }
     
     @IBOutlet private weak var scrollView: UIScrollView!
     @IBOutlet private weak var optionsContainer: UIView!
+    
+    @IBOutlet private weak var easyButton: UIButton!
+    @IBOutlet private weak var intermediateButton: UIButton!
+    @IBOutlet private weak var expertButton: UIButton!
     
     @IBOutlet private weak var musicSwitch: UISwitch!
     @IBOutlet private weak var soundEffectsSwitch: UISwitch!
@@ -29,18 +40,14 @@ class OptionsViewController: UIViewController {
     
     var exitHandler: ExitOptionsHandler?
     
-    fileprivate var selectedRowIndex: Int = 0
-    fileprivate var selectedColumnIndex: Int = 0
-    fileprivate var selectedMinesIndex: Int = 0
-    
     private var gameOptions: GameOptions = PersistableService.getGameOptions()
     private var audioOptions: AudioOptions = PersistableService.getAudioOptions()
     
     private var audioService: AudioService = AudioService.shared
-    
-    private var currentOrientation: UIDeviceOrientation = .portrait
+    private var selectedDifficultyButton: UIButton?
     
     fileprivate lazy var initialize: Void = {
+        self.updateDifficultyLabels()
         self.updateSelectedPickerIndices()
         self.updateSwitchStates()
     }()
@@ -48,16 +55,16 @@ class OptionsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.setupOrientationHandler()
+        self.rowCountPicker.delegate = self
+        self.rowCountPicker.dataSource = self
         
-        rowCountPicker.delegate = self
-        rowCountPicker.dataSource = self
+        self.columnCountPicker.delegate = self
+        self.columnCountPicker.dataSource = self
         
-        columnCountPicker.delegate = self
-        columnCountPicker.dataSource = self
+        self.mineCountPicker.delegate = self
+        self.mineCountPicker.dataSource = self
         
-        mineCountPicker.delegate = self
-        mineCountPicker.dataSource = self
+        self.scrollView.contentSize = CGSize(width: self.optionsContainer.frame.width, height: 400)
         
         if !UIAccessibilityIsReduceTransparencyEnabled() {
             self.view.backgroundColor = .clear
@@ -87,28 +94,52 @@ class OptionsViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    private func setupOrientationHandler() {
-        self.currentOrientation = UIDevice.current.orientation
+    private func updateDifficultyLabels() {
+        let validDimensions = [Constant.easyDimension, Constant.intermediateDimension, Constant.expertDimension]
         
-        NotificationCenter.default.addObserver(forName: .UIDeviceOrientationDidChange, object: nil, queue: .main)
-        { [weak self] (notification) in
-            guard let `self` = self else { return }
-            
-            if self.currentOrientation != UIDevice.current.orientation {
-                switch UIDevice.current.orientation {
-                case .landscapeLeft, .landscapeRight,
-                     .portrait, .portraitUpsideDown:
-                    self.currentOrientation = UIDevice.current.orientation
-                    self.updateScrollView()
-                default:
-                    break
-                }
-            }
+        guard validDimensions.contains(self.gameOptions.rowCount), self.gameOptions.columnCount == self.gameOptions.rowCount else {
+            self.selectedDifficultyButton?.setTitleColor(Constants.primaryColor, for: .normal)
+            self.selectedDifficultyButton = nil
+            return
         }
+        
+        var newDifficultyButton: UIButton?
+        
+        // Do we have column and row to be one of 3 known sizes?
+        
+        if self.gameOptions.rowCount == Constant.easyDimension, self.gameOptions.minesCount == Constant.easyMines {
+            if let selectedDifficultyButton = self.selectedDifficultyButton, selectedDifficultyButton === self.easyButton {
+                return
+            }
+            // is easy
+            newDifficultyButton = self.easyButton
+        } else if self.gameOptions.rowCount == Constant.intermediateDimension, self.gameOptions.minesCount == Constant.intermediateMines {
+            if let selectedDifficultyButton = self.selectedDifficultyButton, selectedDifficultyButton !== self.intermediateButton {
+                return
+            }
+            // is intermediate
+            newDifficultyButton = self.intermediateButton
+        } else if self.gameOptions.rowCount == Constant.expertDimension, self.gameOptions.minesCount == Constant.expertDimension {
+            if let selectedDifficultyButton = self.selectedDifficultyButton, selectedDifficultyButton !== self.expertButton {
+                return
+            }
+            // is expert
+            newDifficultyButton = self.expertButton
+        }
+        
+        self.swapDifficultyLabels(to: newDifficultyButton)
     }
     
-    private func updateScrollView() {
-        self.scrollView.contentSize = CGSize(width: self.optionsContainer.frame.width, height: 400)
+    private func swapDifficultyLabels(to newDifficultyButton: UIButton?) {
+        guard let newDifficultyButton = newDifficultyButton else {
+            self.selectedDifficultyButton?.setTitleColor(Constants.primaryColor, for: .normal)
+            self.selectedDifficultyButton = nil
+            return
+        }
+        
+        self.selectedDifficultyButton?.setTitleColor(Constants.primaryColor, for: .normal)
+        newDifficultyButton.setTitleColor(Constants.accentColor, for: .normal)
+        self.selectedDifficultyButton = newDifficultyButton
     }
     
     private func updateSwitchStates() {
@@ -117,87 +148,93 @@ class OptionsViewController: UIViewController {
     }
     
     private func updateSelectedPickerIndices() {
-        let currentRow = self.gameOptions.rowCount - GameGeneralService.Constant.minimumFieldDimension
-        let currentCol = self.gameOptions.columnCount - GameGeneralService.Constant.minimumFieldDimension
-        let currentMines = self.gameOptions.minesCount - GameGeneralService.Constant.minimumMines
+        let currentRow = self.gameOptions.rowCount - Constants.minimumFieldDimension
+        let currentCol = self.gameOptions.columnCount - Constants.minimumFieldDimension
+        let currentMines = self.gameOptions.minesCount - Constants.minimumMines
         
-        self.selectedRowIndex = (currentRow >= 0) ? currentRow : 0
-        self.selectedColumnIndex = (currentCol >= 0) ? currentCol : 0
-        self.selectedMinesIndex = (currentMines >= 0) ? currentMines: 0
+        let selectedRowIndex = (currentRow >= 0) ? currentRow : 0
+        let selectedColumnIndex = (currentCol >= 0) ? currentCol : 0
+        let selectedMinesIndex = (currentMines >= 0) ? currentMines: 0
         
-        self.rowCountPicker.selectRow(self.selectedRowIndex, inComponent: 0, animated: false)
-        self.columnCountPicker.selectRow(self.selectedColumnIndex, inComponent: 0, animated: false)
-        self.mineCountPicker.selectRow(self.selectedMinesIndex, inComponent: 0, animated: false)
+        self.rowCountPicker.selectRow(selectedRowIndex, inComponent: 0, animated: false)
+        self.columnCountPicker.selectRow(selectedColumnIndex, inComponent: 0, animated: false)
+        self.mineCountPicker.selectRow(selectedMinesIndex, inComponent: 0, animated: false)
     }
     
-    @IBAction func onMusicToggle(_ sender: UISwitch) {
+    @IBAction func onMusicToggle(_ uiSwitch: UISwitch) {
         self.audioService.playSelectSound()
         
-        self.audioOptions.isMusicEnabled = sender.isOn
+        self.audioOptions.isMusicEnabled = uiSwitch.isOn
         PersistableService.saveAudioOptions(audioOptions: self.audioOptions)
         
-        if !sender.isOn {
+        if !uiSwitch.isOn {
             self.audioService.stopBackgroundMusic()
         }
         
         self.audioService.updateSoundOptions()
     }
     
-    @IBAction func onSoundEffectsToggle(_ sender: UISwitch) {
+    @IBAction func onSoundEffectsToggle(_ uiSwitch: UISwitch) {
         self.audioService.playSelectSound(forced: true)
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-            self.audioOptions.isSoundEffectsEnabled = sender.isOn
+            self.audioOptions.isSoundEffectsEnabled = uiSwitch.isOn
             PersistableService.saveAudioOptions(audioOptions: self.audioOptions)
             
             self.audioService.updateSoundOptions()
         }
     }
     
-    @IBAction func onEasyButtonPressed(_ sender: UIButton) {
+    @IBAction func onEasyButtonPressed(_ button: UIButton) {
         self.audioService.playSelectSound()
         // 9x9, 10 mines
-        self.gameOptions.rowCount = 9
-        self.gameOptions.columnCount = 9
-        self.gameOptions.minesCount = 10
+        self.gameOptions.rowCount = Constant.easyDimension
+        self.gameOptions.columnCount = Constant.easyDimension
+        self.gameOptions.minesCount = Constant.easyMines
+        
+        self.swapDifficultyLabels(to: button)
         self.updateSelectedPickerIndices()
     }
     
-    @IBAction func onIntermediateButtonPressed(_ sender: UIButton) {
+    @IBAction func onIntermediateButtonPressed(_ button: UIButton) {
         self.audioService.playSelectSound()
         // 16x16, 40 mines
-        self.gameOptions.rowCount = 16
-        self.gameOptions.columnCount = 16
-        self.gameOptions.minesCount = 40
+        self.gameOptions.rowCount = Constant.intermediateDimension
+        self.gameOptions.columnCount = Constant.intermediateDimension
+        self.gameOptions.minesCount = Constant.intermediateMines
+        
+        self.swapDifficultyLabels(to: button)
         self.updateSelectedPickerIndices()
     }
     
-    @IBAction func onExpertButtonPressed(_ sender: UIButton) {
+    @IBAction func onExpertButtonPressed(_ button: UIButton) {
         self.audioService.playSelectSound()
         // 24x24, 99 mines
-        self.gameOptions.rowCount = 24
-        self.gameOptions.columnCount = 24
-        self.gameOptions.minesCount = 99
+        self.gameOptions.rowCount = Constant.expertDimension
+        self.gameOptions.columnCount = Constant.expertDimension
+        self.gameOptions.minesCount = Constant.expertMines
+        
+        self.swapDifficultyLabels(to: button)
         self.updateSelectedPickerIndices()
     }
     
-    @IBAction func onCancelButtonPressed(_ sender: UIButton) {
+    @IBAction func onCancelButtonPressed(_ button: UIButton) {
         self.audioService.playRevealSound()
         self.exitHandler?(false)
         self.dismiss(animated: true)
     }
     
-    @IBAction func onSaveButtonPressed(_ sender: UIButton) {
-        let rowCount = Constant.dimensionRange[selectedRowIndex]
-        let columnCount = Constant.dimensionRange[selectedColumnIndex]
-        let minesCount = Constant.mineRange[selectedMinesIndex]
-        
-        if let errorMessage = validateConfig(rowCount: rowCount, columnCount: columnCount, minesCount: minesCount) {
+    @IBAction func onSaveButtonPressed(_ button: UIButton) {
+        if let errorMessage = validateConfig(
+            rowCount: self.gameOptions.rowCount,
+            columnCount: self.gameOptions.columnCount,
+            minesCount: self.gameOptions.minesCount) {
+            
             self.audioService.playBeepBeepSound()
             self.showToast(message: errorMessage)
         } else {
             self.audioService.playSaveConfigSound()
-            self.saveConfig(row: rowCount, col: columnCount, mines: minesCount)
+            self.saveGameConfig()
             self.exitHandler?(true)
             self.dismiss(animated: true)
         }
@@ -231,12 +268,8 @@ class OptionsViewController: UIViewController {
         })
     }
     
-    private func saveConfig(row: Int, col: Int, mines: Int) {
+    private func saveGameConfig() {
         // Write to UserDefaults
-        self.gameOptions.rowCount = row
-        self.gameOptions.columnCount = col
-        self.gameOptions.minesCount = mines
-        
         PersistableService.saveGameOptions(gameOptions: self.gameOptions)
     }
 }
@@ -265,14 +298,16 @@ extension OptionsViewController: UIPickerViewDelegate {
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         switch pickerView.tag {
         case 0:
-            self.selectedRowIndex = row
+            self.gameOptions.rowCount = Constant.dimensionRange[row]
         case 1:
-            self.selectedColumnIndex = row
+            self.gameOptions.columnCount = Constant.dimensionRange[row]
         case 2:
-            self.selectedMinesIndex = row
+            self.gameOptions.minesCount = Constant.mineRange[row]
         default:
             break
         }
+        
+        self.updateDifficultyLabels()
     }
 }
 

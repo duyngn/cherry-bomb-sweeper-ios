@@ -28,7 +28,7 @@ class FieldGridCollectionView: UICollectionView {
     
     fileprivate var rowCount: Int = 0
     fileprivate var columnCount: Int = 0
-    fileprivate var cellDimension: CGFloat = GameGeneralService.Constant.defaultCellDimension
+    fileprivate var cellDimension: CGFloat = Constants.defaultCellDimension
     fileprivate var longPressOnIndex: IndexPath?
     
     private var dimensionConstraints: [NSLayoutConstraint] = []
@@ -65,9 +65,9 @@ class FieldGridCollectionView: UICollectionView {
         self.columnCount = columns
         
         let fieldWidth = (CGFloat(self.columnCount) *
-            (self.cellDimension + GameGeneralService.Constant.cellSpacing)) - GameGeneralService.Constant.cellSpacing
+            (self.cellDimension + Constants.cellSpacing)) - Constants.cellSpacing
         let fieldHeight = (CGFloat(self.rowCount) *
-            (self.cellDimension + GameGeneralService.Constant.cellSpacing)) - GameGeneralService.Constant.cellSpacing
+            (self.cellDimension + Constants.cellSpacing)) - Constants.cellSpacing
         
         self.isScrollEnabled = false
         
@@ -119,7 +119,7 @@ extension FieldGridCollectionView: FieldGridLayoutDelegate {
     }
     
     func collectionView(cellSpacingForFieldGrid collectionView: UICollectionView) -> CGFloat {
-        return GameGeneralService.Constant.cellSpacing
+        return Constants.cellSpacing
     }
     
     func collectionView(viewWindowForFieldGrid collectionView: UICollectionView) -> CGRect? {

@@ -11,7 +11,7 @@ import UIKit
 class FieldGridScrollView: UIScrollView {
     fileprivate var fieldGridCollection: FieldGridCollectionView?
 
-    private var minScaleFactor: CGFloat = GameGeneralService.Constant.defaultMinScaleFactor
+    private var minScaleFactor: CGFloat = Constants.defaultMinScaleFactor
     
     private var rowCount: Int = 0
     private var columnCount: Int = 0
@@ -33,7 +33,7 @@ class FieldGridScrollView: UIScrollView {
         
         let fieldGrid = FieldGridCollectionView(frame: self.frame, collectionViewLayout: FieldGridCollectionViewLayout())
         fieldGrid.backgroundColor = UIColor.clear
-        fieldGrid.layer.borderWidth = GameGeneralService.Constant.fieldBorderWidth
+        fieldGrid.layer.borderWidth = Constants.fieldBorderWidth
         fieldGrid.layer.borderColor = UIColor.black.cgColor
         fieldGrid.isScrollEnabled = false
         self.fieldGridCollection = fieldGrid
@@ -130,7 +130,7 @@ class FieldGridScrollView: UIScrollView {
         self.minScaleFactor = newMinScale
         
         self.minimumZoomScale = self.minScaleFactor
-        self.maximumZoomScale = GameGeneralService.Constant.defaultMaxScaleFactor
+        self.maximumZoomScale = Constants.defaultMaxScaleFactor
     }
     
     func showEntireField() {

@@ -19,6 +19,9 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="OptionsViewController" customModule="CherryBombSweeper" customModuleProvider="target">
             <connections>
                 <outlet property="columnCountPicker" destination="FDq-Vs-bAG" id="Cz5-Ib-WxD"/>
+                <outlet property="easyButton" destination="pXQ-P7-eth" id="5qS-aK-Ari"/>
+                <outlet property="expertButton" destination="lrm-S1-l2a" id="6wG-Xm-vN7"/>
+                <outlet property="intermediateButton" destination="klV-PH-wnV" id="Gj0-wE-5Dh"/>
                 <outlet property="mineCountPicker" destination="PMc-T9-3fY" id="adf-5g-a9f"/>
                 <outlet property="musicSwitch" destination="X51-9h-H9A" id="afO-MW-50k"/>
                 <outlet property="optionsContainer" destination="XaH-re-ke8" id="bEM-Bd-cU0"/>

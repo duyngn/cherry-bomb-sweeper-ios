@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		04046BB32015293C00426A47 /* GameGeneralService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04046BB22015293C00426A47 /* GameGeneralService.swift */; };
+		04046BB32015293C00426A47 /* GameIconsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04046BB22015293C00426A47 /* GameIconsService.swift */; };
 		040FF625201C427400084720 /* flag_sound.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 040FF61C201C427300084720 /* flag_sound.mp3 */; };
 		040FF626201C427400084720 /* save_config_sound.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 040FF61D201C427300084720 /* save_config_sound.mp3 */; };
 		040FF627201C427400084720 /* explosion_sound.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 040FF61E201C427300084720 /* explosion_sound.mp3 */; };
@@ -25,6 +25,8 @@
 		042168C72008368C0065854F /* MineField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042168C62008368C0065854F /* MineField.swift */; };
 		0423F03C200D653000DE76CF /* FieldGridCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0423F03B200D653000DE76CF /* FieldGridCollectionView.swift */; };
 		047F483C201DD0A1007E9768 /* AudioOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047F483B201DD0A1007E9768 /* AudioOptions.swift */; };
+		047F483F201F01E3007E9768 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047F483E201F01E3007E9768 /* Constants.swift */; };
+		047F4841201F01F5007E9768 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047F4840201F01F5007E9768 /* Extensions.swift */; };
 		04A50C71200F3CB80075A9BE /* GameProcessingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A50C70200F3CB80075A9BE /* GameProcessingService.swift */; };
 		04A9232F201AD8E200BF1DF4 /* PersistableService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A9232E201AD8E200BF1DF4 /* PersistableService.swift */; };
 		04B44FCA201124B300CF63EB /* FieldGridCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B44FC9201124B300CF63EB /* FieldGridCollectionViewLayout.swift */; };
@@ -40,7 +42,6 @@
 		04E22D972006D2F100DEC328 /* GameOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E22D962006D2F100DEC328 /* GameOptions.swift */; };
 		04FB4E15200B1E080007A329 /* FieldGridCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04FB4E13200B1E080007A329 /* FieldGridCell.swift */; };
 		04FB4E16200B1E080007A329 /* FieldGridCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 04FB4E14200B1E080007A329 /* FieldGridCell.xib */; };
-		270E607F90B97BD0BE53CF41 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 270E6AB37CD953F790C86C68 /* Info.plist */; };
 		270E61E349D485A4C4A83B5B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 270E601A1DBCD2934A3A3A51 /* AppDelegate.swift */; };
 		270E65B9713F1DDC9FF2001D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 270E657B121C3E32368710CB /* LaunchScreen.storyboard */; };
 		270E6E264E09B3A5FA6766E0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 270E6B1D93FF9CB97F5EF120 /* Main.storyboard */; };
@@ -48,7 +49,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		04046BB22015293C00426A47 /* GameGeneralService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameGeneralService.swift; sourceTree = "<group>"; };
+		04046BB22015293C00426A47 /* GameIconsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameIconsService.swift; sourceTree = "<group>"; };
 		040FF61C201C427300084720 /* flag_sound.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = flag_sound.mp3; sourceTree = "<group>"; };
 		040FF61D201C427300084720 /* save_config_sound.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = save_config_sound.mp3; sourceTree = "<group>"; };
 		040FF61E201C427300084720 /* explosion_sound.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = explosion_sound.mp3; sourceTree = "<group>"; };
@@ -66,6 +67,8 @@
 		042168C62008368C0065854F /* MineField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MineField.swift; sourceTree = "<group>"; };
 		0423F03B200D653000DE76CF /* FieldGridCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldGridCollectionView.swift; sourceTree = "<group>"; };
 		047F483B201DD0A1007E9768 /* AudioOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioOptions.swift; sourceTree = "<group>"; };
+		047F483E201F01E3007E9768 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		047F4840201F01F5007E9768 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		04A50C70200F3CB80075A9BE /* GameProcessingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameProcessingService.swift; sourceTree = "<group>"; };
 		04A9232E201AD8E200BF1DF4 /* PersistableService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistableService.swift; sourceTree = "<group>"; };
 		04B44FC9201124B300CF63EB /* FieldGridCollectionViewLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldGridCollectionViewLayout.swift; sourceTree = "<group>"; };
@@ -165,7 +168,7 @@
 			children = (
 				04E22D942006D29500DEC328 /* GameGeneratorService.swift */,
 				04A50C70200F3CB80075A9BE /* GameProcessingService.swift */,
-				04046BB22015293C00426A47 /* GameGeneralService.swift */,
+				04046BB22015293C00426A47 /* GameIconsService.swift */,
 				04A9232E201AD8E200BF1DF4 /* PersistableService.swift */,
 				040FF62E201C485500084720 /* AudioService.swift */,
 			);
@@ -213,6 +216,8 @@
 				270E657B121C3E32368710CB /* LaunchScreen.storyboard */,
 				270E6B1D93FF9CB97F5EF120 /* Main.storyboard */,
 				270E601A1DBCD2934A3A3A51 /* AppDelegate.swift */,
+				047F483E201F01E3007E9768 /* Constants.swift */,
+				047F4840201F01F5007E9768 /* Extensions.swift */,
 			);
 			path = CherryBombSweeper;
 			sourceTree = "<group>";
@@ -247,10 +252,12 @@
 					columnCountPicker,
 					rowCountPicker,
 				);
+				LastUpgradeCheck = 0920;
 				ORGANIZATIONNAME = Duy.Ninja;
 				TargetAttributes = {
 					270E624EAD06B3D6EB122011 = {
 						DevelopmentTeam = W8P665STS7;
+						LastSwiftMigration = 0920;
 					};
 				};
 			};
@@ -278,7 +285,6 @@
 			files = (
 				04D044CD201BF50600758DD1 /* font-digital-7.ttf in Resources */,
 				040FF628201C427400084720 /* tap_sound.mp3 in Resources */,
-				270E607F90B97BD0BE53CF41 /* Info.plist in Resources */,
 				040FF634201C51B600084720 /* beep_beep_sound.mp3 in Resources */,
 				040FF62A201C427400084720 /* select_sound.mp3 in Resources */,
 				04E22D8E2006CF8F00DEC328 /* OptionsViewController.xib in Resources */,
@@ -307,10 +313,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				0423F03C200D653000DE76CF /* FieldGridCollectionView.swift in Sources */,
+				047F483F201F01E3007E9768 /* Constants.swift in Sources */,
 				270E61E349D485A4C4A83B5B /* AppDelegate.swift in Sources */,
 				04A9232F201AD8E200BF1DF4 /* PersistableService.swift in Sources */,
 				041CA0442015608C006A37BA /* GameTimer.swift in Sources */,
-				04046BB32015293C00426A47 /* GameGeneralService.swift in Sources */,
+				04046BB32015293C00426A47 /* GameIconsService.swift in Sources */,
 				04E22D8A2006CC8500DEC328 /* Game.swift in Sources */,
 				04E22D972006D2F100DEC328 /* GameOptions.swift in Sources */,
 				04E22D952006D29500DEC328 /* GameGeneratorService.swift in Sources */,
@@ -320,6 +327,7 @@
 				04FB4E15200B1E080007A329 /* FieldGridCell.swift in Sources */,
 				04E22D882006CC7800DEC328 /* Cell.swift in Sources */,
 				047F483C201DD0A1007E9768 /* AudioOptions.swift in Sources */,
+				047F4841201F01F5007E9768 /* Extensions.swift in Sources */,
 				04E22D912006CFEB00DEC328 /* GameViewController.swift in Sources */,
 				04E22D8D2006CF8F00DEC328 /* OptionsViewController.swift in Sources */,
 				040FF62F201C485500084720 /* AudioService.swift in Sources */,
@@ -358,7 +366,9 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
@@ -366,7 +376,11 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -408,7 +422,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = duy.ninja.CherryBombSweeper;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Release;
 		};
@@ -421,7 +436,9 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
@@ -429,7 +446,11 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -464,7 +485,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = duy.ninja.CherryBombSweeper;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Debug;
 		};

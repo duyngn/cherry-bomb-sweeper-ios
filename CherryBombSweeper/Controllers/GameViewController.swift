@@ -50,7 +50,7 @@ class GameViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if let bkgPattern = GameGeneralService.shared.brickTileImage {
+        if let bkgPattern = GameIconsService.shared.brickTileImage {
             self.view.backgroundColor = UIColor.init(patternImage: bkgPattern)
         }
         
@@ -154,7 +154,7 @@ class GameViewController: UIViewController {
     private func resetControlStates() {
         self.updateActionModeButton(to: .tap)
         
-        if let bombImage = GameGeneralService.shared.bombImage {
+        if let bombImage = GameIconsService.shared.bombImage {
             self.newGameButton.setImage(bombImage, for: UIControlState.normal)
         }
         
@@ -178,7 +178,7 @@ class GameViewController: UIViewController {
         DispatchQueue.main.async {
             self.game?.state = .lost
             
-            if let boomImage = GameGeneralService.shared.boomImage {
+            if let boomImage = GameIconsService.shared.boomImage {
                 self.newGameButton.setImage(boomImage, for: UIControlState.normal)
                 self.newGameButton.transform = CGAffineTransform(scaleX: 2, y: 2)
             }
@@ -241,11 +241,11 @@ class GameViewController: UIViewController {
             
             switch self.currentUserAction {
             case .flag:
-                if let flagImage = GameGeneralService.shared.flagImage {
+                if let flagImage = GameIconsService.shared.flagImage {
                     self.actionModeButton.setImage(flagImage, for: UIControlState.normal)
                 }
             case .tap:
-                if let shovelImage = GameGeneralService.shared.shovelImage {
+                if let shovelImage = GameIconsService.shared.shovelImage {
                     self.actionModeButton.setImage(shovelImage, for: UIControlState.normal)
                 }
             }
