@@ -1,4 +1,5 @@
 # Cherry Bomb Minesweeper - iOS - Swift 4
+<p align="center"><img src="https://github.com/duyngn/cherry-bomb-sweeper-ios/blob/master/CherryBombSweeper/Assets.xcassets/AppIcon.appiconset/Icon-180.png?raw=true" alt="Gear Icon" width="120"/> </p>
 
 A modern take on the classic game Minesweeper. Written fully in Swift 4 with iPhone X screen support.
 
@@ -13,9 +14,9 @@ A modern take on the classic game Minesweeper. Written fully in Swift 4 with iPh
 
 ## Controls
 - **Top Action Bar**
-	- **Gear Icon** - Tap to access the Options screen to toggle sound and set minefield difficulties
-	- **Bomb Icon** - Tap to start a new game with the current difficulty
-	- **Action Icon** - Tap to toggle between "reveal cell" (shovel icon) and "flag cell" (flag icon)
+	- <img src="https://github.com/duyngn/cherry-bomb-sweeper-ios/blob/master/CherryBombSweeper/Assets.xcassets/gear-icon.imageset/gear-120.png?raw=true" alt="Gear Icon" width="30" height="30"/> - Tap to access the Options screen to toggle sound and set minefield difficulties
+	- <img src="https://github.com/duyngn/cherry-bomb-sweeper-ios/blob/master/CherryBombSweeper/Assets.xcassets/cherry-bomb-icon.imageset/Icon-120.png?raw=true" alt="Gear Icon" width="30" height="30"/> - Tap to start a new game with the current difficulty
+	- <img src="https://github.com/duyngn/cherry-bomb-sweeper-ios/blob/master/CherryBombSweeper/Assets.xcassets/shovel-icon.imageset/shovel-120.png?raw=true" alt="Gear Icon" width="30" height="30"/> <img src="https://github.com/duyngn/cherry-bomb-sweeper-ios/blob/master/CherryBombSweeper/Assets.xcassets/flag-icon.imageset/Icon-120.png?raw=true" alt="Gear Icon" width="30" height="30"/> - Tap to toggle between "reveal cell" and "flag cell"
 	
 - **Gameplay**
 	- With Action Icon showing the "Shovel", tap to reveal cell
@@ -42,12 +43,12 @@ A modern take on the classic game Minesweeper. Written fully in Swift 4 with iPh
 ## Credits
 
 - **Images**
-	- [Cherry Bomb Icon](https://www.1001freedownloads.com/free-clipart/cartoon-bomb)
-	- [Gear Icon](https://www.1001freedownloads.com/free-clipart/architetto-ruota-dentata-2)
-	- [Shovel Icon](https://www.1001freedownloads.com/free-clipart/shovel-4) (Altered handle color)
-	- [Flag Icon](https://www.1001freedownloads.com/free-clipart/game-marbles-flags) (Used the Red flag with slight alterations)
-	- [BOOM Icon](https://www.1001freedownloads.com/free-clipart/boom)
-	- [Brick Background](https://www.1001freedownloads.com/free-clipart/brick-tile)
+	- <img src="https://github.com/duyngn/cherry-bomb-sweeper-ios/blob/master/CherryBombSweeper/Assets.xcassets/cherry-bomb-icon.imageset/Icon-120.png?raw=true" alt="Gear Icon" width="30" height="30"/> [Cherry Bomb Icon](https://www.1001freedownloads.com/free-clipart/cartoon-bomb)
+	- <img src="https://github.com/duyngn/cherry-bomb-sweeper-ios/blob/master/CherryBombSweeper/Assets.xcassets/gear-icon.imageset/gear-120.png?raw=true" alt="Gear Icon" width="30" height="30"/> [Gear Icon](https://www.1001freedownloads.com/free-clipart/architetto-ruota-dentata-2)
+	- <img src="https://github.com/duyngn/cherry-bomb-sweeper-ios/blob/master/CherryBombSweeper/Assets.xcassets/shovel-icon.imageset/shovel-120.png?raw=true" alt="Gear Icon" width="30" height="30"/> [Shovel Icon](https://www.1001freedownloads.com/free-clipart/shovel-4) (Altered handle color)
+	- <img src="https://github.com/duyngn/cherry-bomb-sweeper-ios/blob/master/CherryBombSweeper/Assets.xcassets/flag-icon.imageset/Icon-120.png?raw=true" alt="Gear Icon" width="30" height="30"/> [Flag Icon](https://www.1001freedownloads.com/free-clipart/game-marbles-flags) (Used the Red flag with slight alterations)
+	- <img src="https://github.com/duyngn/cherry-bomb-sweeper-ios/blob/master/CherryBombSweeper/Assets.xcassets/boom-icon.imageset/Icon-120.png?raw=true" alt="Gear Icon" width="30" height="30"/> [BOOM Icon](https://www.1001freedownloads.com/free-clipart/boom)
+	- <img src="https://github.com/duyngn/cherry-bomb-sweeper-ios/blob/master/CherryBombSweeper/Assets.xcassets/brick-tile-icon.imageset/brick-tile-icon-120.jpg?raw=true" alt="Gear Icon" width="30" height="30"/> [Brick Background](https://www.1001freedownloads.com/free-clipart/brick-tile)
 	
 - **Font**
 	- [Digital-7](http://www.styleseven.com/php/get_product.php?product=Digital-7) - created by http://www.styleseven.com/
