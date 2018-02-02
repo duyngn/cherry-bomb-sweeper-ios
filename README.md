@@ -1,4 +1,4 @@
-﻿# Cherry Bomb Minesweeper
+﻿# Cherry Bomb Minesweeper - iOS - Swift 4
 
 A modern take on the classic game Minesweeper. Written fully in Swift 4 with iPhone X screen support.
 
