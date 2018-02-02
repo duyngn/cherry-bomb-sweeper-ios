@@ -1,4 +1,4 @@
-﻿# Cherry Bomb Minesweeper - iOS - Swift 4
+# Cherry Bomb Minesweeper
 
 A modern take on the classic game Minesweeper. Written fully in Swift 4 with iPhone X screen support.
 
@@ -41,4 +41,26 @@ A modern take on the classic game Minesweeper. Written fully in Swift 4 with iPh
 
 ## Credits
 
-// TODO
+- **Images**
+	- [Cherry Bomb Icon](https://www.1001freedownloads.com/free-clipart/cartoon-bomb)
+	- [Gear Icon](https://www.1001freedownloads.com/free-clipart/architetto-ruota-dentata-2)
+	- [Shovel Icon](https://www.1001freedownloads.com/free-clipart/shovel-4) (Altered handle color)
+	- [Flag Icon](https://www.1001freedownloads.com/free-clipart/game-marbles-flags) (Used the Red flag with slight alterations)
+	- [BOOM Icon](https://www.1001freedownloads.com/free-clipart/boom)
+	- [Brick Background](https://www.1001freedownloads.com/free-clipart/brick-tile)
+	
+- **Font**
+	- [Digital-7](http://www.styleseven.com/php/get_product.php?product=Digital-7) - created by http://www.styleseven.com/
+	
+- **Sound**
+	- [Background Music](https://freesound.org/people/RokZRooM/sounds/344778/)
+	- [Explosion](https://freesound.org/people/Iwiploppenisse/sounds/156031/)
+	- [Flag Drop](https://freesound.org/people/plasterbrain/sounds/237422/)
+	- [Reveal](https://freesound.org/people/NenadSimic/sounds/171697/)
+	- [Probe](https://freesound.org/people/kwahmah_02/sounds/256116/)
+	- [Icon Selection](https://freesound.org/people/PaulMorek/sounds/330052/)
+	- [Beep Beep](https://freesound.org/people/Kodack/sounds/258193/)
+	- [New Game](https://freesound.org/people/InspectorJ/sounds/403009/)
+	- [Option Selection](https://freesound.org/people/pan14/sounds/263133/)
+	- [Game Win](https://freesound.org/people/LittleRobotSoundFactory/sounds/270404/)
+	- [Cancel](https://freesound.org/people/hodomostvarujemritam/sounds/171273/)
