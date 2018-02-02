@@ -69,7 +69,6 @@
 		047F483B201DD0A1007E9768 /* AudioOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioOptions.swift; sourceTree = "<group>"; };
 		047F483E201F01E3007E9768 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		047F4840201F01F5007E9768 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
-		048C2AEF202438A6009A9EE9 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../../../../../../Volumes/KNSTN16GB/README.md; sourceTree = "<group>"; };
 		04A50C70200F3CB80075A9BE /* GameProcessingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameProcessingService.swift; sourceTree = "<group>"; };
 		04A9232E201AD8E200BF1DF4 /* PersistableService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistableService.swift; sourceTree = "<group>"; };
 		04B44FC9201124B300CF63EB /* FieldGridCollectionViewLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldGridCollectionViewLayout.swift; sourceTree = "<group>"; };
@@ -219,7 +218,6 @@
 				270E601A1DBCD2934A3A3A51 /* AppDelegate.swift */,
 				047F483E201F01E3007E9768 /* Constants.swift */,
 				047F4840201F01F5007E9768 /* Extensions.swift */,
-				048C2AEF202438A6009A9EE9 /* README.md */,
 			);
 			path = CherryBombSweeper;
 			sourceTree = "<group>";
