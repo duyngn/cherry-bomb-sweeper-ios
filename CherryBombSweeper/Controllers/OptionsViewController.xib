@@ -11,6 +11,9 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
+        <array key="font-digital-7-mono.ttf">
+            <string>Digital-7Mono</string>
+        </array>
         <array key="font-digital-7.ttf">
             <string>Digital-7</string>
         </array>
@@ -28,6 +31,7 @@
                 <outlet property="rowCountPicker" destination="J2S-mX-a0Z" id="NtV-d8-bdL"/>
                 <outlet property="scrollView" destination="eg6-ql-MLP" id="Sif-Vx-bZN"/>
                 <outlet property="soundEffectsSwitch" destination="foe-8p-4mI" id="JAH-IR-rjF"/>
+                <outlet property="versionLabel" destination="KGU-dR-rff" id="GKb-fj-3ve"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -220,14 +224,34 @@
                         <constraint firstItem="XaH-re-ke8" firstAttribute="top" secondItem="eg6-ql-MLP" secondAttribute="top" constant="50" id="ySw-JI-lpu"/>
                     </constraints>
                 </scrollView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Mm7-DV-oEr" userLabel="Credits">
+                    <rect key="frame" x="288" y="607" width="55" height="28"/>
+                    <fontDescription key="fontDescription" name="Digital-7Mono" family="Digital-7 Mono" pointSize="17"/>
+                    <state key="normal" title="Credits">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </state>
+                    <connections>
+                        <action selector="onCreditButtonPressed:" destination="-1" eventType="touchUpInside" id="KWX-jA-Sy3"/>
+                    </connections>
+                </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="v1.0.0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KGU-dR-rff" userLabel="Version">
+                    <rect key="frame" x="32" y="621" width="41" height="14"/>
+                    <fontDescription key="fontDescription" name="Digital-7Mono" family="Digital-7 Mono" pointSize="15"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
-            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
                 <constraint firstItem="eg6-ql-MLP" firstAttribute="top" secondItem="zj4-p6-neq" secondAttribute="top" id="2LI-ek-hjf"/>
+                <constraint firstItem="zj4-p6-neq" firstAttribute="trailing" secondItem="Mm7-DV-oEr" secondAttribute="trailing" constant="32" id="5Px-9i-0dJ"/>
                 <constraint firstItem="eg6-ql-MLP" firstAttribute="height" secondItem="zj4-p6-neq" secondAttribute="height" id="BiY-E2-uMj"/>
                 <constraint firstItem="XaH-re-ke8" firstAttribute="width" secondItem="zj4-p6-neq" secondAttribute="width" id="QKF-qK-jZt"/>
                 <constraint firstItem="eg6-ql-MLP" firstAttribute="centerX" secondItem="zj4-p6-neq" secondAttribute="centerX" id="TrO-DQ-E3e"/>
+                <constraint firstItem="KGU-dR-rff" firstAttribute="bottom" secondItem="zj4-p6-neq" secondAttribute="bottom" constant="-32" id="gwc-IM-K1Y"/>
+                <constraint firstItem="KGU-dR-rff" firstAttribute="leading" secondItem="zj4-p6-neq" secondAttribute="leading" constant="32" id="tTu-dt-22a"/>
                 <constraint firstItem="eg6-ql-MLP" firstAttribute="width" secondItem="zj4-p6-neq" secondAttribute="width" id="ukj-3Q-gXr"/>
+                <constraint firstItem="zj4-p6-neq" firstAttribute="bottom" secondItem="Mm7-DV-oEr" secondAttribute="bottom" constant="32" id="ums-hj-wCF"/>
                 <constraint firstItem="XaH-re-ke8" firstAttribute="height" secondItem="zj4-p6-neq" secondAttribute="height" id="xYC-Ea-hx7"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="zj4-p6-neq"/>

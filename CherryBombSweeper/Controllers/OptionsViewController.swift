@@ -25,6 +25,7 @@ class OptionsViewController: UIViewController {
         static let expertMines: Int = 99
     }
     
+    @IBOutlet private weak var versionLabel: UILabel!
     @IBOutlet private weak var scrollView: UIScrollView!
     @IBOutlet private weak var optionsContainer: UIView!
     
@@ -50,6 +51,8 @@ class OptionsViewController: UIViewController {
         self.updateDifficultyLabels()
         self.updateSelectedPickerIndices()
         self.updateSwitchStates()
+        
+        self.setupVersionNumber()
     }()
     
     override func viewDidLoad() {
@@ -92,6 +95,20 @@ class OptionsViewController: UIViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    private func setupVersionNumber() {
+        if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
+            var outputVersion = version
+            
+            if let buildNumber = Bundle.main.infoDictionary?["CFBundleVersion"] as? String {
+                outputVersion += ".\(buildNumber)"
+            }
+            
+            self.versionLabel.text = outputVersion
+        } else {
+            self.versionLabel.isHidden = true
+        }
     }
     
     private func updateDifficultyLabels() {
@@ -238,6 +255,15 @@ class OptionsViewController: UIViewController {
             self.exitHandler?(true)
             self.dismiss(animated: true)
         }
+    }
+    
+    @IBAction func onCreditButtonPressed(_ sender: UIButton) {
+        self.audioService.playSelectSound()
+        
+        let creditsController = CreditsViewController(nibName: "CreditsViewController", bundle: nil)
+        creditsController.modalPresentationStyle = .overFullScreen
+        
+        self.present(creditsController, animated: true)
     }
     
     private func validateConfig(rowCount: Int, columnCount: Int, minesCount: Int) -> String? {
