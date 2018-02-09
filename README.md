@@ -37,7 +37,6 @@ A modern take on the classic game Minesweeper. Written fully in Swift 4 with iPh
 
 - Implement stat tracking and persist to CoreData
 - Implement stat screen accessible via the countdown timer
-- Implement a Credits screen to properly credit all the free assets used
 - Optimize large grid generation
 
 ## Credits
