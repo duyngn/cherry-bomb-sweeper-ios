@@ -136,7 +136,7 @@ class OptionsViewController: UIViewController {
             }
             // is intermediate
             newDifficultyButton = self.intermediateButton
-        } else if self.gameOptions.rowCount == Constant.expertDimension, self.gameOptions.minesCount == Constant.expertDimension {
+        } else if self.gameOptions.rowCount == Constant.expertDimension, self.gameOptions.minesCount == Constant.expertMines {
             if let selectedDifficultyButton = self.selectedDifficultyButton, selectedDifficultyButton !== self.expertButton {
                 return
             }
