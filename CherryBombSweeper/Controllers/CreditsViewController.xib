@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="font-digital-7.ttf">
+            <string>Digital-7</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CreditsViewController" customModule="CherryBombSweeper" customModuleProvider="target">
+            <connections>
+                <outlet property="aboutText" destination="ZpC-rW-WH4" id="JDU-tQ-TbL"/>
+                <outlet property="creditsTitle" destination="2z0-c0-IO0" id="9qX-Wn-n5n"/>
+                <outlet property="fontsCredits" destination="FhC-De-vY2" id="knd-rY-UcV"/>
+                <outlet property="fontsTitle" destination="D7N-44-Dbn" id="dOF-SD-REt"/>
+                <outlet property="imagesCredits" destination="V5S-v0-QAO" id="FNr-zq-1ON"/>
+                <outlet property="imagesTitle" destination="eyb-eA-SSt" id="PfX-mg-tae"/>
+                <outlet property="scrollView" destination="BjL-um-o5x" id="r2e-7K-7ex"/>
+                <outlet property="soundsCredits" destination="AEM-2M-iZN" id="hY7-07-ue4"/>
+                <outlet property="soundsTitle" destination="7Qu-ZM-cU2" id="NHE-L4-DTP"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <scrollView multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BjL-um-o5x">
+                    <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rlA-8f-bAE" userLabel="Container">
+                            <rect key="frame" x="38" y="0.0" width="300" height="475.5"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Credits" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2z0-c0-IO0" userLabel="Credits Title">
+                                    <rect key="frame" x="106" y="32" width="88" height="27.5"/>
+                                    <fontDescription key="fontDescription" name="Digital-7" family="Digital-7" pointSize="30"/>
+                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="About" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="v7Y-XY-dkr" userLabel="About Title">
+                                    <rect key="frame" x="0.0" y="91.5" width="300" height="23"/>
+                                    <fontDescription key="fontDescription" name="Digital-7" family="Digital-7" pointSize="25"/>
+                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <textView multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" editable="NO" text="About text" translatesAutoresizingMaskIntoConstraints="NO" id="ZpC-rW-WH4" userLabel="About Text">
+                                    <rect key="frame" x="0.0" y="130.5" width="300" height="29"/>
+                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <fontDescription key="fontDescription" name="Digital-7" family="Digital-7" pointSize="14"/>
+                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                </textView>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Images" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eyb-eA-SSt" userLabel="Images Title">
+                                    <rect key="frame" x="0.0" y="191.5" width="300" height="23"/>
+                                    <fontDescription key="fontDescription" name="Digital-7" family="Digital-7" pointSize="25"/>
+                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <textView multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" editable="NO" text="Image Credit" translatesAutoresizingMaskIntoConstraints="NO" id="V5S-v0-QAO" userLabel="Images Bullets">
+                                    <rect key="frame" x="16" y="230.5" width="268" height="29"/>
+                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <fontDescription key="fontDescription" name="Digital-7" family="Digital-7" pointSize="14"/>
+                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                </textView>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sounds" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Qu-ZM-cU2" userLabel="Sounds Title">
+                                    <rect key="frame" x="0.0" y="291.5" width="300" height="23"/>
+                                    <fontDescription key="fontDescription" name="Digital-7" family="Digital-7" pointSize="25"/>
+                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <textView multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" editable="NO" text="Sound Credit" translatesAutoresizingMaskIntoConstraints="NO" id="AEM-2M-iZN" userLabel="Sounds Bullets">
+                                    <rect key="frame" x="16" y="330.5" width="268" height="29"/>
+                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <fontDescription key="fontDescription" name="Digital-7" family="Digital-7" pointSize="14"/>
+                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                </textView>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Font" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="D7N-44-Dbn" userLabel="Font Title">
+                                    <rect key="frame" x="0.0" y="391.5" width="300" height="23"/>
+                                    <fontDescription key="fontDescription" name="Digital-7" family="Digital-7" pointSize="25"/>
+                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <textView multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" editable="NO" text="Font Credit" translatesAutoresizingMaskIntoConstraints="NO" id="FhC-De-vY2" userLabel="Fonts Bullets">
+                                    <rect key="frame" x="16" y="430.5" width="268" height="29"/>
+                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <fontDescription key="fontDescription" name="Digital-7" family="Digital-7" pointSize="14"/>
+                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                </textView>
+                            </subviews>
+                            <constraints>
+                                <constraint firstItem="FhC-De-vY2" firstAttribute="top" secondItem="D7N-44-Dbn" secondAttribute="bottom" constant="16" id="2le-7a-9aO"/>
+                                <constraint firstItem="ZpC-rW-WH4" firstAttribute="trailing" secondItem="rlA-8f-bAE" secondAttribute="trailing" id="7u1-Bi-wgG"/>
+                                <constraint firstItem="V5S-v0-QAO" firstAttribute="top" secondItem="eyb-eA-SSt" secondAttribute="bottom" constant="16" id="9Gp-lR-alC"/>
+                                <constraint firstItem="ZpC-rW-WH4" firstAttribute="leading" secondItem="rlA-8f-bAE" secondAttribute="leading" id="Bjc-WK-nBb"/>
+                                <constraint firstItem="7Qu-ZM-cU2" firstAttribute="top" secondItem="V5S-v0-QAO" secondAttribute="bottom" constant="32" id="EDF-j6-RJP"/>
+                                <constraint firstItem="7Qu-ZM-cU2" firstAttribute="trailing" secondItem="rlA-8f-bAE" secondAttribute="trailing" id="FiQ-Qb-GWN"/>
+                                <constraint firstItem="7Qu-ZM-cU2" firstAttribute="leading" secondItem="rlA-8f-bAE" secondAttribute="leading" id="HYd-3L-DTk"/>
+                                <constraint firstItem="AEM-2M-iZN" firstAttribute="top" secondItem="7Qu-ZM-cU2" secondAttribute="bottom" constant="16" id="LYh-ZE-DLG"/>
+                                <constraint firstItem="2z0-c0-IO0" firstAttribute="top" secondItem="rlA-8f-bAE" secondAttribute="top" constant="32" id="Npf-vj-jI4"/>
+                                <constraint firstItem="V5S-v0-QAO" firstAttribute="leading" secondItem="rlA-8f-bAE" secondAttribute="leading" constant="16" id="O4w-yb-CS4"/>
+                                <constraint firstItem="eyb-eA-SSt" firstAttribute="trailing" secondItem="rlA-8f-bAE" secondAttribute="trailing" id="OHA-0h-sRC"/>
+                                <constraint firstItem="v7Y-XY-dkr" firstAttribute="leading" secondItem="rlA-8f-bAE" secondAttribute="leading" id="Q94-O5-ism"/>
+                                <constraint firstItem="v7Y-XY-dkr" firstAttribute="top" secondItem="2z0-c0-IO0" secondAttribute="bottom" constant="32" id="Rl1-Dn-Lk0"/>
+                                <constraint firstItem="FhC-De-vY2" firstAttribute="leading" secondItem="rlA-8f-bAE" secondAttribute="leading" constant="16" id="Z4u-je-Cqx"/>
+                                <constraint firstItem="FhC-De-vY2" firstAttribute="bottom" secondItem="rlA-8f-bAE" secondAttribute="bottom" constant="-16" id="aev-x0-msm"/>
+                                <constraint firstItem="ZpC-rW-WH4" firstAttribute="top" secondItem="v7Y-XY-dkr" secondAttribute="bottom" constant="16" id="dIs-9j-rpO"/>
+                                <constraint firstAttribute="width" constant="300" id="dPU-bw-uYJ"/>
+                                <constraint firstItem="D7N-44-Dbn" firstAttribute="trailing" secondItem="rlA-8f-bAE" secondAttribute="trailing" id="flW-JL-LoH"/>
+                                <constraint firstItem="AEM-2M-iZN" firstAttribute="leading" secondItem="rlA-8f-bAE" secondAttribute="leading" constant="16" id="hPQ-I5-qZL"/>
+                                <constraint firstItem="2z0-c0-IO0" firstAttribute="centerX" secondItem="rlA-8f-bAE" secondAttribute="centerX" id="j6q-jL-bAG"/>
+                                <constraint firstItem="eyb-eA-SSt" firstAttribute="leading" secondItem="rlA-8f-bAE" secondAttribute="leading" id="kAC-cX-axN"/>
+                                <constraint firstItem="AEM-2M-iZN" firstAttribute="trailing" secondItem="rlA-8f-bAE" secondAttribute="trailing" constant="-16" id="kNh-pb-Exg"/>
+                                <constraint firstItem="D7N-44-Dbn" firstAttribute="top" secondItem="AEM-2M-iZN" secondAttribute="bottom" constant="32" id="m7z-Iy-vMq"/>
+                                <constraint firstItem="eyb-eA-SSt" firstAttribute="top" secondItem="ZpC-rW-WH4" secondAttribute="bottom" constant="32" id="rAF-df-vZ4"/>
+                                <constraint firstItem="D7N-44-Dbn" firstAttribute="leading" secondItem="rlA-8f-bAE" secondAttribute="leading" id="x2q-Vp-dlP"/>
+                                <constraint firstItem="v7Y-XY-dkr" firstAttribute="trailing" secondItem="rlA-8f-bAE" secondAttribute="trailing" id="xb2-3q-fpC"/>
+                                <constraint firstItem="V5S-v0-QAO" firstAttribute="trailing" secondItem="rlA-8f-bAE" secondAttribute="trailing" constant="-16" id="yB2-j5-Chp"/>
+                                <constraint firstItem="FhC-De-vY2" firstAttribute="trailing" secondItem="rlA-8f-bAE" secondAttribute="trailing" constant="-16" id="zh0-oY-Sk6"/>
+                            </constraints>
+                        </view>
+                    </subviews>
+                    <constraints>
+                        <constraint firstItem="rlA-8f-bAE" firstAttribute="top" secondItem="BjL-um-o5x" secondAttribute="top" id="FLX-7H-CTR"/>
+                        <constraint firstItem="rlA-8f-bAE" firstAttribute="bottom" secondItem="BjL-um-o5x" secondAttribute="bottom" id="H0B-w1-m9H"/>
+                        <constraint firstItem="rlA-8f-bAE" firstAttribute="trailing" secondItem="BjL-um-o5x" secondAttribute="trailing" priority="900" constant="-37" id="fVX-30-M7s"/>
+                        <constraint firstItem="rlA-8f-bAE" firstAttribute="leading" secondItem="BjL-um-o5x" secondAttribute="leading" priority="900" constant="38" id="lAo-Ue-XoE"/>
+                    </constraints>
+                </scrollView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ucl-Tq-XoU" userLabel="Close">
+                    <rect key="frame" x="304" y="52" width="39" height="28"/>
+                    <fontDescription key="fontDescription" name="Digital-7" family="Digital-7" pointSize="17"/>
+                    <state key="normal" title="Close">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </state>
+                    <connections>
+                        <action selector="onCloseButtonPressed:" destination="-1" eventType="touchUpInside" id="uz6-Wi-Fm0"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="BjL-um-o5x" firstAttribute="width" secondItem="i5M-Pr-FkT" secondAttribute="width" id="3if-Sh-TnE"/>
+                <constraint firstItem="BjL-um-o5x" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="E3m-rr-cBH"/>
+                <constraint firstItem="rlA-8f-bAE" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="adG-fx-blF"/>
+                <constraint firstItem="BjL-um-o5x" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="egn-jt-IwT"/>
+                <constraint firstItem="BjL-um-o5x" firstAttribute="bottom" secondItem="fnl-2z-Ty3" secondAttribute="bottom" id="gVT-PD-WMM"/>
+                <constraint firstItem="ucl-Tq-XoU" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="32" id="v6t-rg-qeR"/>
+                <constraint firstItem="ucl-Tq-XoU" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" constant="-32" id="wUZ-U8-3In"/>
+                <constraint firstItem="BjL-um-o5x" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="yWM-o0-y0S"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+        </view>
+    </objects>
+</document>

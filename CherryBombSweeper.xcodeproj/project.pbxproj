@@ -27,6 +27,8 @@
 		047F483C201DD0A1007E9768 /* AudioOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047F483B201DD0A1007E9768 /* AudioOptions.swift */; };
 		047F483F201F01E3007E9768 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047F483E201F01E3007E9768 /* Constants.swift */; };
 		047F4841201F01F5007E9768 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047F4840201F01F5007E9768 /* Extensions.swift */; };
+		048C2AF2202571A1009A9EE9 /* CreditsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048C2AF0202571A1009A9EE9 /* CreditsViewController.swift */; };
+		048C2AF3202571A1009A9EE9 /* CreditsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 048C2AF1202571A1009A9EE9 /* CreditsViewController.xib */; };
 		04A50C71200F3CB80075A9BE /* GameProcessingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A50C70200F3CB80075A9BE /* GameProcessingService.swift */; };
 		04A9232F201AD8E200BF1DF4 /* PersistableService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A9232E201AD8E200BF1DF4 /* PersistableService.swift */; };
 		04B44FCA201124B300CF63EB /* FieldGridCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B44FC9201124B300CF63EB /* FieldGridCollectionViewLayout.swift */; };
@@ -69,6 +71,8 @@
 		047F483B201DD0A1007E9768 /* AudioOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioOptions.swift; sourceTree = "<group>"; };
 		047F483E201F01E3007E9768 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		047F4840201F01F5007E9768 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		048C2AF0202571A1009A9EE9 /* CreditsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreditsViewController.swift; sourceTree = "<group>"; };
+		048C2AF1202571A1009A9EE9 /* CreditsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CreditsViewController.xib; sourceTree = "<group>"; };
 		04A50C70200F3CB80075A9BE /* GameProcessingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameProcessingService.swift; sourceTree = "<group>"; };
 		04A9232E201AD8E200BF1DF4 /* PersistableService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistableService.swift; sourceTree = "<group>"; };
 		04B44FC9201124B300CF63EB /* FieldGridCollectionViewLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldGridCollectionViewLayout.swift; sourceTree = "<group>"; };
@@ -122,6 +126,8 @@
 				04E22D8B2006CF8F00DEC328 /* OptionsViewController.swift */,
 				04E22D8C2006CF8F00DEC328 /* OptionsViewController.xib */,
 				04E22D8F2006CFEB00DEC328 /* GameViewController.swift */,
+				048C2AF0202571A1009A9EE9 /* CreditsViewController.swift */,
+				048C2AF1202571A1009A9EE9 /* CreditsViewController.xib */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -294,6 +300,7 @@
 				040FF626201C427400084720 /* save_config_sound.mp3 in Resources */,
 				040FF62B201C427400084720 /* bkg_music_2.mp3 in Resources */,
 				040FF629201C427400084720 /* bkg_music_1.mp3 in Resources */,
+				048C2AF3202571A1009A9EE9 /* CreditsViewController.xib in Resources */,
 				040FF62C201C427400084720 /* probe_sound.wav in Resources */,
 				270E6E264E09B3A5FA6766E0 /* Main.storyboard in Resources */,
 				040FF631201C4DAD00084720 /* reveal_sound.mp3 in Resources */,
@@ -313,6 +320,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0423F03C200D653000DE76CF /* FieldGridCollectionView.swift in Sources */,
+				048C2AF2202571A1009A9EE9 /* CreditsViewController.swift in Sources */,
 				047F483F201F01E3007E9768 /* Constants.swift in Sources */,
 				270E61E349D485A4C4A83B5B /* AppDelegate.swift in Sources */,
 				04A9232F201AD8E200BF1DF4 /* PersistableService.swift in Sources */,
