@@ -154,6 +154,12 @@ class GameViewController: UIViewController {
     private func resetControlStates() {
         self.updateActionModeButton(to: .tap)
         
+        self.timerLabel.textColor = Constants.primaryColor
+        self.mineCountLabel.textColor = Constants.primaryColor
+        UIView.animate(withDuration: 0.3) {
+            self.timerLabel.transform = CGAffineTransform.identity
+        }
+        
         if let bombImage = GameIconsService.shared.bombImage {
             self.newGameButton.setImage(bombImage, for: UIControlState.normal)
         }
@@ -183,6 +189,12 @@ class GameViewController: UIViewController {
                 self.newGameButton.transform = CGAffineTransform(scaleX: 2, y: 2)
             }
             
+            self.timerLabel.textColor = Constants.heavyAccentColor
+            self.mineCountLabel.textColor = Constants.heavyAccentColor
+            UIView.animate(withDuration: 0.2, animations: {
+                self.timerLabel.transform = CGAffineTransform(scaleX: 1.5, y: 1.5).rotated(by: .pi * -0.15)
+            })
+            
             self.mineFieldView.showEntireField()
             
             // Preload the next game
@@ -197,6 +209,12 @@ class GameViewController: UIViewController {
         
         DispatchQueue.main.async {
             self.game?.state = .win
+            
+            self.timerLabel.textColor = Constants.accentColor
+            self.mineCountLabel.textColor = Constants.accentColor
+            UIView.animate(withDuration: 0.2, animations: {
+                self.timerLabel.transform = CGAffineTransform(scaleX: 1.5, y: 1.5).rotated(by: .pi * -0.15)
+            })
             
             self.mineFieldView.showEntireField()
             
@@ -254,8 +272,17 @@ class GameViewController: UIViewController {
     
     fileprivate func updateRemainingMinesCountLabel() {
         if let minesCount = self.game?.minesRemaining {
+            
             DispatchQueue.main.async {
                 self.mineCountLabel.text = String(describing: minesCount)
+                self.mineCountLabel.textColor = Constants.accentColor
+                self.mineCountLabel.transform = CGAffineTransform(scaleX: 1.7, y: 1.7)
+                
+                UIView.animate(withDuration: 0.2, delay: 0.1, options: .curveEaseOut, animations: {
+                    self.mineCountLabel.transform = CGAffineTransform.identity
+                }, completion: { (_) in
+                    self.mineCountLabel.textColor = Constants.primaryColor
+                })
             }
         }
     }

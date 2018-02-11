@@ -47,7 +47,7 @@
                                                     <action selector="onOptionsPressed:" destination="cKM-BE-w3S" eventType="touchUpInside" id="HIB-G9-tor"/>
                                                 </connections>
                                             </button>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00:00" textAlignment="center" lineBreakMode="tailTruncation" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="B1e-lm-PzS" userLabel="Timer">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00" textAlignment="center" lineBreakMode="tailTruncation" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="B1e-lm-PzS" userLabel="Timer">
                                                 <rect key="frame" x="55" y="13" width="109.5" height="23"/>
                                                 <fontDescription key="fontDescription" name="Digital-7Mono" family="Digital-7 Mono" pointSize="25"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -66,8 +66,8 @@
                                                     <action selector="onNewGamePressed:" destination="cKM-BE-w3S" eventType="touchUpInside" id="Kij-AV-So7"/>
                                                 </connections>
                                             </button>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="99" textAlignment="center" lineBreakMode="tailTruncation" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="otB-5h-P9O" userLabel="Mine Count">
-                                                <rect key="frame" x="254.5" y="12.5" width="23" height="23"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="otB-5h-P9O" userLabel="Mine Count">
+                                                <rect key="frame" x="266" y="24" width="0.0" height="0.0"/>
                                                 <fontDescription key="fontDescription" name="Digital-7Mono" family="Digital-7 Mono" pointSize="25"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>

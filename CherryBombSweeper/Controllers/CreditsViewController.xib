@@ -10,6 +10,9 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
+        <array key="font-digital-7-mono.ttf">
+            <string>Digital-7Mono</string>
+        </array>
         <array key="font-digital-7.ttf">
             <string>Digital-7</string>
         </array>
@@ -41,14 +44,14 @@
                             <rect key="frame" x="38" y="0.0" width="300" height="475.5"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Credits" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2z0-c0-IO0" userLabel="Credits Title">
-                                    <rect key="frame" x="106" y="32" width="88" height="27.5"/>
-                                    <fontDescription key="fontDescription" name="Digital-7" family="Digital-7" pointSize="30"/>
+                                    <rect key="frame" x="102.5" y="32" width="95.5" height="27.5"/>
+                                    <fontDescription key="fontDescription" name="Digital-7Mono" family="Digital-7 Mono" pointSize="30"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="About" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="v7Y-XY-dkr" userLabel="About Title">
                                     <rect key="frame" x="0.0" y="91.5" width="300" height="23"/>
-                                    <fontDescription key="fontDescription" name="Digital-7" family="Digital-7" pointSize="25"/>
+                                    <fontDescription key="fontDescription" name="Digital-7Mono" family="Digital-7 Mono" pointSize="25"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <nil key="highlightedColor"/>
                                 </label>
@@ -60,7 +63,7 @@
                                 </textView>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Images" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eyb-eA-SSt" userLabel="Images Title">
                                     <rect key="frame" x="0.0" y="191.5" width="300" height="23"/>
-                                    <fontDescription key="fontDescription" name="Digital-7" family="Digital-7" pointSize="25"/>
+                                    <fontDescription key="fontDescription" name="Digital-7Mono" family="Digital-7 Mono" pointSize="25"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <nil key="highlightedColor"/>
                                 </label>
@@ -72,7 +75,7 @@
                                 </textView>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sounds" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Qu-ZM-cU2" userLabel="Sounds Title">
                                     <rect key="frame" x="0.0" y="291.5" width="300" height="23"/>
-                                    <fontDescription key="fontDescription" name="Digital-7" family="Digital-7" pointSize="25"/>
+                                    <fontDescription key="fontDescription" name="Digital-7Mono" family="Digital-7 Mono" pointSize="25"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <nil key="highlightedColor"/>
                                 </label>
@@ -84,7 +87,7 @@
                                 </textView>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Font" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="D7N-44-Dbn" userLabel="Font Title">
                                     <rect key="frame" x="0.0" y="391.5" width="300" height="23"/>
-                                    <fontDescription key="fontDescription" name="Digital-7" family="Digital-7" pointSize="25"/>
+                                    <fontDescription key="fontDescription" name="Digital-7Mono" family="Digital-7 Mono" pointSize="25"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <nil key="highlightedColor"/>
                                 </label>
@@ -136,7 +139,7 @@
                 </scrollView>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ucl-Tq-XoU" userLabel="Close">
                     <rect key="frame" x="304" y="52" width="39" height="28"/>
-                    <fontDescription key="fontDescription" name="Digital-7" family="Digital-7" pointSize="17"/>
+                    <fontDescription key="fontDescription" name="Digital-7Mono" family="Digital-7 Mono" pointSize="17"/>
                     <state key="normal" title="Close">
                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </state>

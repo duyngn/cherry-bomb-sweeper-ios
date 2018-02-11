@@ -279,9 +279,9 @@ class OptionsViewController: UIViewController {
     private func showToast(message: String) {
         let toastLabel = UILabel(frame: CGRect(x: 8, y: self.view.frame.size.height-100, width: self.view.frame.size.width - 16, height: 35))
         toastLabel.backgroundColor = UIColor.black.withAlphaComponent(0.6)
-        toastLabel.textColor = UIColor.white
+        toastLabel.textColor = Constants.accentColor
         toastLabel.textAlignment = .center;
-        toastLabel.font = UIFont(name: "Montserrat-Light", size: 12.0)
+        toastLabel.font = UIFont(name: Constants.digital7MonoFont, size: 12.0)
         toastLabel.text = message
         toastLabel.alpha = 1.0
         toastLabel.layer.cornerRadius = 10;
@@ -316,7 +316,7 @@ extension OptionsViewController: UIPickerViewDelegate {
         let pickerLabel = UILabel()
         pickerLabel.textColor = UIColor.white
         pickerLabel.text = valueStr
-        pickerLabel.font = UIFont(name: "Digital-7 Mono", size: 25) // In this use your custom font
+        pickerLabel.font = UIFont(name: Constants.digital7MonoFont, size: 25)
         pickerLabel.textAlignment = NSTextAlignment.center
         return pickerLabel
     }

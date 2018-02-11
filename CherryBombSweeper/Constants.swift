@@ -10,7 +10,11 @@ import UIKit
 
 class Constants {
     static let primaryColor: UIColor = UIColor.white
-    static let accentColor: UIColor = UIColor(rgb: 0x990000)
+    static let accentColor: UIColor = UIColor(rgb: 0x18EBFF)
+    static let heavyAccentColor: UIColor = UIColor(rgb: 0x990000)
+    
+    static let digital7Font: String = "Digital-7"
+    static let digital7MonoFont: String = "Digital-7 Mono"
     
     static let brickTileIconName = "brick-tile-icon"
     static let darkGrassIconName = "grass-dark-icon"

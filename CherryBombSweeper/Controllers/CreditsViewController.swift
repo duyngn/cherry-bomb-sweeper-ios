@@ -67,10 +67,7 @@ class CreditsViewController: UIViewController {
         aboutString.addAttribute(NSAttributedStringKey.link, value: "https://github.com/duyngn/cherry-bomb-sweeper-ios", range: linkRange)
         
         self.aboutText.attributedText = aboutString
-        
-        if let fontName = self.creditsTitle.font?.fontName {
-            self.aboutText.font = UIFont(name: fontName, size: 18)
-        }
+        self.aboutText.font = UIFont(name: Constants.digital7MonoFont, size: 18)
         
         let linkAttributes: [String : Any] = [NSAttributedStringKey.foregroundColor.rawValue: Constants.accentColor]
         
@@ -116,7 +113,7 @@ class CreditsViewController: UIViewController {
         let fontIcon = UIImage(named: "font-icon")
         
         let fontCredit: [CreditEntry] = [
-            CreditEntry(image: fontIcon, text: "Digital-7", link: "http://www.styleseven.com/php/get_product.php?product=Digital-7")
+            CreditEntry(image: fontIcon, text: Constants.digital7Font, link: "http://www.styleseven.com/php/get_product.php?product=Digital-7")
         ]
         
         self.setupCreditTexts(for: self.fontsCredits, credits: fontCredit)
@@ -162,10 +159,7 @@ class CreditsViewController: UIViewController {
         }
         
         textView.attributedText = fullAttributedString
-        
-        if let fontName = self.creditsTitle.font?.fontName {
-            textView.font = UIFont(name: fontName, size: 18)
-        }
+        textView.font = UIFont(name: Constants.digital7Font, size: 18)
         
         let linkAttributes: [String : Any] = [NSAttributedStringKey.foregroundColor.rawValue: Constants.accentColor]
         

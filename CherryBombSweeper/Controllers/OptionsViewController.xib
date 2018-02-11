@@ -14,9 +14,6 @@
         <array key="font-digital-7-mono.ttf">
             <string>Digital-7Mono</string>
         </array>
-        <array key="font-digital-7.ttf">
-            <string>Digital-7</string>
-        </array>
     </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="OptionsViewController" customModule="CherryBombSweeper" customModuleProvider="target">
@@ -47,15 +44,15 @@
                             <rect key="frame" x="0.0" y="50" width="375" height="647"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Background Music" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w5Y-xl-Wy0" userLabel="Background Music">
-                                    <rect key="frame" x="47.5" y="115" width="140" height="18.5"/>
-                                    <fontDescription key="fontDescription" name="Digital-7" family="Digital-7" pointSize="20"/>
+                                    <rect key="frame" x="42" y="115" width="145.5" height="18.5"/>
+                                    <fontDescription key="fontDescription" name="Digital-7Mono" family="Digital-7 Mono" pointSize="20"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <switch opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="X51-9h-H9A" userLabel="Music toggle">
                                     <rect key="frame" x="219.5" y="109" width="51" height="31"/>
                                     <color key="backgroundColor" red="0.80000000000000004" green="0.80000000000000004" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
-                                    <color key="onTintColor" red="0.59999999999999998" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="onTintColor" red="0.094117647058823528" green="0.92156862745098034" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                     <color key="thumbTintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <userDefinedRuntimeAttributes>
                                         <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
@@ -73,15 +70,15 @@
                                     </connections>
                                 </switch>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sound Effects" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jnn-Bw-VL5" userLabel="Sound Effects">
-                                    <rect key="frame" x="72" y="158.5" width="115.5" height="18.5"/>
-                                    <fontDescription key="fontDescription" name="Digital-7" family="Digital-7" pointSize="20"/>
+                                    <rect key="frame" x="69" y="158.5" width="118.5" height="18.5"/>
+                                    <fontDescription key="fontDescription" name="Digital-7Mono" family="Digital-7 Mono" pointSize="20"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="foe-8p-4mI" userLabel="Effects toggle">
                                     <rect key="frame" x="219.5" y="152.5" width="51" height="31"/>
                                     <color key="backgroundColor" red="0.80000000000000004" green="0.80000000000000004" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
-                                    <color key="onTintColor" red="0.59999999999999998" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="onTintColor" red="0.094117647058823528" green="0.92156862745098034" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                     <color key="thumbTintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <userDefinedRuntimeAttributes>
                                         <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
@@ -99,8 +96,8 @@
                                     </connections>
                                 </switch>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pXQ-P7-eth" userLabel="Easy">
-                                    <rect key="frame" x="16" y="225" width="109" height="31"/>
-                                    <fontDescription key="fontDescription" name="Digital-7" family="Digital-7" pointSize="20"/>
+                                    <rect key="frame" x="16" y="225" width="108.5" height="31"/>
+                                    <fontDescription key="fontDescription" name="Digital-7Mono" family="Digital-7 Mono" pointSize="20"/>
                                     <state key="normal" title="Easy">
                                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </state>
@@ -109,8 +106,8 @@
                                     </connections>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="klV-PH-wnV" userLabel="Intermediate">
-                                    <rect key="frame" x="133" y="225" width="109" height="31"/>
-                                    <fontDescription key="fontDescription" name="Digital-7" family="Digital-7" pointSize="20"/>
+                                    <rect key="frame" x="132.5" y="225" width="110" height="31"/>
+                                    <fontDescription key="fontDescription" name="Digital-7Mono" family="Digital-7 Mono" pointSize="20"/>
                                     <state key="normal" title="Intermediate">
                                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </state>
@@ -119,8 +116,8 @@
                                     </connections>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lrm-S1-l2a" userLabel="Expert">
-                                    <rect key="frame" x="250" y="225" width="109" height="31"/>
-                                    <fontDescription key="fontDescription" name="Digital-7" family="Digital-7" pointSize="20"/>
+                                    <rect key="frame" x="250.5" y="225" width="108.5" height="31"/>
+                                    <fontDescription key="fontDescription" name="Digital-7Mono" family="Digital-7 Mono" pointSize="20"/>
                                     <state key="normal" title="Expert">
                                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </state>
@@ -129,15 +126,15 @@
                                     </connections>
                                 </button>
                                 <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="J2S-mX-a0Z">
-                                    <rect key="frame" x="41.5" y="288" width="70" height="70"/>
+                                    <rect key="frame" x="42.5" y="288" width="70" height="70"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="70" id="apv-dg-JTQ"/>
                                         <constraint firstAttribute="width" constant="70" id="u3t-aE-ygn"/>
                                     </constraints>
                                 </pickerView>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="x" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hcq-gm-aPp" userLabel="x">
-                                    <rect key="frame" x="127.5" y="315" width="9" height="16"/>
-                                    <fontDescription key="fontDescription" name="Digital-7" family="Digital-7" pointSize="17"/>
+                                    <rect key="frame" x="128.5" y="315" width="8" height="16"/>
+                                    <fontDescription key="fontDescription" name="Digital-7Mono" family="Digital-7 Mono" pointSize="17"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <nil key="highlightedColor"/>
                                 </label>
@@ -149,21 +146,21 @@
                                     </constraints>
                                 </pickerView>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="@" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BMP-Lx-6jw" userLabel="@">
-                                    <rect key="frame" x="238.5" y="315" width="9" height="16"/>
-                                    <fontDescription key="fontDescription" name="Digital-7" family="Digital-7" pointSize="17"/>
+                                    <rect key="frame" x="238.5" y="315" width="8" height="16"/>
+                                    <fontDescription key="fontDescription" name="Digital-7Mono" family="Digital-7 Mono" pointSize="17"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <pickerView tag="2" contentMode="scaleToFill" restorationIdentifier="mineCountPicker" translatesAutoresizingMaskIntoConstraints="NO" id="PMc-T9-3fY" userLabel="Mine Count Picker">
-                                    <rect key="frame" x="263.5" y="288" width="70" height="70"/>
+                                    <rect key="frame" x="262.5" y="288" width="70" height="70"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="70" id="d1e-im-eZi"/>
                                         <constraint firstAttribute="height" constant="70" id="f45-1q-fph"/>
                                     </constraints>
                                 </pickerView>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rqE-pe-704" userLabel="New Game">
-                                    <rect key="frame" x="143.5" y="390" width="88" height="35"/>
-                                    <fontDescription key="fontDescription" name="Digital-7" family="Digital-7" pointSize="25"/>
+                                    <rect key="frame" x="142" y="390" width="91" height="35"/>
+                                    <fontDescription key="fontDescription" name="Digital-7Mono" family="Digital-7 Mono" pointSize="25"/>
                                     <state key="normal" title="New Game">
                                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </state>
@@ -173,7 +170,7 @@
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cCi-dX-aY8" userLabel="Cancel">
                                     <rect key="frame" x="153" y="433" width="69" height="35"/>
-                                    <fontDescription key="fontDescription" name="Digital-7" family="Digital-7" pointSize="25"/>
+                                    <fontDescription key="fontDescription" name="Digital-7Mono" family="Digital-7 Mono" pointSize="25"/>
                                     <state key="normal" title="Cancel">
                                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </state>
@@ -185,7 +182,7 @@
                             <constraints>
                                 <constraint firstItem="Jnn-Bw-VL5" firstAttribute="trailing" secondItem="XaH-re-ke8" secondAttribute="centerX" id="0yG-dH-hKw"/>
                                 <constraint firstItem="lrm-S1-l2a" firstAttribute="centerY" secondItem="klV-PH-wnV" secondAttribute="centerY" id="10f-0r-zmd"/>
-                                <constraint firstItem="pXQ-P7-eth" firstAttribute="width" secondItem="klV-PH-wnV" secondAttribute="width" id="238-GF-9Ex"/>
+                                <constraint firstItem="lrm-S1-l2a" firstAttribute="width" secondItem="pXQ-P7-eth" secondAttribute="width" id="238-GF-9Ex"/>
                                 <constraint firstItem="rqE-pe-704" firstAttribute="top" secondItem="FDq-Vs-bAG" secondAttribute="bottom" constant="32" id="2bV-ff-56s"/>
                                 <constraint firstItem="Jnn-Bw-VL5" firstAttribute="top" secondItem="w5Y-xl-Wy0" secondAttribute="bottom" constant="25" id="4pQ-wq-Mbv"/>
                                 <constraint firstItem="hcq-gm-aPp" firstAttribute="trailing" secondItem="FDq-Vs-bAG" secondAttribute="leading" constant="-16" id="5yo-zH-Piz"/>
@@ -201,7 +198,7 @@
                                 <constraint firstItem="pXQ-P7-eth" firstAttribute="centerY" secondItem="klV-PH-wnV" secondAttribute="centerY" id="N26-ie-nLP"/>
                                 <constraint firstItem="PMc-T9-3fY" firstAttribute="centerY" secondItem="FDq-Vs-bAG" secondAttribute="centerY" id="N2h-nH-9jW"/>
                                 <constraint firstItem="lrm-S1-l2a" firstAttribute="trailing" secondItem="XaH-re-ke8" secondAttribute="trailing" constant="-16" id="NZr-IJ-dJy"/>
-                                <constraint firstItem="lrm-S1-l2a" firstAttribute="width" secondItem="klV-PH-wnV" secondAttribute="width" id="Rsq-bO-mCR"/>
+                                <constraint firstItem="klV-PH-wnV" firstAttribute="width" relation="greaterThanOrEqual" secondItem="lrm-S1-l2a" secondAttribute="width" id="Rsq-bO-mCR"/>
                                 <constraint firstItem="BMP-Lx-6jw" firstAttribute="centerY" secondItem="FDq-Vs-bAG" secondAttribute="centerY" id="SSL-x4-Qtg"/>
                                 <constraint firstItem="FDq-Vs-bAG" firstAttribute="centerY" secondItem="XaH-re-ke8" secondAttribute="centerY" id="Sm7-K8-o90"/>
                                 <constraint firstItem="rqE-pe-704" firstAttribute="centerX" secondItem="XaH-re-ke8" secondAttribute="centerX" id="Vch-1g-ZGH"/>
