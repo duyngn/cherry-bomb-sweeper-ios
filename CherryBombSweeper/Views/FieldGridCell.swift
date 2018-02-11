@@ -172,8 +172,13 @@ class FieldGridCell: UICollectionViewCell {
         }
         
         self.cellFlagIcon.isHidden = true
+        
         self.bombIcon.isHidden = true
         self.bombIcon.transform = CGAffineTransform.identity
+        if let bombIcon = GameIconsService.shared.bombImage {
+            self.bombIcon.image = bombIcon
+        }
+        
         self.adjacentBombsLabel.isHidden = true
         self.adjacentBombsLabel.text = nil
     }
