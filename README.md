@@ -27,13 +27,10 @@ A modern take on the classic game Minesweeper. Written fully in Swift 4 with iPh
 
 ## Screenshots
 <p align="center">
-<img src="https://user-images.githubusercontent.com/5741896/35718857-3d37fac2-079b-11e8-9c46-05d2d17742b5.jpg" width="300"/> <img src="https://user-images.githubusercontent.com/5741896/35718813-0ab93a7a-079b-11e8-928d-3c2919db4701.jpg" width="300"/>
+<img src="https://user-images.githubusercontent.com/5741896/35718857-3d37fac2-079b-11e8-9c46-05d2d17742b5.jpg" width="250"/> <img src="https://user-images.githubusercontent.com/5741896/35718813-0ab93a7a-079b-11e8-928d-3c2919db4701.jpg" width="250"/> <img src="https://user-images.githubusercontent.com/5741896/35718871-5260ade0-079b-11e8-85b3-03ce02846ad2.jpg" width="250"/>
 </p>
 <p align="center">
-<img src="https://user-images.githubusercontent.com/5741896/35718871-5260ade0-079b-11e8-85b3-03ce02846ad2.jpg" width="300"/> <img src="https://user-images.githubusercontent.com/5741896/36017407-73789e3e-0d2c-11e8-9327-ef1ebb9fb16a.PNG" width="300"/>
-</p>
-<p align="center">
-<img src="https://user-images.githubusercontent.com/5741896/36017473-b8a9035e-0d2c-11e8-8995-6a181f6d7c98.PNG" width="300"/>
+<img src="https://user-images.githubusercontent.com/5741896/36141027-343db6b2-1058-11e8-8cd0-99ce2c86ffe3.PNG" width="250"/> <img src="https://user-images.githubusercontent.com/5741896/36141121-7d85e1f0-1058-11e8-9487-98cae6feed8d.PNG" width="250"/> <img src="https://user-images.githubusercontent.com/5741896/36141138-900325e0-1058-11e8-8a7d-016168daf7b5.PNG" width="250"/>
 </p>
 
 ## TODO
