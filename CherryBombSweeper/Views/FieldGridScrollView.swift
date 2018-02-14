@@ -17,12 +17,25 @@ class FieldGridScrollView: UIScrollView {
     private var columnCount: Int = 0
     private var fieldWidth: CGFloat = 0
     private var fieldHeight: CGFloat = 0
-    private var modifiedIndexPaths: Set<IndexPath> = []
+//    private var modifiedIndexPaths: Set<IndexPath> = []
     
     fileprivate var lastZoomedWidth: CGFloat = 0
     
     fileprivate var topConstraint: NSLayoutConstraint?
     fileprivate var leadingConstraint: NSLayoutConstraint?
+    
+    // This gridViewBounds is an inverse zoom of the contentSize.  As content size of this scrollview scales down,
+    // this gridViewBounds will appear to have enlarge to the underlying collectionview.
+    fileprivate var gridViewBounds: CGRect {
+        // This gridViewBounds is effectively 100px larger on all sides than the actual container view
+        // to prevent clipping outside of safe regions.
+        let newOffsetX = (self.contentOffset.x - 100) / self.zoomScale
+        let newOffsetY = (self.contentOffset.y - 100) / self.zoomScale
+        let newWidth = (self.bounds.width + 200) / self.zoomScale
+        let newHeight = (self.bounds.height + 200) / self.zoomScale
+        
+        return CGRect(x: newOffsetX, y: newOffsetY, width: newWidth, height: newHeight)
+    }
     
     lazy private var setUpOnce: Void = {
         self.delegate = self
@@ -61,11 +74,14 @@ class FieldGridScrollView: UIScrollView {
             fieldGridCollection.dataSource = dataSource
             fieldGridCollection.cellActionHandler = cellActionHandler
             
+            fieldGridCollection.gridViewBounds = self.gridViewBounds
+            
             // Show and reload only what's been affected
             fieldGridCollection.isHidden = false
-            fieldGridCollection.reloadItems(at: Array(self.modifiedIndexPaths))
+//            fieldGridCollection.reloadItems(at: Array(self.modifiedIndexPaths))
+            fieldGridCollection.reloadData()
             
-            self.modifiedIndexPaths.removeAll()
+//            self.modifiedIndexPaths.removeAll()
             self.contentSize = CGSize(width: self.fieldWidth, height: self.fieldHeight)
             
             self.recenterFieldGrid()
@@ -85,7 +101,7 @@ class FieldGridScrollView: UIScrollView {
         
         self.rowCount = rows
         self.columnCount = columns
-        self.modifiedIndexPaths.removeAll()
+//        self.modifiedIndexPaths.removeAll()
         
         fieldGridCollection.setupFieldGrid(rows: rows, columns: columns, dataSource: dataSource, cellActionHandler: cellActionHandler) { [weak self] (fieldWidth, fieldHeight) in
             guard let `self` = self else { return }
@@ -95,6 +111,8 @@ class FieldGridScrollView: UIScrollView {
             self.contentSize = CGSize(width: fieldWidth, height: fieldHeight)
             
             self.calculateGridLayoutParams(width: fieldWidth, height: fieldHeight)
+            
+            fieldGridCollection.gridViewBounds = self.gridViewBounds
             
             // Show and reload
             fieldGridCollection.isHidden = false
@@ -136,6 +154,7 @@ class FieldGridScrollView: UIScrollView {
     func showEntireField() {
         UIView.animate(withDuration: 0.3) {
             self.zoomScale = self.minScaleFactor
+            self.fieldGridCollection?.gridViewBounds = self.gridViewBounds
             self.recenterFieldGrid()
         }
     }
@@ -143,7 +162,7 @@ class FieldGridScrollView: UIScrollView {
     func updateCells(at indexPaths: [IndexPath]) {
         guard let fieldGridCollection = self.fieldGridCollection else { return }
         // keep track of which cell has been affected
-        self.modifiedIndexPaths = self.modifiedIndexPaths.union(indexPaths)
+//        self.modifiedIndexPaths = self.modifiedIndexPaths.union(indexPaths)
         DispatchQueue.main.async {
             fieldGridCollection.reloadItems(at: indexPaths)
         }
@@ -230,12 +249,24 @@ class FieldGridScrollView: UIScrollView {
 }
 
 extension FieldGridScrollView: UIScrollViewDelegate {
+    // Zooming
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         return self.fieldGridCollection
     }
     
+    func scrollViewDidZoom(_ scrollView: UIScrollView) {
+        // The view rect has changed due to Zooming, so update the grid's view bounds
+        self.fieldGridCollection?.gridViewBounds = self.gridViewBounds
+    }
+    
     func scrollViewDidEndZooming(_ scrollView: UIScrollView, with view: UIView?, atScale scale: CGFloat) {
         self.recenterFieldGrid()
+    }
+    
+    // Panning
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        // The content has shifted due to Panning, so update the grid's view bounds
+        self.fieldGridCollection?.gridViewBounds = self.gridViewBounds
     }
 }
 

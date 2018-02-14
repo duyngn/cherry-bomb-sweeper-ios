@@ -23,10 +23,6 @@ class CreditsViewController: UIViewController {
     }
     
     @IBOutlet private weak var scrollView: UIScrollView!
-    @IBOutlet private weak var creditsTitle: UILabel!
-    @IBOutlet private weak var imagesTitle: UILabel!
-    @IBOutlet private weak var soundsTitle: UILabel!
-    @IBOutlet private weak var fontsTitle: UILabel!
     @IBOutlet private weak var imagesCredits: UITextView!
     @IBOutlet private weak var soundsCredits: UITextView!
     @IBOutlet private weak var fontsCredits: UITextView!

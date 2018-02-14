@@ -25,6 +25,11 @@ class FieldGridCollectionView: UICollectionView {
     }
     
     var cellActionHandler: FieldGridCellActionListener?
+    var gridViewBounds: CGRect = UIScreen.main.bounds {
+        didSet {
+            self.collectionViewLayout.invalidateLayout()
+        }
+    }
     
     fileprivate var rowCount: Int = 0
     fileprivate var columnCount: Int = 0
@@ -123,7 +128,7 @@ extension FieldGridCollectionView: FieldGridLayoutDelegate {
     }
     
     func collectionView(viewWindowForFieldGrid collectionView: UICollectionView) -> CGRect? {
-        return self.superview?.frame
+        return self.gridViewBounds
     }
 }
 
