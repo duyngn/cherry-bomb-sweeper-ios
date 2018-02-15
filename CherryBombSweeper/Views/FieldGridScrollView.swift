@@ -17,7 +17,7 @@ class FieldGridScrollView: UIScrollView {
     private var columnCount: Int = 0
     private var fieldWidth: CGFloat = 0
     private var fieldHeight: CGFloat = 0
-//    private var modifiedIndexPaths: Set<IndexPath> = []
+    private var modifiedIndexPaths: Set<IndexPath> = []
     
     fileprivate var lastZoomedWidth: CGFloat = 0
     
@@ -74,23 +74,23 @@ class FieldGridScrollView: UIScrollView {
             fieldGridCollection.dataSource = dataSource
             fieldGridCollection.cellActionHandler = cellActionHandler
             
-            fieldGridCollection.gridViewBounds = self.gridViewBounds
-            
             // Show and reload only what's been affected
             fieldGridCollection.isHidden = false
-//            fieldGridCollection.reloadItems(at: Array(self.modifiedIndexPaths))
-            fieldGridCollection.reloadData()
+            fieldGridCollection.reloadItems(at: Array(self.modifiedIndexPaths))
             
-//            self.modifiedIndexPaths.removeAll()
+            self.modifiedIndexPaths.removeAll()
             self.contentSize = CGSize(width: self.fieldWidth, height: self.fieldHeight)
             
             self.recenterFieldGrid()
             
             DispatchQueue.main.async {
-                UIView.animate(withDuration: 0.3) {
+                UIView.animate(withDuration: 0.3, animations: {
                     self.zoomScale = 1.0
                     self.contentOffset.x = 0
                     self.contentOffset.y = 0
+                }) { (_) in
+                    let fullGridBounds = CGRect(x: 0, y: 0, width: self.fieldWidth, height: self.fieldHeight)
+                    fieldGridCollection.gridViewBounds = fullGridBounds
                 }
                 
                 completionHandler?(self.fieldWidth, self.fieldHeight)
@@ -101,7 +101,7 @@ class FieldGridScrollView: UIScrollView {
         
         self.rowCount = rows
         self.columnCount = columns
-//        self.modifiedIndexPaths.removeAll()
+        self.modifiedIndexPaths.removeAll()
         
         fieldGridCollection.setupFieldGrid(rows: rows, columns: columns, dataSource: dataSource, cellActionHandler: cellActionHandler) { [weak self] (fieldWidth, fieldHeight) in
             guard let `self` = self else { return }
@@ -112,17 +112,22 @@ class FieldGridScrollView: UIScrollView {
             
             self.calculateGridLayoutParams(width: fieldWidth, height: fieldHeight)
             
-            fieldGridCollection.gridViewBounds = self.gridViewBounds
+            fieldGridCollection.gridViewBounds = self.bounds
             
             // Show and reload
             fieldGridCollection.isHidden = false
             fieldGridCollection.reloadData()
             
             DispatchQueue.main.async {
-                UIView.animate(withDuration: 0.3) {
+                // Let the user see the grid first at the smaller view bounds = loads less cells
+                UIView.animate(withDuration: 0.3, animations: {
                     self.zoomScale = 1.0
                     self.contentOffset.x = 0
                     self.contentOffset.y = 0
+                }) { (_) in
+                    // Then load the entire table in the brief moment before user plays
+                    let fullGridBounds = CGRect(x: 0, y: 0, width: fieldWidth, height: fieldHeight)
+                    fieldGridCollection.gridViewBounds = fullGridBounds
                 }
                 
                 completionHandler?(fieldWidth, fieldHeight)
@@ -154,7 +159,6 @@ class FieldGridScrollView: UIScrollView {
     func showEntireField() {
         UIView.animate(withDuration: 0.3) {
             self.zoomScale = self.minScaleFactor
-            self.fieldGridCollection?.gridViewBounds = self.gridViewBounds
             self.recenterFieldGrid()
         }
     }
@@ -162,7 +166,7 @@ class FieldGridScrollView: UIScrollView {
     func updateCells(at indexPaths: [IndexPath]) {
         guard let fieldGridCollection = self.fieldGridCollection else { return }
         // keep track of which cell has been affected
-//        self.modifiedIndexPaths = self.modifiedIndexPaths.union(indexPaths)
+        self.modifiedIndexPaths = self.modifiedIndexPaths.union(indexPaths)
         DispatchQueue.main.async {
             fieldGridCollection.reloadItems(at: indexPaths)
         }
@@ -254,19 +258,8 @@ extension FieldGridScrollView: UIScrollViewDelegate {
         return self.fieldGridCollection
     }
     
-    func scrollViewDidZoom(_ scrollView: UIScrollView) {
-        // The view rect has changed due to Zooming, so update the grid's view bounds
-        self.fieldGridCollection?.gridViewBounds = self.gridViewBounds
-    }
-    
     func scrollViewDidEndZooming(_ scrollView: UIScrollView, with view: UIView?, atScale scale: CGFloat) {
         self.recenterFieldGrid()
-    }
-    
-    // Panning
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        // The content has shifted due to Panning, so update the grid's view bounds
-        self.fieldGridCollection?.gridViewBounds = self.gridViewBounds
     }
 }
 

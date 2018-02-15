@@ -45,6 +45,10 @@ class FieldGridCell: UICollectionViewCell {
         self.cellCover.layer.borderColor = Constant.cellBorderColor
     }
     
+    override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
+        return layoutAttributes
+    }
+    
     func reinitCell(at index: Int, fieldRows: Int) {
         if let image = self.getCellCoverDarkGrass(row: index / fieldRows, column: index % fieldRows) {
             self.cellCover.image = image
