@@ -47,7 +47,7 @@
                                                     <action selector="onOptionsPressed:" destination="cKM-BE-w3S" eventType="touchUpInside" id="HIB-G9-tor"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vea-es-vQy">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vea-es-vQy">
                                                 <rect key="frame" x="81.5" y="6.5" width="57" height="35"/>
                                                 <fontDescription key="fontDescription" name="Digital-7Mono" family="Digital-7 Mono" pointSize="25"/>
                                                 <state key="normal" title="00:00">
@@ -70,7 +70,7 @@
                                                     <action selector="onNewGamePressed:" destination="cKM-BE-w3S" eventType="touchUpInside" id="Kij-AV-So7"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fNS-OK-P7v" userLabel="Mine Count Button">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fNS-OK-P7v" userLabel="Mine Count Button">
                                                 <rect key="frame" x="250.5" y="6.5" width="30" height="35"/>
                                                 <fontDescription key="fontDescription" name="Digital-7Mono" family="Digital-7 Mono" pointSize="25"/>
                                                 <state key="normal" title="00">
