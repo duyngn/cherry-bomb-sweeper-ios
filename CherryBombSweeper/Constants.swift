@@ -8,6 +8,8 @@
 
 import UIKit
 
+typealias EmptyCompletionHandler = () -> Void
+
 class Constants {
     static let primaryColor: UIColor = UIColor.white
     static let accentColor: UIColor = UIColor(rgb: 0x18EBFF)

@@ -22,8 +22,8 @@ class GameViewController: UIViewController {
     @IBOutlet private weak var controlsContainer: UIView!
     @IBOutlet private weak var statsContainer: UIView!
     
-    @IBOutlet fileprivate weak var timerLabel: UILabel!
-    @IBOutlet private weak var mineCountLabel: UILabel!
+    @IBOutlet fileprivate weak var timerButton: UIButton!
+    @IBOutlet private weak var mineCountButton: UIButton!
     
     @IBOutlet private weak var newGameButton: UIButton!
     @IBOutlet private weak var actionModeButton: UIButton!
@@ -168,7 +168,7 @@ class GameViewController: UIViewController {
             self.game = newGame
             
             DispatchQueue.main.async {
-                self.mineCountLabel.text = String(describing: newGame.mineField.mines)
+                self.mineCountButton.setTitle(String(describing: newGame.mineField.mines), for: .normal)
             }
             
             self.finishLoading()
@@ -176,7 +176,7 @@ class GameViewController: UIViewController {
     }
     
     private func resetGameTimer() {
-        self.timerLabel.text = "00:00"
+        self.timerButton.setTitle("00:00", for: .normal)
         
         self.gameTimer?.resetTimer()
     }
@@ -184,10 +184,10 @@ class GameViewController: UIViewController {
     private func resetControlStates() {
         self.updateActionModeButton(to: .tap)
         
-        self.timerLabel.textColor = Constants.primaryColor
-        self.mineCountLabel.textColor = Constants.primaryColor
+        self.timerButton.setTitleColor(Constants.primaryColor, for: .normal)
+        self.mineCountButton.setTitleColor(Constants.primaryColor, for: .normal)
         UIView.animate(withDuration: 0.3) {
-            self.timerLabel.transform = CGAffineTransform.identity
+            self.timerButton.transform = CGAffineTransform.identity
         }
         
         if let bombImage = GameIconsService.shared.bombImage {
@@ -219,10 +219,10 @@ class GameViewController: UIViewController {
                 self.newGameButton.transform = CGAffineTransform(scaleX: 2, y: 2)
             }
             
-            self.timerLabel.textColor = Constants.heavyAccentColor
-            self.mineCountLabel.textColor = Constants.heavyAccentColor
+            self.timerButton.setTitleColor(Constants.heavyAccentColor, for: .normal)
+            self.mineCountButton.setTitleColor(Constants.heavyAccentColor, for: .normal)
             UIView.animate(withDuration: 0.2, animations: {
-                self.timerLabel.transform = CGAffineTransform(scaleX: 1.5, y: 1.5).rotated(by: .pi * -0.15)
+                self.timerButton.transform = CGAffineTransform(scaleX: 1.5, y: 1.5).rotated(by: .pi * -0.15)
             })
             
             self.mineFieldView.showEntireField()
@@ -240,10 +240,10 @@ class GameViewController: UIViewController {
         DispatchQueue.main.async {
             self.game?.state = .win
             
-            self.timerLabel.textColor = Constants.accentColor
-            self.mineCountLabel.textColor = Constants.accentColor
+            self.timerButton.setTitleColor(Constants.accentColor, for: .normal)
+            self.mineCountButton.setTitleColor(Constants.accentColor, for: .normal)
             UIView.animate(withDuration: 0.2, animations: {
-                self.timerLabel.transform = CGAffineTransform(scaleX: 1.5, y: 1.5).rotated(by: .pi * -0.15)
+                self.timerButton.transform = CGAffineTransform(scaleX: 1.5, y: 1.5).rotated(by: .pi * -0.15)
             })
             
             self.mineFieldView.showEntireField()
@@ -304,17 +304,40 @@ class GameViewController: UIViewController {
         if let minesCount = self.game?.minesRemaining {
             
             DispatchQueue.main.async {
-                self.mineCountLabel.text = String(describing: minesCount)
-                self.mineCountLabel.textColor = Constants.accentColor
-                self.mineCountLabel.transform = CGAffineTransform(scaleX: 1.7, y: 1.7)
+                self.mineCountButton.setTitle(String(describing: minesCount), for: .normal)
+                self.mineCountButton.setTitleColor(Constants.accentColor, for: .normal)
+                self.mineCountButton.transform = CGAffineTransform(scaleX: 1.7, y: 1.7)
                 
                 UIView.animate(withDuration: 0.2, delay: 0.1, options: .curveEaseOut, animations: {
-                    self.mineCountLabel.transform = CGAffineTransform.identity
+                    self.mineCountButton.transform = CGAffineTransform.identity
                 }, completion: { (_) in
-                    self.mineCountLabel.textColor = Constants.primaryColor
+                    self.mineCountButton.setTitleColor(Constants.primaryColor, for: .normal)
                 })
             }
         }
+    }
+    
+    private func loadHighScoresScreen() {
+        self.audioService.playPositiveSound()
+        
+        self.pauseGame()
+        
+        let highScoresController = HighScoreViewController(nibName: "HighScoreViewController", bundle: nil)
+        highScoresController.exitHandler = { [weak self] in
+            self?.unpauseGame()
+        }
+        
+        highScoresController.modalPresentationStyle = .overFullScreen
+        
+        self.present(highScoresController, animated: true)
+    }
+    
+    @IBAction func onTimerPressed(_ sender: UIButton) {
+        self.loadHighScoresScreen()
+    }
+    
+    @IBAction func onMineCountPressed(_ sender: UIButton) {
+        self.loadHighScoresScreen()
     }
     
     @IBAction func onActionModePressed(_ sender: UIButton) {
@@ -352,7 +375,7 @@ class GameViewController: UIViewController {
 
 extension GameViewController: GameTimerDelegate {
     func onTimerUpdate(seconds: Int, timeString: String) {
-        self.timerLabel.text = timeString
+        self.timerButton.setTitle(timeString, for: .normal)
     }
 }
 

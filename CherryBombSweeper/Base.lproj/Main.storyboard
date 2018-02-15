@@ -47,12 +47,16 @@
                                                     <action selector="onOptionsPressed:" destination="cKM-BE-w3S" eventType="touchUpInside" id="HIB-G9-tor"/>
                                                 </connections>
                                             </button>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00" textAlignment="center" lineBreakMode="tailTruncation" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="B1e-lm-PzS" userLabel="Timer">
-                                                <rect key="frame" x="55" y="13" width="109.5" height="23"/>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vea-es-vQy">
+                                                <rect key="frame" x="81.5" y="6.5" width="57" height="35"/>
                                                 <fontDescription key="fontDescription" name="Digital-7Mono" family="Digital-7 Mono" pointSize="25"/>
-                                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
+                                                <state key="normal" title="00:00">
+                                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="onTimerPressed:" destination="cKM-BE-w3S" eventType="touchUpInside" id="aPt-QA-PyK"/>
+                                                </connections>
+                                            </button>
                                             <button opaque="NO" contentMode="scaleAspectFit" semanticContentAttribute="forceRightToLeft" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8c0-Ri-wWo" userLabel="New Game">
                                                 <rect key="frame" x="164.5" y="1" width="46" height="46"/>
                                                 <constraints>
@@ -66,12 +70,16 @@
                                                     <action selector="onNewGamePressed:" destination="cKM-BE-w3S" eventType="touchUpInside" id="Kij-AV-So7"/>
                                                 </connections>
                                             </button>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="otB-5h-P9O" userLabel="Mine Count">
-                                                <rect key="frame" x="266" y="24" width="0.0" height="0.0"/>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fNS-OK-P7v" userLabel="Mine Count Button">
+                                                <rect key="frame" x="250.5" y="6.5" width="30" height="35"/>
                                                 <fontDescription key="fontDescription" name="Digital-7Mono" family="Digital-7 Mono" pointSize="25"/>
-                                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
+                                                <state key="normal" title="00">
+                                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="onMineCountPressed:" destination="cKM-BE-w3S" eventType="touchUpInside" id="Tpc-rb-Z0W"/>
+                                                </connections>
+                                            </button>
                                             <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Rdf-kh-KOT" userLabel="Action Mode">
                                                 <rect key="frame" x="319" y="4" width="40" height="40"/>
                                                 <constraints>
@@ -87,18 +95,17 @@
                                             </button>
                                         </subviews>
                                         <constraints>
-                                            <constraint firstItem="otB-5h-P9O" firstAttribute="centerY" secondItem="8c0-Ri-wWo" secondAttribute="centerY" id="0Lq-0X-I30"/>
                                             <constraint firstItem="IBH-w7-m0i" firstAttribute="leading" secondItem="WvL-IU-jSd" secondAttribute="leading" constant="16" id="9im-vh-mnn"/>
-                                            <constraint firstItem="B1e-lm-PzS" firstAttribute="centerX" secondItem="8c0-Ri-wWo" secondAttribute="centerX" multiplier="0.5" constant="16" id="De9-Fz-Z5B"/>
+                                            <constraint firstItem="Vea-es-vQy" firstAttribute="centerY" secondItem="8c0-Ri-wWo" secondAttribute="centerY" id="9wc-lm-ROi"/>
+                                            <constraint firstItem="Vea-es-vQy" firstAttribute="centerX" secondItem="8c0-Ri-wWo" secondAttribute="centerX" multiplier="0.5" constant="16" id="IPM-gf-GwX"/>
                                             <constraint firstItem="IBH-w7-m0i" firstAttribute="centerY" secondItem="WvL-IU-jSd" secondAttribute="centerY" id="Im1-cC-d3G"/>
-                                            <constraint firstItem="otB-5h-P9O" firstAttribute="centerX" secondItem="8c0-Ri-wWo" secondAttribute="centerX" multiplier="1.5" constant="-16" id="ImE-yW-e5t"/>
-                                            <constraint firstItem="B1e-lm-PzS" firstAttribute="centerY" secondItem="8c0-Ri-wWo" secondAttribute="centerY" id="KyE-4a-L9S"/>
                                             <constraint firstItem="Rdf-kh-KOT" firstAttribute="trailing" secondItem="WvL-IU-jSd" secondAttribute="trailing" constant="-16" id="OeK-kH-d6e"/>
                                             <constraint firstItem="8c0-Ri-wWo" firstAttribute="centerY" secondItem="WvL-IU-jSd" secondAttribute="centerY" id="QKJ-oU-req"/>
+                                            <constraint firstItem="fNS-OK-P7v" firstAttribute="centerX" secondItem="8c0-Ri-wWo" secondAttribute="centerX" multiplier="1.5" constant="-16" id="dOO-Ol-OVp"/>
                                             <constraint firstAttribute="height" constant="48" id="fEp-lM-XXy" userLabel="height = 48"/>
                                             <constraint firstItem="8c0-Ri-wWo" firstAttribute="centerX" secondItem="WvL-IU-jSd" secondAttribute="centerX" id="ldi-Fd-1fz"/>
                                             <constraint firstItem="Rdf-kh-KOT" firstAttribute="centerY" secondItem="WvL-IU-jSd" secondAttribute="centerY" id="rGT-um-X39"/>
-                                            <constraint firstItem="8c0-Ri-wWo" firstAttribute="leading" secondItem="B1e-lm-PzS" secondAttribute="trailing" id="sjL-T4-ilD"/>
+                                            <constraint firstItem="fNS-OK-P7v" firstAttribute="centerY" secondItem="8c0-Ri-wWo" secondAttribute="centerY" id="xru-sY-rcs"/>
                                         </constraints>
                                     </view>
                                 </subviews>
@@ -131,12 +138,12 @@
                     <connections>
                         <outlet property="actionModeButton" destination="Rdf-kh-KOT" id="R17-wz-3nQ"/>
                         <outlet property="controlsContainer" destination="lh7-Kx-vxV" id="4uv-E2-ddc"/>
-                        <outlet property="mineCountLabel" destination="otB-5h-P9O" id="QLe-LB-HRW"/>
+                        <outlet property="mineCountButton" destination="fNS-OK-P7v" id="KQm-uK-ajF"/>
                         <outlet property="mineFieldView" destination="b5B-6w-8p9" id="CWH-as-apu"/>
                         <outlet property="newGameButton" destination="8c0-Ri-wWo" id="nFZ-sv-FTX"/>
                         <outlet property="splashImage" destination="NO2-aF-Pf2" id="vWF-T5-M1V"/>
                         <outlet property="statsContainer" destination="WvL-IU-jSd" id="9zN-J5-iIV"/>
-                        <outlet property="timerLabel" destination="B1e-lm-PzS" id="dJ3-ba-K8f"/>
+                        <outlet property="timerButton" destination="Vea-es-vQy" id="HbI-CK-DH7"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fnB-NC-xa2" userLabel="First Responder" sceneMemberID="firstResponder"/>

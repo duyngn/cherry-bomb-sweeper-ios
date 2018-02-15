@@ -257,6 +257,15 @@ class OptionsViewController: UIViewController {
         }
     }
     
+    @IBAction func onHighScoresButtonPressed(_ sender: UIButton) {
+        self.audioService.playSelectSound()
+        
+        let highScoresController = HighScoreViewController(nibName: "HighScoreViewController", bundle: nil)
+        highScoresController.modalPresentationStyle = .overFullScreen
+        
+        self.present(highScoresController, animated: true)
+    }
+    
     @IBAction func onCreditButtonPressed(_ sender: UIButton) {
         self.audioService.playSelectSound()
         

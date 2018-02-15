@@ -33,6 +33,10 @@
 		04A9232F201AD8E200BF1DF4 /* PersistableService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A9232E201AD8E200BF1DF4 /* PersistableService.swift */; };
 		04B44FCA201124B300CF63EB /* FieldGridCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B44FC9201124B300CF63EB /* FieldGridCollectionViewLayout.swift */; };
 		04B44FCC2012952000CF63EB /* FieldGridScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B44FCB2012952000CF63EB /* FieldGridScrollView.swift */; };
+		04CB9D4E2030D511003FF415 /* HighScoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04CB9D4C2030D511003FF415 /* HighScoreViewController.swift */; };
+		04CB9D4F2030D511003FF415 /* HighScoreViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 04CB9D4D2030D511003FF415 /* HighScoreViewController.xib */; };
+		04CB9D512030D782003FF415 /* HighScoreSectionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 04CB9D502030D782003FF415 /* HighScoreSectionView.xib */; };
+		04CB9D532030D7AA003FF415 /* HighScoreSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04CB9D522030D7AA003FF415 /* HighScoreSectionView.swift */; };
 		04D044CD201BF50600758DD1 /* font-digital-7.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 04D044CC201BF50600758DD1 /* font-digital-7.ttf */; };
 		04D044CF201BF63500758DD1 /* font-digital-7-mono.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 04D044CE201BF63500758DD1 /* font-digital-7-mono.ttf */; };
 		04E22D882006CC7800DEC328 /* Cell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E22D872006CC7800DEC328 /* Cell.swift */; };
@@ -77,6 +81,10 @@
 		04A9232E201AD8E200BF1DF4 /* PersistableService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistableService.swift; sourceTree = "<group>"; };
 		04B44FC9201124B300CF63EB /* FieldGridCollectionViewLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldGridCollectionViewLayout.swift; sourceTree = "<group>"; };
 		04B44FCB2012952000CF63EB /* FieldGridScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldGridScrollView.swift; sourceTree = "<group>"; };
+		04CB9D4C2030D511003FF415 /* HighScoreViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HighScoreViewController.swift; sourceTree = "<group>"; };
+		04CB9D4D2030D511003FF415 /* HighScoreViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HighScoreViewController.xib; sourceTree = "<group>"; };
+		04CB9D502030D782003FF415 /* HighScoreSectionView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HighScoreSectionView.xib; sourceTree = "<group>"; };
+		04CB9D522030D7AA003FF415 /* HighScoreSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HighScoreSectionView.swift; sourceTree = "<group>"; };
 		04D044CC201BF50600758DD1 /* font-digital-7.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "font-digital-7.ttf"; sourceTree = "<group>"; };
 		04D044CE201BF63500758DD1 /* font-digital-7-mono.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "font-digital-7-mono.ttf"; sourceTree = "<group>"; };
 		04E22D872006CC7800DEC328 /* Cell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cell.swift; sourceTree = "<group>"; };
@@ -128,6 +136,8 @@
 				04E22D8F2006CFEB00DEC328 /* GameViewController.swift */,
 				048C2AF0202571A1009A9EE9 /* CreditsViewController.swift */,
 				048C2AF1202571A1009A9EE9 /* CreditsViewController.xib */,
+				04CB9D4C2030D511003FF415 /* HighScoreViewController.swift */,
+				04CB9D4D2030D511003FF415 /* HighScoreViewController.xib */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -189,6 +199,8 @@
 				0423F03B200D653000DE76CF /* FieldGridCollectionView.swift */,
 				04B44FC9201124B300CF63EB /* FieldGridCollectionViewLayout.swift */,
 				04B44FCB2012952000CF63EB /* FieldGridScrollView.swift */,
+				04CB9D502030D782003FF415 /* HighScoreSectionView.xib */,
+				04CB9D522030D7AA003FF415 /* HighScoreSectionView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -298,11 +310,13 @@
 				270E65B9713F1DDC9FF2001D /* LaunchScreen.storyboard in Resources */,
 				040FF627201C427400084720 /* explosion_sound.mp3 in Resources */,
 				040FF626201C427400084720 /* save_config_sound.mp3 in Resources */,
+				04CB9D512030D782003FF415 /* HighScoreSectionView.xib in Resources */,
 				040FF62B201C427400084720 /* bkg_music_2.mp3 in Resources */,
 				040FF629201C427400084720 /* bkg_music_1.mp3 in Resources */,
 				048C2AF3202571A1009A9EE9 /* CreditsViewController.xib in Resources */,
 				040FF62C201C427400084720 /* probe_sound.wav in Resources */,
 				270E6E264E09B3A5FA6766E0 /* Main.storyboard in Resources */,
+				04CB9D4F2030D511003FF415 /* HighScoreViewController.xib in Resources */,
 				040FF631201C4DAD00084720 /* reveal_sound.mp3 in Resources */,
 				040FF636201C52F500084720 /* positive_sound.mp3 in Resources */,
 				04FB4E16200B1E080007A329 /* FieldGridCell.xib in Resources */,
@@ -328,6 +342,7 @@
 				04046BB32015293C00426A47 /* GameIconsService.swift in Sources */,
 				04E22D8A2006CC8500DEC328 /* Game.swift in Sources */,
 				04E22D972006D2F100DEC328 /* GameOptions.swift in Sources */,
+				04CB9D532030D7AA003FF415 /* HighScoreSectionView.swift in Sources */,
 				04E22D952006D29500DEC328 /* GameGeneratorService.swift in Sources */,
 				04B44FCC2012952000CF63EB /* FieldGridScrollView.swift in Sources */,
 				04A50C71200F3CB80075A9BE /* GameProcessingService.swift in Sources */,
@@ -340,6 +355,7 @@
 				04E22D8D2006CF8F00DEC328 /* OptionsViewController.swift in Sources */,
 				040FF62F201C485500084720 /* AudioService.swift in Sources */,
 				04B44FCA201124B300CF63EB /* FieldGridCollectionViewLayout.swift in Sources */,
+				04CB9D4E2030D511003FF415 /* HighScoreViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
