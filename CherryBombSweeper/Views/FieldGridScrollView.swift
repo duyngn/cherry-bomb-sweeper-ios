@@ -112,7 +112,7 @@ class FieldGridScrollView: UIScrollView {
             
             self.calculateGridLayoutParams(width: fieldWidth, height: fieldHeight)
             
-            let partialGridBounds = CGRect(origin: CGPoint(x: 0, y: 0), size: self.bounds.size)
+            let partialGridBounds = CGRect(x: 0, y: 0, width: self.bounds.size.width * 1.5, height: self.bounds.size.height * 1.5)
             fieldGridCollection.gridViewBounds = partialGridBounds
             
             // Show and reload
