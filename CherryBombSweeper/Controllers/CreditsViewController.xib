@@ -21,14 +21,10 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CreditsViewController" customModule="CherryBombSweeper" customModuleProvider="target">
             <connections>
                 <outlet property="aboutText" destination="ZpC-rW-WH4" id="JDU-tQ-TbL"/>
-                <outlet property="creditsTitle" destination="2z0-c0-IO0" id="9qX-Wn-n5n"/>
                 <outlet property="fontsCredits" destination="FhC-De-vY2" id="knd-rY-UcV"/>
-                <outlet property="fontsTitle" destination="D7N-44-Dbn" id="dOF-SD-REt"/>
                 <outlet property="imagesCredits" destination="V5S-v0-QAO" id="FNr-zq-1ON"/>
-                <outlet property="imagesTitle" destination="eyb-eA-SSt" id="PfX-mg-tae"/>
                 <outlet property="scrollView" destination="BjL-um-o5x" id="r2e-7K-7ex"/>
                 <outlet property="soundsCredits" destination="AEM-2M-iZN" id="hY7-07-ue4"/>
-                <outlet property="soundsTitle" destination="7Qu-ZM-cU2" id="NHE-L4-DTP"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>

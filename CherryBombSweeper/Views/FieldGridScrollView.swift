@@ -24,6 +24,19 @@ class FieldGridScrollView: UIScrollView {
     fileprivate var topConstraint: NSLayoutConstraint?
     fileprivate var leadingConstraint: NSLayoutConstraint?
     
+    // This gridViewBounds is an inverse zoom of the contentSize.  As content size of this scrollview scales down,
+    // this gridViewBounds will appear to have enlarge to the underlying collectionview.
+    fileprivate var gridViewBounds: CGRect {
+        // This gridViewBounds is effectively 100px larger on all sides than the actual container view
+        // to prevent clipping outside of safe regions.
+        let newOffsetX = (self.contentOffset.x - 100) / self.zoomScale
+        let newOffsetY = (self.contentOffset.y - 100) / self.zoomScale
+        let newWidth = (self.bounds.width + 200) / self.zoomScale
+        let newHeight = (self.bounds.height + 200) / self.zoomScale
+        
+        return CGRect(x: newOffsetX, y: newOffsetY, width: newWidth, height: newHeight)
+    }
+    
     lazy private var setUpOnce: Void = {
         self.delegate = self
         
@@ -71,10 +84,13 @@ class FieldGridScrollView: UIScrollView {
             self.recenterFieldGrid()
             
             DispatchQueue.main.async {
-                UIView.animate(withDuration: 0.3) {
+                UIView.animate(withDuration: 0.3, animations: {
                     self.zoomScale = 1.0
                     self.contentOffset.x = 0
                     self.contentOffset.y = 0
+                }) { (_) in
+                    let fullGridBounds = CGRect(x: 0, y: 0, width: self.fieldWidth, height: self.fieldHeight)
+                    fieldGridCollection.gridViewBounds = fullGridBounds
                 }
                 
                 completionHandler?(self.fieldWidth, self.fieldHeight)
@@ -96,15 +112,23 @@ class FieldGridScrollView: UIScrollView {
             
             self.calculateGridLayoutParams(width: fieldWidth, height: fieldHeight)
             
+            let partialGridBounds = CGRect(x: 0, y: 0, width: self.bounds.size.width * 1.5, height: self.bounds.size.height * 1.5)
+            fieldGridCollection.gridViewBounds = partialGridBounds
+            
             // Show and reload
             fieldGridCollection.isHidden = false
             fieldGridCollection.reloadData()
             
             DispatchQueue.main.async {
-                UIView.animate(withDuration: 0.3) {
+                // Let the user see the grid first at the smaller view bounds = loads less cells
+                UIView.animate(withDuration: 0.3, animations: {
                     self.zoomScale = 1.0
                     self.contentOffset.x = 0
                     self.contentOffset.y = 0
+                }) { (_) in
+                    // Then load the entire table in the brief moment before user plays
+                    let fullGridBounds = CGRect(x: 0, y: 0, width: fieldWidth, height: fieldHeight)
+                    fieldGridCollection.gridViewBounds = fullGridBounds
                 }
                 
                 completionHandler?(fieldWidth, fieldHeight)
@@ -230,6 +254,7 @@ class FieldGridScrollView: UIScrollView {
 }
 
 extension FieldGridScrollView: UIScrollViewDelegate {
+    // Zooming
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         return self.fieldGridCollection
     }
