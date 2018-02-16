@@ -17,24 +17,12 @@ import Foundation
 
 import Foundation
 
-class AudioOptions: NSObject, NSCoding {
+struct AudioOptions: Codable {
     var isMusicEnabled: Bool = true
     var isSoundEffectsEnabled: Bool = true
     
     init(musicEnabled: Bool = true, sfxEnabled: Bool = true) {
         self.isMusicEnabled = musicEnabled
         self.isSoundEffectsEnabled = sfxEnabled
-    }
-    
-    required convenience init(coder aDecoder: NSCoder) {
-        let isMusicEnabled = aDecoder.decodeBool(forKey: "isMusicEnabled")
-        let isSoundEffectsEnabled = aDecoder.decodeBool(forKey: "isSoundEffectsEnabled")
-        
-        self.init(musicEnabled: isMusicEnabled, sfxEnabled: isSoundEffectsEnabled)
-    }
-    
-    func encode(with aCoder: NSCoder) {
-        aCoder.encode(self.isMusicEnabled, forKey: "isMusicEnabled")
-        aCoder.encode(self.isSoundEffectsEnabled, forKey: "isSoundEffectsEnabled")
     }
 }
