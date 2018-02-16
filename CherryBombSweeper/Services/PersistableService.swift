@@ -15,36 +15,32 @@ class PersistableService {
     }
     
     static func saveAudioOptions(to userDefaults: UserDefaults = UserDefaults.standard, audioOptions: AudioOptions) {
-        let encodedData: Data = NSKeyedArchiver.archivedData(withRootObject: audioOptions)
-        
-        userDefaults.set(encodedData, forKey: Constants.audioOptionsKey)
-        userDefaults.synchronize()
+        if let encodedData = try? JSONEncoder().encode(audioOptions) {
+            userDefaults.set(encodedData, forKey: Constants.audioOptionsKey)
+            userDefaults.synchronize()
+        }
     }
     
     static func getAudioOptions(from userDefaults: UserDefaults = UserDefaults.standard) -> AudioOptions {
         if let decoded  = userDefaults.object(forKey: Constants.audioOptionsKey) as? Data,
-            let decodedAudioOptions = NSKeyedUnarchiver.unarchiveObject(with: decoded) as? AudioOptions {
-            
-            return decodedAudioOptions
+            let audioOptions = try? JSONDecoder().decode(AudioOptions.self, from: decoded) {
+            return audioOptions
         }
-        
+
         return AudioOptions()
     }
 
     static func saveGameOptions(to userDefaults: UserDefaults = UserDefaults.standard, gameOptions: GameOptions) {
-        let userDefaults = UserDefaults.standard
-        let encodedData: Data = NSKeyedArchiver.archivedData(withRootObject: gameOptions)
-        
-        userDefaults.set(encodedData, forKey: Constants.gameOptionsKey)
-        userDefaults.synchronize()
+        if let encodedData = try? JSONEncoder().encode(gameOptions) {
+            userDefaults.set(encodedData, forKey: Constants.gameOptionsKey)
+            userDefaults.synchronize()
+        }
     }
     
     static func getGameOptions(from userDefaults: UserDefaults = UserDefaults.standard) -> GameOptions {
-        let userDefaults = UserDefaults.standard
         if let decoded  = userDefaults.object(forKey: Constants.gameOptionsKey) as? Data,
-            let decodedGameOptions = NSKeyedUnarchiver.unarchiveObject(with: decoded) as? GameOptions {
-            
-            return decodedGameOptions
+            let gameOptions = try? JSONDecoder().decode(GameOptions.self, from: decoded) {
+            return gameOptions
         }
         
         return GameOptions()
