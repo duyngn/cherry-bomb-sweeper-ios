@@ -6,13 +6,54 @@
 //  Copyright © 2018 Duy.Ninja. All rights reserved.
 //
 
-import Foundation
+//import Foundation
+import CoreData
 
 class PersistableService {
     enum Constants {
         static let gameOptionsKey = "gameOptions"
         static let audioOptionsKey = "audioOptions"
+        static let coreDataName = "CherryBombSweeper"
     }
+    
+    static let shared = PersistableService()
+    
+    private let coreDataManager = CoreDataManager(name: Constants.coreDataName)
+    
+    private init(){
+        self.setupPersistOnAppExit()
+    }
+    
+    // MARK: - CoreData
+    private func setupPersistOnAppExit() {
+        let notificationCenter = NotificationCenter.default
+        
+        notificationCenter.addObserver(self,
+                                       selector: #selector(commitAllChangesToDisk),
+                                       name: Notification.Name.UIApplicationWillTerminate, object: nil)
+        
+        notificationCenter.addObserver(self,
+                                       selector: #selector(commitAllChangesToDisk),
+                                       name: Notification.Name.UIApplicationDidEnterBackground, object: nil)
+    }
+    
+    private func selectManagedContext() -> NSManagedObjectContext {
+        if let backgroundContext = self.coreDataManager.backgroundManagedObjectContext {
+            return backgroundContext
+        } else if let mainContext = self.coreDataManager.mainManagedObjectContext {
+            return mainContext
+        } else {
+            return self.coreDataManager.memoryManagedObjectContext
+        }
+    }
+    
+    // Ensures all memory saved changes are pushed to its parent, which is a background ManagedObjectContext,
+    // which is then commited to disk on the background queue
+    @objc func commitAllChangesToDisk() {
+        self.coreDataManager.commitAllChangesToDisk()
+    }
+    
+    // MARK: - UserDefaults
     
     static func saveAudioOptions(to userDefaults: UserDefaults = UserDefaults.standard, audioOptions: AudioOptions) {
         if let encodedData = try? JSONEncoder().encode(audioOptions) {
