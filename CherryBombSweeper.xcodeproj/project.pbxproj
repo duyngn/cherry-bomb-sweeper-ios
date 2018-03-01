@@ -24,6 +24,8 @@
 		041CA0442015608C006A37BA /* GameTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 041CA0432015608C006A37BA /* GameTimer.swift */; };
 		042168C72008368C0065854F /* MineField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042168C62008368C0065854F /* MineField.swift */; };
 		0423F03C200D653000DE76CF /* FieldGridCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0423F03B200D653000DE76CF /* FieldGridCollectionView.swift */; };
+		0459F4052047B659002A160A /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0459F4042047B659002A160A /* CoreDataManager.swift */; };
+		0459F4082047B8D2002A160A /* CherryBombSweeper.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 0459F4062047B8D2002A160A /* CherryBombSweeper.xcdatamodeld */; };
 		047F483C201DD0A1007E9768 /* AudioOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047F483B201DD0A1007E9768 /* AudioOptions.swift */; };
 		047F483F201F01E3007E9768 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047F483E201F01E3007E9768 /* Constants.swift */; };
 		047F4841201F01F5007E9768 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047F4840201F01F5007E9768 /* Extensions.swift */; };
@@ -68,6 +70,8 @@
 		041CA0432015608C006A37BA /* GameTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameTimer.swift; sourceTree = "<group>"; };
 		042168C62008368C0065854F /* MineField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MineField.swift; sourceTree = "<group>"; };
 		0423F03B200D653000DE76CF /* FieldGridCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldGridCollectionView.swift; sourceTree = "<group>"; };
+		0459F4042047B659002A160A /* CoreDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
+		0459F4072047B8D2002A160A /* CherryBombSweeper.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CherryBombSweeper.xcdatamodel; sourceTree = "<group>"; };
 		047F483B201DD0A1007E9768 /* AudioOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioOptions.swift; sourceTree = "<group>"; };
 		047F483E201F01E3007E9768 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		047F4840201F01F5007E9768 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
@@ -110,6 +114,7 @@
 		0408123F20068E2C009B0BD4 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				0459F40A2047B975002A160A /* Scoring */,
 				04E22D872006CC7800DEC328 /* Cell.swift */,
 				04E22D892006CC8500DEC328 /* Game.swift */,
 				04E22D962006D2F100DEC328 /* GameOptions.swift */,
@@ -151,9 +156,33 @@
 			path = Sounds;
 			sourceTree = "<group>";
 		};
+		0459F4032047B625002A160A /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				0459F4042047B659002A160A /* CoreDataManager.swift */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+		0459F4092047B8DA002A160A /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				0459F4062047B8D2002A160A /* CherryBombSweeper.xcdatamodeld */,
+			);
+			path = CoreData;
+			sourceTree = "<group>";
+		};
+		0459F40A2047B975002A160A /* Scoring */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Scoring;
+			sourceTree = "<group>";
+		};
 		04D044CA201BF4E800758DD1 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				0459F4092047B8DA002A160A /* CoreData */,
 				040FF61B201C425800084720 /* Sounds */,
 				04D044CB201BF4F400758DD1 /* Fonts */,
 			);
@@ -212,6 +241,7 @@
 		270E6FFD6082501567BCD667 /* CherryBombSweeper */ = {
 			isa = PBXGroup;
 			children = (
+				0459F4032047B625002A160A /* Utilities */,
 				04D044CA201BF4E800758DD1 /* Resources */,
 				04FB4E0E200B1D240007A329 /* Views */,
 				04E22D932006D27700DEC328 /* Services */,
@@ -320,6 +350,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0423F03C200D653000DE76CF /* FieldGridCollectionView.swift in Sources */,
+				0459F4082047B8D2002A160A /* CherryBombSweeper.xcdatamodeld in Sources */,
 				048C2AF2202571A1009A9EE9 /* CreditsViewController.swift in Sources */,
 				047F483F201F01E3007E9768 /* Constants.swift in Sources */,
 				270E61E349D485A4C4A83B5B /* AppDelegate.swift in Sources */,
@@ -329,6 +360,7 @@
 				04E22D8A2006CC8500DEC328 /* Game.swift in Sources */,
 				04E22D972006D2F100DEC328 /* GameOptions.swift in Sources */,
 				04E22D952006D29500DEC328 /* GameGeneratorService.swift in Sources */,
+				0459F4052047B659002A160A /* CoreDataManager.swift in Sources */,
 				04B44FCC2012952000CF63EB /* FieldGridScrollView.swift in Sources */,
 				04A50C71200F3CB80075A9BE /* GameProcessingService.swift in Sources */,
 				042168C72008368C0065854F /* MineField.swift in Sources */,
@@ -520,6 +552,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		0459F4062047B8D2002A160A /* CherryBombSweeper.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				0459F4072047B8D2002A160A /* CherryBombSweeper.xcdatamodel */,
+			);
+			currentVersion = 0459F4072047B8D2002A160A /* CherryBombSweeper.xcdatamodel */;
+			path = CherryBombSweeper.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 270E6A3594D178B9E1628FFC /* Project object */;
 }
