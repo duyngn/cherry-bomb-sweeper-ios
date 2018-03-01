@@ -73,13 +73,23 @@ class FieldGridScrollView: UIScrollView {
             // Dimension didn't change, so just reset it
             fieldGridCollection.dataSource = dataSource
             fieldGridCollection.cellActionHandler = cellActionHandler
-            
-            // Show and reload only what's been affected
             fieldGridCollection.isHidden = false
-            fieldGridCollection.reloadItems(at: Array(self.modifiedIndexPaths))
+            
+            self.contentSize = CGSize(width: self.fieldWidth, height: self.fieldHeight)
+            
+            // If the modified cells exceed 300 count, then it's more efficient if we just reload by the main bound's viewport
+            if self.modifiedIndexPaths.count > 300 {
+                let partialGridBounds = CGRect(x: 0, y: 0, width: self.bounds.size.width * 1.5, height: self.bounds.size.height * 1.5)
+                fieldGridCollection.gridViewBounds = partialGridBounds
+                
+                // Show and reload
+                fieldGridCollection.reloadData()
+            } else {
+                // Show and reload only what's been affected
+                fieldGridCollection.reloadItems(at: Array(self.modifiedIndexPaths))
+            }
             
             self.modifiedIndexPaths.removeAll()
-            self.contentSize = CGSize(width: self.fieldWidth, height: self.fieldHeight)
             
             self.recenterFieldGrid()
             

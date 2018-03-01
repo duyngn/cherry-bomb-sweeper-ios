@@ -135,7 +135,6 @@
 			isa = PBXGroup;
 			children = (
 				0459F40B2047D64B002A160A /* CoreData */,
-				0459F40A2047B975002A160A /* Scoring */,
 				04E22D872006CC7800DEC328 /* Cell.swift */,
 				04E22D892006CC8500DEC328 /* Game.swift */,
 				04E22D962006D2F100DEC328 /* GameOptions.swift */,
@@ -193,13 +192,6 @@
 				0459F4062047B8D2002A160A /* CherryBombSweeper.xcdatamodeld */,
 			);
 			path = CoreData;
-			sourceTree = "<group>";
-		};
-		0459F40A2047B975002A160A /* Scoring */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Scoring;
 			sourceTree = "<group>";
 		};
 		0459F40B2047D64B002A160A /* CoreData */ = {
