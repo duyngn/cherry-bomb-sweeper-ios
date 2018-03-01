@@ -23,7 +23,7 @@ class GameIconsService {
     var gearImage: UIImage?
     var xImage: UIImage?
     
-    fileprivate init() {
+    private init() {
         self.brickTileImage = UIImage(named: Constants.brickTileIconName)
         self.darkGrassImage = UIImage(named: Constants.darkGrassIconName)
         self.lightGrassImage = UIImage(named: Constants.lightGrassIconName)

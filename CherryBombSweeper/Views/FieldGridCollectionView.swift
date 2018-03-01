@@ -31,10 +31,10 @@ class FieldGridCollectionView: UICollectionView {
         }
     }
     
-    fileprivate var rowCount: Int = 0
-    fileprivate var columnCount: Int = 0
-    fileprivate var cellDimension: CGFloat = Constants.defaultCellDimension
-    fileprivate var longPressOnIndex: IndexPath?
+    private var rowCount: Int = 0
+    private var columnCount: Int = 0
+    private var cellDimension: CGFloat = Constants.defaultCellDimension
+    private var longPressOnIndex: IndexPath?
     
     private var dimensionConstraints: [NSLayoutConstraint] = []
     
@@ -95,7 +95,7 @@ class FieldGridCollectionView: UICollectionView {
 }
 
 extension FieldGridCollectionView: UIGestureRecognizerDelegate {
-    @objc fileprivate func handleLongPress(gesture : UILongPressGestureRecognizer!) {
+    @objc private func handleLongPress(gesture : UILongPressGestureRecognizer!) {
         if gesture.state == .began {
             let p = gesture.location(in: self)
             

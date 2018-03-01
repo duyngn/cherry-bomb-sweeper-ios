@@ -26,6 +26,12 @@
 		0423F03C200D653000DE76CF /* FieldGridCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0423F03B200D653000DE76CF /* FieldGridCollectionView.swift */; };
 		0459F4052047B659002A160A /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0459F4042047B659002A160A /* CoreDataManager.swift */; };
 		0459F4082047B8D2002A160A /* CherryBombSweeper.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 0459F4062047B8D2002A160A /* CherryBombSweeper.xcdatamodeld */; };
+		0459F4182047D73C002A160A /* DifficultyCategory+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0459F4142047D73B002A160A /* DifficultyCategory+CoreDataClass.swift */; };
+		0459F4192047D73C002A160A /* DifficultyCategory+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0459F4152047D73C002A160A /* DifficultyCategory+CoreDataProperties.swift */; };
+		0459F41A2047D73C002A160A /* HighScorePlayer+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0459F4162047D73C002A160A /* HighScorePlayer+CoreDataClass.swift */; };
+		0459F41B2047D73C002A160A /* HighScorePlayer+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0459F4172047D73C002A160A /* HighScorePlayer+CoreDataProperties.swift */; };
+		0459F41E2047E0F6002A160A /* OverallStats+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0459F41C2047E0F6002A160A /* OverallStats+CoreDataClass.swift */; };
+		0459F41F2047E0F6002A160A /* OverallStats+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0459F41D2047E0F6002A160A /* OverallStats+CoreDataProperties.swift */; };
 		047F483C201DD0A1007E9768 /* AudioOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047F483B201DD0A1007E9768 /* AudioOptions.swift */; };
 		047F483F201F01E3007E9768 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047F483E201F01E3007E9768 /* Constants.swift */; };
 		047F4841201F01F5007E9768 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047F4840201F01F5007E9768 /* Extensions.swift */; };
@@ -76,6 +82,12 @@
 		0423F03B200D653000DE76CF /* FieldGridCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldGridCollectionView.swift; sourceTree = "<group>"; };
 		0459F4042047B659002A160A /* CoreDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		0459F4072047B8D2002A160A /* CherryBombSweeper.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CherryBombSweeper.xcdatamodel; sourceTree = "<group>"; };
+		0459F4142047D73B002A160A /* DifficultyCategory+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DifficultyCategory+CoreDataClass.swift"; sourceTree = "<group>"; };
+		0459F4152047D73C002A160A /* DifficultyCategory+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DifficultyCategory+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		0459F4162047D73C002A160A /* HighScorePlayer+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HighScorePlayer+CoreDataClass.swift"; sourceTree = "<group>"; };
+		0459F4172047D73C002A160A /* HighScorePlayer+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HighScorePlayer+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		0459F41C2047E0F6002A160A /* OverallStats+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OverallStats+CoreDataClass.swift"; sourceTree = "<group>"; };
+		0459F41D2047E0F6002A160A /* OverallStats+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OverallStats+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		047F483B201DD0A1007E9768 /* AudioOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioOptions.swift; sourceTree = "<group>"; };
 		047F483E201F01E3007E9768 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		047F4840201F01F5007E9768 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
@@ -122,6 +134,7 @@
 		0408123F20068E2C009B0BD4 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				0459F40B2047D64B002A160A /* CoreData */,
 				0459F40A2047B975002A160A /* Scoring */,
 				04E22D872006CC7800DEC328 /* Cell.swift */,
 				04E22D892006CC8500DEC328 /* Game.swift */,
@@ -187,6 +200,19 @@
 			children = (
 			);
 			path = Scoring;
+			sourceTree = "<group>";
+		};
+		0459F40B2047D64B002A160A /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				0459F41C2047E0F6002A160A /* OverallStats+CoreDataClass.swift */,
+				0459F41D2047E0F6002A160A /* OverallStats+CoreDataProperties.swift */,
+				0459F4142047D73B002A160A /* DifficultyCategory+CoreDataClass.swift */,
+				0459F4152047D73C002A160A /* DifficultyCategory+CoreDataProperties.swift */,
+				0459F4162047D73C002A160A /* HighScorePlayer+CoreDataClass.swift */,
+				0459F4172047D73C002A160A /* HighScorePlayer+CoreDataProperties.swift */,
+			);
+			path = CoreData;
 			sourceTree = "<group>";
 		};
 		04D044CA201BF4E800758DD1 /* Resources */ = {
@@ -363,8 +389,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0459F4192047D73C002A160A /* DifficultyCategory+CoreDataProperties.swift in Sources */,
 				0423F03C200D653000DE76CF /* FieldGridCollectionView.swift in Sources */,
 				0459F4082047B8D2002A160A /* CherryBombSweeper.xcdatamodeld in Sources */,
+				0459F41A2047D73C002A160A /* HighScorePlayer+CoreDataClass.swift in Sources */,
 				048C2AF2202571A1009A9EE9 /* CreditsViewController.swift in Sources */,
 				047F483F201F01E3007E9768 /* Constants.swift in Sources */,
 				270E61E349D485A4C4A83B5B /* AppDelegate.swift in Sources */,
@@ -375,16 +403,20 @@
 				04E22D972006D2F100DEC328 /* GameOptions.swift in Sources */,
 				04CB9D532030D7AA003FF415 /* HighScoreSectionView.swift in Sources */,
 				04E22D952006D29500DEC328 /* GameGeneratorService.swift in Sources */,
+				0459F4182047D73C002A160A /* DifficultyCategory+CoreDataClass.swift in Sources */,
 				0459F4052047B659002A160A /* CoreDataManager.swift in Sources */,
 				04B44FCC2012952000CF63EB /* FieldGridScrollView.swift in Sources */,
 				04A50C71200F3CB80075A9BE /* GameProcessingService.swift in Sources */,
 				042168C72008368C0065854F /* MineField.swift in Sources */,
+				0459F41F2047E0F6002A160A /* OverallStats+CoreDataProperties.swift in Sources */,
 				04FB4E15200B1E080007A329 /* FieldGridCell.swift in Sources */,
 				04E22D882006CC7800DEC328 /* Cell.swift in Sources */,
 				047F483C201DD0A1007E9768 /* AudioOptions.swift in Sources */,
+				0459F41B2047D73C002A160A /* HighScorePlayer+CoreDataProperties.swift in Sources */,
 				047F4841201F01F5007E9768 /* Extensions.swift in Sources */,
 				04E22D912006CFEB00DEC328 /* GameViewController.swift in Sources */,
 				04E22D8D2006CF8F00DEC328 /* OptionsViewController.swift in Sources */,
+				0459F41E2047E0F6002A160A /* OverallStats+CoreDataClass.swift in Sources */,
 				040FF62F201C485500084720 /* AudioService.swift in Sources */,
 				04B44FCA201124B300CF63EB /* FieldGridCollectionViewLayout.swift in Sources */,
 				04CB9D4E2030D511003FF415 /* HighScoreViewController.swift in Sources */,

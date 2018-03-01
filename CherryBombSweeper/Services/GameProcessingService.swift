@@ -18,6 +18,8 @@ protocol GameStatusListener {
     func gameCompleted() -> Void
 }
 
+typealias HighScoreHandler = (_ isHighScore: Bool) -> Void
+
 class GameProcessingService {
     
     private typealias CellRevealHandler = (_ revealedCells: Set<Int>) -> Void
@@ -29,6 +31,10 @@ class GameProcessingService {
     
     func registerListener(_ listener: GameStatusListener) {
         self.gameListener = listener
+    }
+    
+    func performScoring(handler: @escaping HighScoreHandler) {
+        
     }
     
     func resolveUserAction(at cellIndex: Int, in game: Game, with userAction: UserAction) {

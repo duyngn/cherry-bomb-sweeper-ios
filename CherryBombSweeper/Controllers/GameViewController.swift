@@ -22,31 +22,31 @@ class GameViewController: UIViewController {
     @IBOutlet private weak var controlsContainer: UIView!
     @IBOutlet private weak var statsContainer: UIView!
     
-    @IBOutlet fileprivate weak var timerButton: UIButton!
+    @IBOutlet private weak var timerButton: UIButton!
     @IBOutlet private weak var mineCountButton: UIButton!
     
     @IBOutlet private weak var newGameButton: UIButton!
     @IBOutlet private weak var actionModeButton: UIButton!
     
     // Grid
-    @IBOutlet fileprivate weak var mineFieldView: FieldGridScrollView!
+    @IBOutlet private weak var mineFieldView: FieldGridScrollView!
 
-    fileprivate var game: Game?
-    fileprivate var isFieldInit: Bool = true
+    private var game: Game?
+    private var isFieldInit: Bool = true
     
     private var currentOrientation: UIDeviceOrientation = .portrait
-    fileprivate var currentUserAction: UserAction = .tap
-    fileprivate let actionableState: Set<GameState> = Set([.loaded, .new, .inProgress])
+    private var currentUserAction: UserAction = .tap
+    private let actionableState: Set<GameState> = Set([.loaded, .new, .inProgress])
     
-    fileprivate var gameGeneratorService: GameGeneratorService = GameGeneratorService()
-    fileprivate var gameProcessingService: GameProcessingService = GameProcessingService()
+    private var gameGeneratorService: GameGeneratorService = GameGeneratorService()
+    private var gameProcessingService: GameProcessingService = GameProcessingService()
     private var gameTimer: GameTimer?
     
-    fileprivate var audioService: AudioService = AudioService.shared
+    private var audioService: AudioService = AudioService.shared
     
     lazy private var initGame: Void = {
         self.gameProcessingService.registerListener(self)
-        self.showSplashImage()
+        self.showLoading()
         
         self.startNewGame()
     }()
@@ -105,52 +105,6 @@ class GameViewController: UIViewController {
         }
     }
     
-    private func showSplashImage() {
-        self.splashImage.alpha = 0
-        self.splashImage.isHidden = false
-        
-        self.splashImage.startRotating()
-        UIView.animate(withDuration: 0.3) { [weak self] in
-            self?.splashImage.alpha = 1
-        }
-    }
-    
-    private func hideSplashImage() {
-        self.splashImage.alpha = 1
-        UIView.animate(withDuration: 0.3, animations: { [weak self] in
-            guard let `self` = self else { return }
-            self.splashImage.alpha = 0
-            self.splashImage.transform = CGAffineTransform(scaleX: 0.15, y: 0.15)
-        }) { [weak self] (_) in
-            guard let `self` = self else { return }
-            
-            self.splashImage.isHidden = true
-            self.splashImage.transform = CGAffineTransform.identity
-            self.splashImage.stopRotating()
-        }
-    }
-    
-    private func setupFieldGridView() {
-        DispatchQueue.main.async {
-            
-            var rowCount = 0
-            var colCount = 0
-            if let game = self.game {
-                rowCount = game.mineField.rows
-                colCount = game.mineField.columns
-            } else {
-                let gameOptions = PersistableService.getGameOptions()
-                rowCount = gameOptions.rowCount
-                colCount = gameOptions.columnCount
-            }
-            
-            self.mineFieldView.setupFieldGrid(rows: rowCount, columns: colCount, dataSource: self, cellActionHandler: self) { (_, _) in
-                self.audioService.playBeepBeepSound()
-                self.hideSplashImage()
-            }
-        }
-    }
-    
     private func startNewGame() {
         self.audioService.startBackgroundMusic()
         
@@ -175,10 +129,32 @@ class GameViewController: UIViewController {
         }
     }
     
-    private func resetGameTimer() {
-        self.timerButton.setTitle("00:00", for: .normal)
-        
-        self.gameTimer?.resetTimer()
+    private func finishLoading() {
+        self.isFieldInit = false
+    }
+}
+
+// MARK: - View Setup and Updates
+extension GameViewController {
+    private func setupFieldGridView() {
+        DispatchQueue.main.async {
+            
+            var rowCount = 0
+            var colCount = 0
+            if let game = self.game {
+                rowCount = game.mineField.rows
+                colCount = game.mineField.columns
+            } else {
+                let gameOptions = PersistableService.getGameOptions()
+                rowCount = gameOptions.rowCount
+                colCount = gameOptions.columnCount
+            }
+            
+            self.mineFieldView.setupFieldGrid(rows: rowCount, columns: colCount, dataSource: self, cellActionHandler: self) { (_, _) in
+                self.audioService.playBeepBeepSound()
+                self.hideLoading()
+            }
+        }
     }
     
     private func resetControlStates() {
@@ -197,7 +173,52 @@ class GameViewController: UIViewController {
         self.newGameButton.transform = CGAffineTransform.identity
     }
     
-    fileprivate func gameStarted() {
+    private func updateRemainingMinesCountLabel() {
+        if let minesCount = self.game?.minesRemaining {
+            
+            DispatchQueue.main.async {
+                self.mineCountButton.setTitle(String(describing: minesCount), for: .normal)
+                self.mineCountButton.setTitleColor(Constants.accentColor, for: .normal)
+                self.mineCountButton.transform = CGAffineTransform(scaleX: 1.7, y: 1.7)
+                
+                UIView.animate(withDuration: 0.2, delay: 0.1, options: .curveEaseOut, animations: {
+                    self.mineCountButton.transform = CGAffineTransform.identity
+                }, completion: { (_) in
+                    self.mineCountButton.setTitleColor(Constants.primaryColor, for: .normal)
+                })
+            }
+        }
+    }
+    
+    private func showLoading() {
+        self.splashImage.alpha = 0
+        self.splashImage.isHidden = false
+        
+        self.splashImage.startRotating()
+        UIView.animate(withDuration: 0.3) { [weak self] in
+            self?.splashImage.alpha = 1
+        }
+    }
+    
+    private func hideLoading() {
+        self.splashImage.alpha = 1
+        UIView.animate(withDuration: 0.3, animations: { [weak self] in
+            guard let `self` = self else { return }
+            self.splashImage.alpha = 0
+            self.splashImage.transform = CGAffineTransform(scaleX: 0.15, y: 0.15)
+        }) { [weak self] (_) in
+            guard let `self` = self else { return }
+            
+            self.splashImage.isHidden = true
+            self.splashImage.transform = CGAffineTransform.identity
+            self.splashImage.stopRotating()
+        }
+    }
+}
+
+// MARK: - Game Lifecycle
+extension GameViewController {
+    private func gameStarted() {
         guard let game = self.game, game.state != .inProgress else { return }
         
         self.game?.state = .inProgress
@@ -206,7 +227,7 @@ class GameViewController: UIViewController {
         }
     }
     
-    fileprivate func gameOver() {
+    private func gameOver() {
         self.gameTimer?.pauseTimer()
         self.audioService.stopBackgroundMusic()
         self.audioService.playExplodeSound()
@@ -227,12 +248,14 @@ class GameViewController: UIViewController {
             
             self.mineFieldView.showEntireField()
             
+            self.gameScoring()
+            
             // Preload the next game
             self.gameGeneratorService.preloadGame()
         }
     }
     
-    fileprivate func gameFinished() {
+    private func gameFinished() {
         self.gameTimer?.pauseTimer()
         self.audioService.stopBackgroundMusic()
         self.audioService.playWinningMusic()
@@ -248,8 +271,18 @@ class GameViewController: UIViewController {
             
             self.mineFieldView.showEntireField()
             
+            self.gameScoring()
+            
             // Preload the next game
             self.gameGeneratorService.preloadGame()
+        }
+    }
+    
+    private func gameScoring() {
+        self.gameProcessingService.performScoring { isHighScore in
+            if isHighScore {
+                //                self.captureNameAndSaveHighScore()
+            }
         }
     }
     
@@ -278,60 +311,10 @@ class GameViewController: UIViewController {
         
         self.audioService.startBackgroundMusic()
     }
-    
-    private func finishLoading() {
-        self.isFieldInit = false
-    }
-    
-    private func updateActionModeButton(to action: UserAction) {
-        DispatchQueue.main.async {
-            self.currentUserAction = action
-            
-            switch self.currentUserAction {
-            case .flag:
-                if let flagImage = GameIconsService.shared.flagImage {
-                    self.actionModeButton.setImage(flagImage, for: UIControlState.normal)
-                }
-            case .tap:
-                if let shovelImage = GameIconsService.shared.shovelImage {
-                    self.actionModeButton.setImage(shovelImage, for: UIControlState.normal)
-                }
-            }
-        }
-    }
-    
-    fileprivate func updateRemainingMinesCountLabel() {
-        if let minesCount = self.game?.minesRemaining {
-            
-            DispatchQueue.main.async {
-                self.mineCountButton.setTitle(String(describing: minesCount), for: .normal)
-                self.mineCountButton.setTitleColor(Constants.accentColor, for: .normal)
-                self.mineCountButton.transform = CGAffineTransform(scaleX: 1.7, y: 1.7)
-                
-                UIView.animate(withDuration: 0.2, delay: 0.1, options: .curveEaseOut, animations: {
-                    self.mineCountButton.transform = CGAffineTransform.identity
-                }, completion: { (_) in
-                    self.mineCountButton.setTitleColor(Constants.primaryColor, for: .normal)
-                })
-            }
-        }
-    }
-    
-    private func loadHighScoresScreen() {
-        self.audioService.playPositiveSound()
-        
-        self.pauseGame()
-        
-        let highScoresController = HighScoreViewController(nibName: "HighScoreViewController", bundle: nil)
-        highScoresController.exitHandler = { [weak self] in
-            self?.unpauseGame()
-        }
-        
-        highScoresController.modalPresentationStyle = .overFullScreen
-        
-        self.present(highScoresController, animated: true)
-    }
-    
+}
+
+// MARK: - Action Bar Button IBAction
+extension GameViewController {
     @IBAction func onTimerPressed(_ sender: UIButton) {
         self.loadHighScoresScreen()
     }
@@ -371,14 +354,54 @@ class GameViewController: UIViewController {
         
         self.present(optionsController, animated: true)
     }
+    
+    private func updateActionModeButton(to action: UserAction) {
+        DispatchQueue.main.async {
+            self.currentUserAction = action
+            
+            switch self.currentUserAction {
+            case .flag:
+                if let flagImage = GameIconsService.shared.flagImage {
+                    self.actionModeButton.setImage(flagImage, for: UIControlState.normal)
+                }
+            case .tap:
+                if let shovelImage = GameIconsService.shared.shovelImage {
+                    self.actionModeButton.setImage(shovelImage, for: UIControlState.normal)
+                }
+            }
+        }
+    }
+    
+    private func loadHighScoresScreen() {
+        self.audioService.playPositiveSound()
+        
+        self.pauseGame()
+        
+        let highScoresController = HighScoreViewController(nibName: "HighScoreViewController", bundle: nil)
+        highScoresController.exitHandler = { [weak self] in
+            self?.unpauseGame()
+        }
+        
+        highScoresController.modalPresentationStyle = .overFullScreen
+        
+        self.present(highScoresController, animated: true)
+    }
 }
 
+// MARK: - GameTimer
 extension GameViewController: GameTimerDelegate {
+    private func resetGameTimer() {
+        self.timerButton.setTitle("00:00", for: .normal)
+        
+        self.gameTimer?.resetTimer()
+    }
+    
     func onTimerUpdate(seconds: Int, timeString: String) {
         self.timerButton.setTitle(timeString, for: .normal)
     }
 }
 
+// MARK: - UICollectionViewDataSource
 extension GameViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return self.game?.mineField.cellIndexToCoordMap.count ?? self.gameGeneratorService.gameOptions.rowCount * self.gameGeneratorService.gameOptions.columnCount
@@ -402,6 +425,7 @@ extension GameViewController: UICollectionViewDataSource {
     }
 }
 
+// MARK: - FieldGridCellActionListener
 extension GameViewController: FieldGridCellActionListener {
     func onCellTap(_ cellIndex: Int) {
         guard let game = self.game else { return }
@@ -446,6 +470,7 @@ extension GameViewController: FieldGridCellActionListener {
     }
 }
 
+// MARK: - GameStatusListener
 extension GameViewController: GameStatusListener {
     func cellsRevealed(_ revealedCells: Set<Int>) {
         let revealedIndexPaths = revealedCells.map { return IndexPath(row: $0, section: 0) }

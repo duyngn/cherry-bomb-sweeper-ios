@@ -9,7 +9,7 @@
 import UIKit
 
 class FieldGridScrollView: UIScrollView {
-    fileprivate var fieldGridCollection: FieldGridCollectionView?
+    private var fieldGridCollection: FieldGridCollectionView?
 
     private var minScaleFactor: CGFloat = Constants.defaultMinScaleFactor
     
@@ -19,14 +19,14 @@ class FieldGridScrollView: UIScrollView {
     private var fieldHeight: CGFloat = 0
     private var modifiedIndexPaths: Set<IndexPath> = []
     
-    fileprivate var lastZoomedWidth: CGFloat = 0
+    private var lastZoomedWidth: CGFloat = 0
     
-    fileprivate var topConstraint: NSLayoutConstraint?
-    fileprivate var leadingConstraint: NSLayoutConstraint?
+    private var topConstraint: NSLayoutConstraint?
+    private var leadingConstraint: NSLayoutConstraint?
     
     // This gridViewBounds is an inverse zoom of the contentSize.  As content size of this scrollview scales down,
     // this gridViewBounds will appear to have enlarge to the underlying collectionview.
-    fileprivate var gridViewBounds: CGRect {
+    private var gridViewBounds: CGRect {
         // This gridViewBounds is effectively 100px larger on all sides than the actual container view
         // to prevent clipping outside of safe regions.
         let newOffsetX = (self.contentOffset.x - 100) / self.zoomScale
@@ -179,7 +179,7 @@ class FieldGridScrollView: UIScrollView {
         self.recenterFieldGrid(width: width, height: height)
     }
     
-    fileprivate func recenterFieldGrid(width: CGFloat? = nil, height: CGFloat? = nil) {
+    private func recenterFieldGrid(width: CGFloat? = nil, height: CGFloat? = nil) {
         guard self.lastZoomedWidth != self.contentSize.width,
             let fieldGrid = self.fieldGridCollection else { return }
         

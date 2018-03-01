@@ -47,7 +47,7 @@ class OptionsViewController: UIViewController {
     private var audioService: AudioService = AudioService.shared
     private var selectedDifficultyButton: UIButton?
     
-    fileprivate lazy var initialize: Void = {
+    private lazy var initialize: Void = {
         self.updateDifficultyLabels()
         self.updateSelectedPickerIndices()
         self.updateSwitchStates()

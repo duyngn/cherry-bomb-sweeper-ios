@@ -1,35 +1,30 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="13772" systemVersion="17D47" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
-    <entity name="DifficultyCategory" representedClassName="DifficultyCategory" syncable="YES" codeGenerationType="class">
-        <attribute name="games_played" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="games_won" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="name" attributeType="String" syncable="YES"/>
-        <attribute name="total_win_time" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+    <entity name="DifficultyCategory" representedClassName=".DifficultyCategory" syncable="YES">
+        <attribute name="categoryName" attributeType="String" syncable="YES"/>
+        <attribute name="gamesPlayed" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="gamesWon" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="totalWinTime" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="topPlayers" toMany="YES" maxCount="3" deletionRule="Nullify" destinationEntity="HighScorePlayer" inverseName="difficultyCategory" inverseEntity="HighScorePlayer" syncable="YES"/>
         <uniquenessConstraints>
             <uniquenessConstraint>
-                <constraint value="name"/>
+                <constraint value="categoryName"/>
             </uniquenessConstraint>
         </uniquenessConstraints>
     </entity>
-    <entity name="HighScorePlayer" representedClassName="HighScorePlayer" syncable="YES" codeGenerationType="class">
-        <attribute name="category" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="id" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="time" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
-        <uniquenessConstraints>
-            <uniquenessConstraint>
-                <constraint value="id"/>
-            </uniquenessConstraint>
-        </uniquenessConstraints>
+    <entity name="HighScorePlayer" representedClassName=".HighScorePlayer" syncable="YES">
+        <attribute name="gameTime" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="playerName" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="difficultyCategory" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DifficultyCategory" inverseName="topPlayers" inverseEntity="DifficultyCategory" syncable="YES"/>
     </entity>
-    <entity name="OverallStats" representedClassName="OverallStats" syncable="YES" codeGenerationType="class">
+    <entity name="OverallStats" representedClassName=".OverallStats" syncable="YES">
         <attribute name="games_played" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="games_won" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="mines_flagged" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
     </entity>
     <elements>
-        <element name="OverallStats" positionX="-63" positionY="-18" width="128" height="90"/>
-        <element name="DifficultyCategory" positionX="-54" positionY="18" width="128" height="105"/>
-        <element name="HighScorePlayer" positionX="-36" positionY="45" width="128" height="105"/>
+        <element name="DifficultyCategory" positionX="-209" positionY="-6" width="128" height="118"/>
+        <element name="HighScorePlayer" positionX="61" positionY="9" width="128" height="88"/>
+        <element name="OverallStats" positionX="-74" positionY="-180" width="128" height="88"/>
     </elements>
 </model>
